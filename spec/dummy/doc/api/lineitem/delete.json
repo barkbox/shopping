@@ -1,0 +1,48 @@
+{
+  "resource": "LineItem",
+  "http_method": "DELETE",
+  "route": "/api/v1/line_items/:id",
+  "description": "Delete",
+  "explanation": null,
+  "parameters": [
+    {
+      "requred": true,
+      "name": "line_item_id",
+      "description": "Line item id"
+    }
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "DELETE",
+      "request_path": "/api/v1/line_items/1",
+      "request_body": null,
+      "request_headers": {
+        "Host": "example.org",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Cookie": ""
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": "application/x-www-form-urlencoded",
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"1\",\n    \"type\": \"shopping_line_items\",\n    \"attributes\": {\n      \"sale_price\": \"5.0\",\n      \"list_price\": \"5.0\",\n      \"quantity\": 1,\n      \"created_at\": \"2016-11-17T23:24:54.731Z\",\n      \"updated_at\": \"2016-11-17T23:24:54.731Z\"\n    }\n  }\n}",
+      "response_headers": {
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-XSS-Protection": "1; mode=block",
+        "X-Content-Type-Options": "nosniff",
+        "Content-Type": "application/json; charset=utf-8",
+        "ETag": "W/\"70413f57336a21176ee2210a9b4fe98b\"",
+        "Cache-Control": "max-age=0, private, must-revalidate",
+        "X-Request-Id": "13acfcb1-8031-4c86-baf5-b26b571b4682",
+        "X-Runtime": "0.004753",
+        "Content-Length": "194"
+      },
+      "response_content_type": "application/json; charset=utf-8",
+      "curl": null
+    }
+  ]
+}

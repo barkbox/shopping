@@ -1,0 +1,42 @@
+{
+  "resources": [
+    {
+      "name": "Cart",
+      "examples": [
+        {
+          "description": "Show",
+          "link": "cart/show.json",
+          "groups": "all",
+          "route": "/api/v1/carts/:id",
+          "method": "get"
+        },
+        {
+          "description": "Show",
+          "link": "cart/show.json",
+          "groups": "all",
+          "route": "/api/v1/carts/:id?include=line_items",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "name": "LineItem",
+      "examples": [
+        {
+          "description": "Create",
+          "link": "lineitem/create.json",
+          "groups": "all",
+          "route": "/api/v1/line_items",
+          "method": "post"
+        },
+        {
+          "description": "Delete",
+          "link": "lineitem/delete.json",
+          "groups": "all",
+          "route": "/api/v1/line_items/:id",
+          "method": "delete"
+        }
+      ]
+    }
+  ]
+}
