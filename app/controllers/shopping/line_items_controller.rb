@@ -9,21 +9,28 @@ module Shopping
       end
       source = line_item_params[:source_type].constantize.find(line_item_params[:source_id])
       quantity = (line_item_params[:quantity] || 1).to_i
-      service = AddLineItemService.new(cart, source, quantity)
-      line_item = service.perform!
-      render json: line_item, serializer: Shopping::LineItemSerializer, status: 200
+      AddLineItemService.new(cart, source, quantity).perform!
+      render json: cart, serializer: Shopping::CartSerializer, status: 200
     end
 
     def update
+      cart = line_item.cart
+      source = line_item.source
+      quantity = (line_item_params[:quantity] || 0).to_i
+      UpdateLineItemService.new(cart, source, quantity).perform!
+      render json: cart, serializer: Shopping::CartSerializer, status: 200
     end
 
     def destroy
-      line_item = LineItem.find(params[:id])
       line_item.destroy
-      render json: line_item, serializer: Shopping::LineItemSerializer, status: 200
+      render json: line_item.cart, serializer: Shopping::CartSerializer, status: 200
     end
 
-    private 
+    private
+
+      def line_item
+        @line_item ||= LineItem.find(params[:id])
+      end
 
       def line_item_params
         params.require(:data)

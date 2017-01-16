@@ -33,8 +33,7 @@ describe AddLineItemService do
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(1)
-        expect(cart.line_items.first.source_id).to eq(source.id)
-        expect(cart.line_items.first.source_type).to eq(source.type)
+        expect(cart.line_items.first.source).to eq(source)
         expect(cart.line_items.first.sale_price).to eq(source.price)
       end
 
@@ -43,21 +42,19 @@ describe AddLineItemService do
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(2)
-        expect(cart.line_items.first.source_id).to eq(source.id)
-        expect(cart.line_items.first.source_type).to eq(source.type)
+        expect(cart.line_items.first.source).to eq(source)
       end
 
       it 'increments the quantity of an existing line item' do
         cart = create(:cart)
         source = create(:item)
-        cart.line_items << create(:line_item, source_id: source.id, source_type: source.type, sale_price: source.price, quantity: 1)
+        cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
         cart.reload
         service = AddLineItemService.new(cart, source)
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(2)
-        expect(cart.line_items.first.source_id).to eq(source.id)
-        expect(cart.line_items.first.source_type).to eq(source.type)
+        expect(cart.line_items.first.source).to eq(source)
       end
     end
 

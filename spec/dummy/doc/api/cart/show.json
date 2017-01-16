@@ -1,7 +1,7 @@
 {
   "resource": "Cart",
   "http_method": "GET",
-  "route": "/api/v1/carts/:id?include=line_items",
+  "route": "/api/v1/carts/:id",
   "description": "Show",
   "explanation": null,
   "parameters": [
@@ -17,29 +17,28 @@
   "requests": [
     {
       "request_method": "GET",
-      "request_path": "/api/v1/carts/1?include=line_items",
+      "request_path": "/api/v1/carts/1",
       "request_body": null,
       "request_headers": {
         "Host": "example.org",
         "Cookie": ""
       },
       "request_query_parameters": {
-        "include": "line_items"
       },
       "request_content_type": null,
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": {\n    \"id\": \"1\",\n    \"type\": \"shopping_carts\",\n    \"attributes\": {\n      \"user_id\": null,\n      \"purchased_at\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": [\n\n        ]\n      }\n    }\n  }\n}",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"1\",\n    \"type\": \"shopping_carts\",\n    \"attributes\": {\n      \"user_id\": null,\n      \"purchased_at\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": [\n          {\n            \"id\": \"1\",\n            \"type\": \"shopping_line_items\"\n          }\n        ]\n      }\n    }\n  }\n}",
       "response_headers": {
         "X-Frame-Options": "SAMEORIGIN",
         "X-XSS-Protection": "1; mode=block",
         "X-Content-Type-Options": "nosniff",
         "Content-Type": "application/json; charset=utf-8",
-        "ETag": "W/\"1d0964333c1dd0d847266be848e6d623\"",
+        "ETag": "W/\"069462f209b5552bc9300cd9152da0eb\"",
         "Cache-Control": "max-age=0, private, must-revalidate",
-        "X-Request-Id": "5f1977a5-783d-466f-87da-56c33ca1b072",
-        "X-Runtime": "0.004614",
-        "Content-Length": "136"
+        "X-Request-Id": "c5bae7ca-43d4-4a8d-b0ef-a43d6f0bbe95",
+        "X-Runtime": "0.020997",
+        "Content-Length": "175"
       },
       "response_content_type": "application/json; charset=utf-8",
       "curl": null

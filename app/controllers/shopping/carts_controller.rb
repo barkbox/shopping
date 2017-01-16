@@ -3,7 +3,7 @@ module Shopping
     
     def show
       cart = Cart.find(params[:id])
-      render json: cart, serializer: Shopping::CartSerializer
+      render json: cart, include: params[:include], serializer: Shopping::CartSerializer
     end
 
     # def update

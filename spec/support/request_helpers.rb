@@ -1,5 +1,5 @@
-module Requests
-  module JsonHelpers
+module Request
+  module Helpers
     def nest_attributes attributes
       data = {}
       

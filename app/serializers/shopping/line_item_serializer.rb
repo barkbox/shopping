@@ -5,5 +5,7 @@ module Shopping
                 :quantity,
                 :created_at, 
                 :updated_at
+
+    belongs_to :source
   end
 end

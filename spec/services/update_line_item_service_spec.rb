@@ -31,20 +31,19 @@ describe UpdateLineItemService do
       it 'should update an existing line item' do
         cart = create(:cart)
         source = create(:item)
-        cart.line_items << create(:line_item, source_id: source.id, source_type: source.type, sale_price: source.price, quantity: 1)
+        cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
         cart.reload
         service = UpdateLineItemService.new(cart, source, 5)
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(5)
-        expect(cart.line_items.first.source_id).to eq(source.id)
-        expect(cart.line_items.first.source_type).to eq(source.type)
+        expect(cart.line_items.first.source).to eq(source)
       end
 
       it 'should destroy a line item with 0 quantity' do
         cart = create(:cart)
         source = create(:item)
-        cart.line_items << create(:line_item, source_id: source.id, source_type: source.type, sale_price: source.price, quantity: 1)
+        cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
         cart.reload
         service = UpdateLineItemService.new(cart, source, 0)
         service.perform!

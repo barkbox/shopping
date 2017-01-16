@@ -29,7 +29,7 @@ class AddLineItemService < BaseService
   end
 
   def add!
-    line_item = @cart.line_items.find_or_initialize_by(source_id: source.id, source_type: source.type, sale_price: source.price)
+    line_item = @cart.line_items.find_or_initialize_by(source: source, sale_price: source.price)
     line_item.list_price = source.price
     line_item.sale_price = source.price
     line_item.increment(:quantity, @quantity)

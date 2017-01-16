@@ -28,7 +28,7 @@ class UpdateLineItemService < BaseService
   end
 
   def update!
-    line_item = @cart.line_items.find_by(source_id: source.id, source_type: source.type, sale_price: source.price)
+    line_item = @cart.line_items.find_by(source: source, sale_price: source.price)
     raise 'Unable to update line item' if line_item.nil?
     if @quantity > 0
       line_item.quantity = @quantity

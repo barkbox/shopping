@@ -4,6 +4,6 @@ module Shopping
                 :user_id,
                 :purchased_at
 
-    has_many :line_items, embed: :ids
+    has_many :line_items
   end
 end
