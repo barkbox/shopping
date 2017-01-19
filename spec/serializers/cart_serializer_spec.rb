@@ -77,7 +77,6 @@ describe Shopping::CartSerializer, type: :serializer do
     let!(:line_item) { create(:line_item, cart: cart, source: create(:item)) }
 
     it 'serializes the cart' do
-      p json
       expect(json.keys).to include("data")
       
       expect(json["data"]["id"]).to eq(cart.id.to_s)
