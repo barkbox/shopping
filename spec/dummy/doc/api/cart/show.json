@@ -28,17 +28,17 @@
       "request_content_type": null,
       "response_status": 200,
       "response_status_text": "OK",
-      "response_body": "{\n  \"data\": {\n    \"id\": \"1\",\n    \"type\": \"shopping_carts\",\n    \"attributes\": {\n      \"user_id\": null,\n      \"purchased_at\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": [\n          {\n            \"id\": \"1\",\n            \"type\": \"shopping_line_items\"\n          }\n        ]\n      }\n    }\n  }\n}",
+      "response_body": "{\n  \"data\": {\n    \"id\": \"1\",\n    \"type\": \"shopping_carts\",\n    \"attributes\": {\n      \"user_id\": null,\n      \"purchased_at\": null,\n      \"created_at\": \"2017-01-19T19:56:28.881Z\"\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"meta\": {\n        }\n      }\n    }\n  }\n}",
       "response_headers": {
         "X-Frame-Options": "SAMEORIGIN",
         "X-XSS-Protection": "1; mode=block",
         "X-Content-Type-Options": "nosniff",
         "Content-Type": "application/json; charset=utf-8",
-        "ETag": "W/\"069462f209b5552bc9300cd9152da0eb\"",
+        "ETag": "W/\"38e669e2d66edf53832a8b81ba1c1ce1\"",
         "Cache-Control": "max-age=0, private, must-revalidate",
-        "X-Request-Id": "c5bae7ca-43d4-4a8d-b0ef-a43d6f0bbe95",
-        "X-Runtime": "0.020997",
-        "Content-Length": "175"
+        "X-Request-Id": "fd69743c-3849-4745-b013-59543cb7ab1a",
+        "X-Runtime": "0.014148",
+        "Content-Length": "176"
       },
       "response_content_type": "application/json; charset=utf-8",
       "curl": null

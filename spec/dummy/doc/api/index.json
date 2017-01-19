@@ -18,11 +18,37 @@
           "method": "get"
         },
         {
-          "description": "Show incl line items and items",
-          "link": "cart/show_incl_line_items_and_items.json",
+          "description": "Show incl line items and sources",
+          "link": "cart/show_incl_line_items_and_sources.json",
           "groups": "all",
           "route": "/api/v1/carts/:id?include=line_items.source",
           "method": "get"
+        }
+      ]
+    },
+    {
+      "name": "LineItem",
+      "examples": [
+        {
+          "description": "Create",
+          "link": "lineitem/create.json",
+          "groups": "all",
+          "route": "/api/v1/line_items",
+          "method": "post"
+        },
+        {
+          "description": "Delete",
+          "link": "lineitem/delete.json",
+          "groups": "all",
+          "route": "/api/v1/line_items/:id",
+          "method": "delete"
+        },
+        {
+          "description": "Update",
+          "link": "lineitem/update.json",
+          "groups": "all",
+          "route": "/api/v1/line_items/:id",
+          "method": "put"
         }
       ]
     }

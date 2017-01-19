@@ -17,13 +17,13 @@ resource 'LineItem', type: :acceptance do
       params = nest_attributes({
         cart_id: cart.id,
         source_id: item.id,
-        source_type: item.type
+        source_type: item.class.name
       })
 
       do_request params
 
       line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(cart).to_json # request specs should not test the serializer
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)
@@ -41,13 +41,13 @@ resource 'LineItem', type: :acceptance do
 
       params = nest_attributes({
         source_id: item.id,
-        source_type: item.type
+        source_type: item.class.name
       })
 
       do_request params
 
       line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item).to_json # request specs should not test the serializer
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)
@@ -58,7 +58,7 @@ resource 'LineItem', type: :acceptance do
   post '/api/v1/line_items', document: false do
     let(:cart) { create(:cart) }
     let(:item) { create(:item) }
-    let(:line_item) { create(:line_item, cart_id: cart.id, source_id: item.id, source_type: 'Item', quantity: 1, sale_price: item.price) }
+    let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
 
     example 'Create [existing item]' do
 
@@ -74,7 +74,7 @@ resource 'LineItem', type: :acceptance do
       do_request params
 
       line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item).to_json # request specs should not test the serializer
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)
@@ -86,7 +86,9 @@ resource 'LineItem', type: :acceptance do
   put '/api/v1/line_items/:id' do
     parameter :line_item_id, 'Line item id', requred: true
 
-    let!(:line_item) { create(:line_item) }
+    let(:cart) { create(:cart) }
+    let(:item) { create(:item) }
+    let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
     let(:id) { line_item.id }
 
     example 'Update' do
@@ -95,10 +97,10 @@ resource 'LineItem', type: :acceptance do
         quantity: 2
       })
       
-      do_request
+      do_request params
 
       line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item).to_json # request specs should not test the serializer
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)
@@ -109,15 +111,17 @@ resource 'LineItem', type: :acceptance do
   delete '/api/v1/line_items/:id' do
     parameter :line_item_id, 'Line item id', requred: true
 
-    let!(:line_item) { create(:line_item) }
+    let(:cart) { create(:cart) }
+    let(:item) { create(:item) }
+    let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
     let(:id) { line_item.id }
 
     example 'Delete' do
-      line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item).to_json # request specs should not test the serializer
       expect(Shopping::LineItem.count).to eq(1)
       
       do_request
+
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)
