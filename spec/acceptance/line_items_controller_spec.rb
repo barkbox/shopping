@@ -23,7 +23,7 @@ resource 'LineItem', type: :acceptance do
       do_request params
 
       line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)
@@ -47,7 +47,7 @@ resource 'LineItem', type: :acceptance do
       do_request params
 
       line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)
@@ -74,7 +74,7 @@ resource 'LineItem', type: :acceptance do
       do_request params
 
       line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)
@@ -100,7 +100,7 @@ resource 'LineItem', type: :acceptance do
       do_request params
 
       line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)
@@ -121,7 +121,7 @@ resource 'LineItem', type: :acceptance do
       
       do_request
 
-      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart).to_json # request specs should not test the serializer
+      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
 
       expect(status).to be 200
       expect(response_body).to eq(expected)

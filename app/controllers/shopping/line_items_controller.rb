@@ -10,7 +10,7 @@ module Shopping
       source = line_item_params[:source_type].constantize.find(line_item_params[:source_id])
       quantity = (line_item_params[:quantity] || 1).to_i
       AddLineItemService.new(cart, source, quantity).perform!
-      render json: cart, serializer: Shopping::CartSerializer, status: 200
+      render json: cart, include: :line_items, serializer: Shopping::CartSerializer, status: 200
     end
 
     def update
@@ -18,12 +18,12 @@ module Shopping
       source = line_item.source
       quantity = (line_item_params[:quantity] || 0).to_i
       UpdateLineItemService.new(cart, source, quantity).perform!
-      render json: cart, serializer: Shopping::CartSerializer, status: 200
+      render json: cart, include: :line_items, serializer: Shopping::CartSerializer, status: 200
     end
 
     def destroy
       line_item.destroy
-      render json: line_item.cart, serializer: Shopping::CartSerializer, status: 200
+      render json: line_item.cart, include: :line_items, serializer: Shopping::CartSerializer, status: 200
     end
 
     private

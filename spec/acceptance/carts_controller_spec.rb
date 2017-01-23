@@ -65,7 +65,14 @@ resource 'Cart', type: :acceptance do
     example 'Missing' do
       do_request
 
-      expected = ActiveModelSerializers::SerializableResource.new(ActiveRecord::RecordNotFound).to_json # request specs should not test the serializer
+      expected = {
+        :errors => [
+          {
+            status: '404',
+            title:  'Not found'
+          }
+        ]
+      }.to_json
       
       expect(status).to be 404
       expect(response_body).to eq(expected)
