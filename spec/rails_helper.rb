@@ -44,7 +44,7 @@ end
 
 RspecApiDocumentation.configure do |config|
   config.format = :markdown
-  config.docs_dir = Rails.root.join("doc", "api")
+  config.docs_dir = Rails.root.join("..", "..", "doc", "api")
 end
 
 ActiveRecord::Migration.maintain_test_schema!
