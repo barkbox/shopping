@@ -17,5 +17,4 @@ gem 'active_model_serializers', '~> 0.10.4'
 
 group :development, :test do
   gem 'rspec_api_documentation'
-  gem 'apitome'
 end
