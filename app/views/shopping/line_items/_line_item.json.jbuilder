@@ -1,0 +1,1 @@
+json.(line_item, :sale_price, :list_price, :quantity, :created_at, :updated_at)
