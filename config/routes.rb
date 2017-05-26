@@ -1,4 +1,5 @@
 Shopping::Engine.routes.draw do
   jsonapi_resources :carts, except: [:index, :destroy]
-  # resources :line_items
+  jsonapi_resources :line_items, only: :show do
+  end
 end
