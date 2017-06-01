@@ -17,10 +17,10 @@ class UpdateLineItemService < BaseService
 
   def to_hash
     {
-      cart_id: @cart.id,
-      source_id: @source.id,
-      source_type: @source.type,
-      quantity: @quantity
+      cart_id: cart.id,
+      source_id: source.id,
+      source_type: source.type,
+      quantity: quantity
     }
   end
 
