@@ -35,11 +35,7 @@ describe UpdateLineItemService do
     end
 
     shared_examples_for 'it updates a line item in the cart' do
-      it 'should update an existing line item' do
-        # cart = create(:cart)
-        # source = create(:item)
-        # cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
-        # cart.reload
+      it 'should update an existing line item' doS
         service = UpdateLineItemService.new(@line_item, @cart, @item, 5)
         service.perform!
         expect(@cart.line_items.count).to eq(1)
@@ -48,10 +44,6 @@ describe UpdateLineItemService do
       end
 
       it 'should destroy a line item with 0 quantity' do
-        # cart = create(:cart)
-        # source = create(:item)
-        # cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
-        # cart.reload
         service = UpdateLineItemService.new(@line_item, @cart, @item, 0)
         service.perform!
         expect(@cart.line_items.count).to eq(0)
