@@ -62,12 +62,6 @@ describe UpdateLineItemService do
         expect{ service.perform! }.to raise_error(ServiceError, /line_item can't be blank/i)
       end
     end
-  
-    describe 'adding an item to cart' do
-      it_should_behave_like 'it updates a line item in the cart' do
-        let(:cart) { create(:cart) }
-        let(:source) { create(:item) }
-      end
-    end
+
   end
 end
