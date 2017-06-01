@@ -2,12 +2,14 @@ class UpdateLineItemService < BaseService
 
   attr_accessor :cart, 
                 :source,
-                :quantity
+                :quantity,
+                :line_item
 
-  validates :cart, :source, :quantity, presence: true
+  validates :line_item, :cart, :source, :quantity, presence: true
   validate :unpurchased_cart
 
-  def initialize cart, source, quantity
+  def initialize line_item, cart, source, quantity
+    @line_item = line_item
     @cart = cart
     @source = source
     @quantity = quantity
@@ -28,7 +30,6 @@ class UpdateLineItemService < BaseService
   end
 
   def update!
-    line_item = @cart.line_items.find_by(source: source, sale_price: source.price)
     raise 'Unable to update line item' if line_item.nil?
     if @quantity > 0
       line_item.quantity = @quantity
