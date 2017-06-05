@@ -3,12 +3,13 @@ require 'rspec_api_documentation/dsl'
 
 resource 'LineItem', type: :acceptance do
 
-  post '/api/v1/line_items' do
+  post '/api/v1/carts/:cart_id/relationships/line_items' do
     parameter :cart_id, 'Cart id'
     parameter :source_id, 'Source id', required: true
     parameter :source_type, 'Source type', required: true
 
     let(:cart) { create(:cart) }
+    let(:cart_id) { cart.id }
     let(:item) { create(:item) }
 
     example 'Create' do
@@ -31,7 +32,7 @@ resource 'LineItem', type: :acceptance do
     end
   end
 
-  post '/api/v1/line_items', document: false do
+  post '/api/v1/carts/:cart_id/relationships/line_items', document: false do
 
     let(:item) { create(:item) }
 
@@ -55,8 +56,9 @@ resource 'LineItem', type: :acceptance do
     end
   end
   
-  post '/api/v1/line_items', document: false do
+  post '/api/v1/carts/:cart_id/relationships/line_items', document: false do
     let(:cart) { create(:cart) }
+    let(:cart_id) { cart.id }
     let(:item) { create(:item) }
     let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
 
@@ -83,10 +85,11 @@ resource 'LineItem', type: :acceptance do
     end
   end
 
-  put '/api/v1/line_items/:id' do
-    parameter :line_item_id, 'Line item id', requred: true
+  put '/api/v1/carts/:cart_id/relationships/line_items/:id' do
+    parameter :line_item_id, 'Line item id', required: true
 
     let(:cart) { create(:cart) }
+    let(:cart_id) { cart.id }
     let(:item) { create(:item) }
     let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
     let(:id) { line_item.id }
@@ -108,10 +111,11 @@ resource 'LineItem', type: :acceptance do
     end
   end
 
-  delete '/api/v1/line_items/:id' do
-    parameter :line_item_id, 'Line item id', requred: true
+  delete '/api/v1/carts/:cart_id/relationships/line_items/:id' do
+    parameter :line_item_id, 'Line item id', required: true
 
     let(:cart) { create(:cart) }
+    let(:cart_id) { cart.id }
     let(:item) { create(:item) }
     let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
     let(:id) { line_item.id }
