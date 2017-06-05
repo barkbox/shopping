@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+require 'support/rspec_api_documentation'
 
 resource 'Cart', type: :acceptance do
 
@@ -7,7 +8,7 @@ resource 'Cart', type: :acceptance do
   let(:item) { create(:item) }
   let(:id) { cart.id }
   let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
-  header 'Content-Type', 'application/vnd.api+json'
+
   get '/api/v1/carts/:id' do
     parameter :cart_id, 'Cart id', required: true
     

@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require 'pry'
+require 'support/rspec_api_documentation'
 
 resource 'LineItem', type: :acceptance do
   before do
@@ -8,9 +9,12 @@ resource 'LineItem', type: :acceptance do
   end
 
   post '/api/v1/line_items' do
-    # parameter :cart_id, 'Cart id'
-    # parameter :source_id, 'Source id', required: true
-    # parameter :source_type, 'Source type', required: true
+    parameter :data, required: true
+    parameter :type, required: true, scope: [:data]
+    parameter :attributes, scope: [:data], required: true
+    parameter :cart_id, scope: [:data, :attributes], required: true
+    parameter :source_id, scope: [:data, :attributes], required: true
+    parameter :source_type, scope: [:data, :attributes], required: true
 
     let(:cart) { create(:cart) }
     let(:cart_id) { cart.id }
@@ -20,14 +24,18 @@ resource 'LineItem', type: :acceptance do
       expect(Item).to receive(:find).and_return(item)
 
       params = {
-        line_item: {
-          cart_id: cart.id,
-          source_id: item.id,
-          source_type: item.class.name
+        data:{
+          type: "line_items",
+          attributes: {
+            cart_id: cart.id,
+            source_id: item.id,
+            source_type: item.class.name
+          }
         }
       }
 
       do_request params
+      pp JSON.parse(response_body)
       line_item = Shopping::LineItem.first
       expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
 
