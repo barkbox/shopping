@@ -35,7 +35,7 @@ describe UpdateLineItemService do
     end
 
     shared_examples_for 'it updates a line item in the cart' do
-      it 'should update an existing line item' doS
+      it 'should update an existing line item' do
         service = UpdateLineItemService.new(@line_item, @cart, @item, 5)
         service.perform!
         expect(@cart.line_items.count).to eq(1)
