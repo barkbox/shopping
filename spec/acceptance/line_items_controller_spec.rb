@@ -9,9 +9,6 @@ resource 'LineItem', type: :acceptance do
   end
 
   post '/api/v1/line_items' do
-    parameter :data, required: true
-    parameter :type, required: true, scope: [:data]
-    parameter :attributes, scope: [:data], required: true
     parameter :cart_id, scope: [:data, :attributes], required: true
     parameter :source_id, scope: [:data, :attributes], required: true
     parameter :source_type, scope: [:data, :attributes], required: true
@@ -21,8 +18,6 @@ resource 'LineItem', type: :acceptance do
     let(:item) { create(:item) }
 
     example 'Create' do
-      expect(Item).to receive(:find).and_return(item)
-
       params = {
         data:{
           type: "line_items",
@@ -35,12 +30,28 @@ resource 'LineItem', type: :acceptance do
       }
 
       do_request params
-      pp JSON.parse(response_body)
       line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
-
-      expect(status).to be 200
-      expect(response_body).to eq(expected)
+      expected = {"data"=>
+                  {"id"=>"1",
+                   "type"=>"line_items",
+                   "links"=>{"self"=>"http://example.org/api/v1/line_items/1"},
+                   "attributes"=>
+                    {"cart_id"=>1,
+                     "sale_price"=>nil,
+                     "list_price"=>nil,
+                     "quantity"=>nil,
+                     "created_at"=>line_item.created_at.as_json,
+                     "updated_at"=>line_item.created_at.as_json,
+                     "source_id"=>1,
+                     "source_type"=>"Item",
+                     "source_sku"=>"IMASKU"},
+                   "relationships"=>
+                    {"cart"=>
+                      {"links"=>
+                        {"self"=>"http://example.org/api/v1/line_items/1/relationships/cart",
+                         "related"=>"http://example.org/api/v1/line_items/1/cart"}}}}}
+      expect(status).to eq(201)
+      expect(JSON.parse(response_body)).to eq(expected)
       expect(Shopping::Cart.count).to eq(1)
     end
   end
