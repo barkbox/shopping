@@ -16,6 +16,27 @@ resource 'LineItem', type: :acceptance do
     let(:cart) { create(:cart) }
     let(:cart_id) { cart.id }
     let(:item) { create(:item) }
+    let(:expected){
+      {"data"=>
+                  {"id"=>"1",
+                   "type"=>"line_items",
+                   "links"=>{"self"=>"http://example.org/api/v1/line_items/1"},
+                   "attributes"=>
+                    {"cart_id"=>1,
+                     "sale_price"=>nil,
+                     "list_price"=>nil,
+                     "quantity"=>1,
+                     "created_at"=> Shopping::LineItem.first.created_at.as_json,
+                     "updated_at"=> Shopping::LineItem.first.updated_at.as_json,
+                     "source_id"=> item.id,
+                     "source_type"=>"Item",
+                     "source_sku"=>"IMASKU"},
+                   "relationships"=>
+                    {"cart"=>
+                      {"links"=>
+                        {"self"=>"http://example.org/api/v1/line_items/1/relationships/cart",
+                         "related"=>"http://example.org/api/v1/line_items/1/cart"}}}}}
+    }
 
     example 'Create' do
       params = {
@@ -30,61 +51,9 @@ resource 'LineItem', type: :acceptance do
       }
 
       do_request params
-      line_item = Shopping::LineItem.first
-      expected = {"data"=>
-                  {"id"=>"1",
-                   "type"=>"line_items",
-                   "links"=>{"self"=>"http://example.org/api/v1/line_items/1"},
-                   "attributes"=>
-                    {"cart_id"=>1,
-                     "sale_price"=>nil,
-                     "list_price"=>nil,
-                     "quantity"=>nil,
-                     "created_at"=>line_item.created_at.as_json,
-                     "updated_at"=>line_item.created_at.as_json,
-                     "source_id"=>1,
-                     "source_type"=>"Item",
-                     "source_sku"=>"IMASKU"},
-                   "relationships"=>
-                    {"cart"=>
-                      {"links"=>
-                        {"self"=>"http://example.org/api/v1/line_items/1/relationships/cart",
-                         "related"=>"http://example.org/api/v1/line_items/1/cart"}}}}}
       expect(status).to eq(201)
       expect(JSON.parse(response_body)).to eq(expected)
       expect(Shopping::Cart.count).to eq(1)
-    end
-  end
-  
-  post '/api/v1/line_items', document: false do
-    let(:cart) { create(:cart) }
-    let(:cart_id) { cart.id }
-    let(:item) { create(:item) }
-    let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
-
-    example 'Create [existing item]' do
-
-      expect(Item).to receive(:find).and_return(item)
-
-      params = nest_attributes({
-        line_item: 
-        {
-          cart_id: cart.id,
-          source_id: line_item.source_id,
-          source_type: line_item.source_type,
-          quantity: 1
-        }
-      })
-
-      do_request params
-
-      line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
-
-      expect(status).to be 200
-      expect(response_body).to eq(expected)
-      expect(Shopping::Cart.count).to eq(1)
-      expect(line_item.quantity).to eq(2)
     end
   end
 
@@ -96,20 +65,44 @@ resource 'LineItem', type: :acceptance do
     let(:item) { create(:item) }
     let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
     let(:id) { line_item.id }
+    let(:expected){
+      {"data"=>
+        {"id"=>"1",
+         "type"=>"line_items",
+         "links"=>{"self"=>"http://example.org/api/v1/line_items/1"},
+         "attributes"=>
+          {"cart_id"=>1,
+           "sale_price"=>"5.0",
+           "list_price"=>"5.0",
+           "quantity"=>2,
+           "created_at"=> line_item.created_at.as_json,
+           "updated_at"=> line_item.reload.updated_at.as_json,
+           "source_id"=> item.id,
+           "source_type"=>"Item",
+           "source_sku"=>"IMASKU"},
+         "relationships"=>
+          {"cart"=>
+            {"links"=>
+              {"self"=>"http://example.org/api/v1/line_items/1/relationships/cart",
+               "related"=>"http://example.org/api/v1/line_items/1/cart"}}}}}
+    }
 
     example 'Update' do
 
-      params = nest_attributes({
-        quantity: 2
-      })
+      params = {
+        data: {
+          id: line_item.id,
+          type: "line_items",
+          attributes: {
+            quantity: 2
+          }
+        }
+      }
       
       do_request params
 
-      line_item = Shopping::LineItem.first
-      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
-
       expect(status).to be 200
-      expect(response_body).to eq(expected)
+      expect(JSON.parse(response_body)).to eq(expected)
       expect(Shopping::Cart.count).to eq(1)
     end
   end
@@ -128,10 +121,7 @@ resource 'LineItem', type: :acceptance do
       
       do_request
 
-      expected = ActiveModelSerializers::SerializableResource.new(line_item.cart, include: :line_items).to_json # request specs should not test the serializer
-
-      expect(status).to be 200
-      expect(response_body).to eq(expected)
+      expect(status).to be 204
       expect(Shopping::LineItem.count).to eq(0)
     end
   end

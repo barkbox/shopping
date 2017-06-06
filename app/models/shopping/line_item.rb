@@ -3,7 +3,7 @@ module Shopping
     belongs_to :cart
     belongs_to :source, polymorphic: true
     validates :quantity, allow_nil: false, numericality: {only_integer: true, greater_than: -1}
-    validate :unique_source_and_cart
+    validate :unique_source_and_cart, on: :create
     after_initialize :set_defaults
 
     def set_defaults
