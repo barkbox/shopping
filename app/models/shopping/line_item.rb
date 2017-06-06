@@ -4,6 +4,9 @@ module Shopping
     belongs_to :source, polymorphic: true
     validates :quantity, allow_nil: false, numericality: {only_integer: true, greater_than: -1}
     validate :unique_source_and_cart, on: :create
+    validates :cart_id, presence: true
+    validates :source_id, presence: true
+    validates :source_type, presence: true
     after_initialize :set_defaults
 
     def set_defaults

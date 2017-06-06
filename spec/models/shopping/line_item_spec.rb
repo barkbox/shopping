@@ -18,10 +18,24 @@ module Shopping
       end
 
       describe "source/cart combination" do
-        let(:dupe){create(:line_item)}
+        let(:dupe){create(:line_item, source: line_item.source, cart: line_item.cart)}
 
         it "must be unique" do
           expect{line_item.save!}.to raise_error(ActiveRecord::RecordInvalid, /A line item with identical source and cart exists, update quantity instead \(id=#{dupe.id}\)/i)
+        end
+      end
+
+      describe "source" do
+        it "must be present" do
+          line_item.source = nil
+          expect{line_item.save!}.to raise_error(ActiveRecord::RecordInvalid)
+        end
+      end
+
+      describe "cart" do
+        it "must be present" do
+          line_item.cart = nil
+          expect{line_item.save!}.to raise_error(ActiveRecord::RecordInvalid)
         end
       end
     end
