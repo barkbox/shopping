@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "4.2.8"
-  s.add_dependency "active_model_serializers", "~> 0.10.0"
+  s.add_dependency "jsonapi-resources"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
@@ -26,5 +26,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "apitome"
+  s.add_development_dependency "pry"
   s.add_development_dependency "database_cleaner"
 end
