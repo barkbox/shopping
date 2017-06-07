@@ -17,11 +17,6 @@ describe Shopping::UpdateLineItemService do
       expect{ service.perform! }.to raise_error(ServiceError, /source can't be blank/i)
     end
 
-    it 'validates presence of quantity' do
-      service = Shopping::UpdateLineItemService.new(@cart, @item, nil)
-      expect{ service.perform! }.to raise_error(ServiceError, /quantity can't be blank/i)
-    end
-
     it 'validates unpurchased cart' do
       service = Shopping::UpdateLineItemService.new(create(:cart, purchased_at: 1.day.ago), @item, 1)
       expect{ service.perform! }.to raise_error(ServiceError, /transaction already in progress/i)
@@ -40,19 +35,9 @@ describe Shopping::UpdateLineItemService do
         expect(cart.line_items.first.source).to eq(source)
       end
 
-      it 'should destroy a line item with 0 quantity' do
-        cart = create(:cart)
-        source = create(:item)
-        cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
-        cart.reload
-        service = Shopping::UpdateLineItemService.new(cart, source, 0)
-        service.perform!
-        expect(cart.line_items.count).to eq(0)
-      end
-
       it 'raises an error if no line item is found' do
         service = Shopping::UpdateLineItemService.new(cart, source, 1)
-        expect{ service.perform! }.to raise_error(RuntimeError, /unable to update line item/i)
+        expect{ service.perform! }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   

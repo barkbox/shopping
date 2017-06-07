@@ -22,11 +22,6 @@ describe Shopping::AddLineItemService do
       expect{ service.perform! }.to raise_error(ServiceError, /transaction already in progress/i)
     end
 
-    it 'validates quantity value' do
-      service = Shopping::AddLineItemService.new(create(:cart), @item, 0)
-      expect{ service.perform! }.to raise_error(ServiceError, /greater than 0/i)
-    end
-
     shared_examples_for 'it adds an item to the cart' do
       it 'should create a new line item' do
         service = Shopping::AddLineItemService.new(cart, source)
@@ -45,16 +40,13 @@ describe Shopping::AddLineItemService do
         expect(cart.line_items.first.source).to eq(source)
       end
 
-      it 'increments the quantity of an existing line item' do
+      it 'is unable to create a duplicate line item' do
         cart = create(:cart)
         source = create(:item)
         cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
         cart.reload
         service = Shopping::AddLineItemService.new(cart, source)
-        service.perform!
-        expect(cart.line_items.count).to eq(1)
-        expect(cart.line_items.first.quantity).to eq(2)
-        expect(cart.line_items.first.source).to eq(source)
+        expect{ service.perform! }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
 

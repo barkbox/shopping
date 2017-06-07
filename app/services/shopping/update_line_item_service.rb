@@ -6,7 +6,6 @@ module Shopping
                   :quantity
 
     validates :cart, :source, presence: true
-    validates :quantity, numericality: { greater_than: 0 }
     validate :unpurchased_cart
 
     def initialize cart, source, quantity=1
@@ -30,7 +29,7 @@ module Shopping
     end
 
     def update!
-      line_item = @cart.line_items.find_by!(source: source, sale_price: source.price)
+      line_item = @cart.line_items.find_by!(source: @source, sale_price: @source.price)
       line_item.quantity = @quantity
       line_item.save!
     end
