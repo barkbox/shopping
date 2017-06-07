@@ -13,7 +13,15 @@ resource 'Cart', type: :acceptance do
     parameter :cart_id, 'Cart id', required: true
     
     let(:expected) {
-      {"data"=>{"id"=>"1", "type"=>"carts", "links"=>{"self"=>"http://example.org/api/v1/carts/1"}, "attributes"=>{"user_id"=>nil, "purchased_at"=>nil, "created_at"=> cart.created_at.as_json }, "relationships"=>{"line_items"=>{"links"=>{"self"=>"http://example.org/api/v1/carts/1/relationships/line_items", "related"=>"http://example.org/api/v1/carts/1/line_items"}}}}} 
+      {"data"=>
+        {"id"=>"1", 
+         "type"=>"carts", 
+         "links"=>{"self"=>"http://example.org/api/v1/carts/1"},
+         "attributes"=>
+          {"user_id"=>cart.user_id, 
+           "purchased_at"=>nil, 
+           "created_at"=> cart.created_at.as_json,
+           "updated_at"=> cart.updated_at.as_json}, "relationships"=>{"line_items"=>{"links"=>{"self"=>"http://example.org/api/v1/carts/1/relationships/line_items", "related"=>"http://example.org/api/v1/carts/1/line_items"}}}}} 
     }
     
     example 'Show' do
@@ -33,9 +41,10 @@ resource 'Cart', type: :acceptance do
          "type"=>"carts",
          "links"=>{"self"=>"http://example.org/api/v1/carts/1"},
          "attributes"=>
-          {"user_id"=>nil,
+          {"user_id"=>cart.user_id,
            "purchased_at"=>nil,
-           "created_at"=> cart.created_at.as_json },
+           "created_at"=> cart.created_at.as_json,
+           "updated_at"=> cart.updated_at.as_json },
          "relationships"=>
           {"line_items"=>
             {"links"=>
