@@ -17,5 +17,14 @@ module Shopping
     def source_sku
       @model.source.sku
     end
+
+    def self.updatable_fields(context)
+      [:quantity]
+    end
+
+    def self.creatable_fields(context)
+      super - [:updated_at, :created_at, :purchased_at]
+    end
+  
   end
 end
