@@ -6,7 +6,7 @@ module Shopping
     has_many :line_items
 
     def self.updatable_fields(context)
-      super - [:updated_at, :created_at, :purchased_at]
+      super - [:user_id, :updated_at, :created_at, :purchased_at]
     end
 
     def self.creatable_fields(context)
