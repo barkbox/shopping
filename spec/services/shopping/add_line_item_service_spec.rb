@@ -1,6 +1,6 @@
 require 'rails_helper'
  
-describe AddLineItemService do
+describe Shopping::AddLineItemService do
   before do 
     @cart = create(:cart)
     @item = create(:item)
@@ -8,28 +8,28 @@ describe AddLineItemService do
 
   describe '#perform!' do
     it 'validates presence of cart' do
-      service = AddLineItemService.new(nil, @item)
+      service = Shopping::AddLineItemService.new(nil, @item)
       expect{ service.perform! }.to raise_error(ServiceError, /cart can't be blank/i)
     end
 
     it 'validates presence of source' do
-      service = AddLineItemService.new(@cart, nil)
+      service = Shopping::AddLineItemService.new(@cart, nil)
       expect{ service.perform! }.to raise_error(ServiceError, /source can't be blank/i)
     end
 
     it 'validates unpurchased cart' do
-      service = AddLineItemService.new(create(:cart, purchased_at: 1.day.ago), @item)
+      service = Shopping::AddLineItemService.new(create(:cart, purchased_at: 1.day.ago), @item)
       expect{ service.perform! }.to raise_error(ServiceError, /transaction already in progress/i)
     end
 
     it 'validates quantity value' do
-      service = AddLineItemService.new(create(:cart), @item, 0)
+      service = Shopping::AddLineItemService.new(create(:cart), @item, 0)
       expect{ service.perform! }.to raise_error(ServiceError, /greater than 0/i)
     end
 
     shared_examples_for 'it adds an item to the cart' do
       it 'should create a new line item' do
-        service = AddLineItemService.new(cart, source)
+        service = Shopping::AddLineItemService.new(cart, source)
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(1)
@@ -38,7 +38,7 @@ describe AddLineItemService do
       end
 
       it 'should create a new line item with a specified quantity' do
-        service = AddLineItemService.new(cart, source, 2)
+        service = Shopping::AddLineItemService.new(cart, source, 2)
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(2)
@@ -50,7 +50,7 @@ describe AddLineItemService do
         source = create(:item)
         cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
         cart.reload
-        service = AddLineItemService.new(cart, source)
+        service = Shopping::AddLineItemService.new(cart, source)
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(2)

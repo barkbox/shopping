@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe UpdateLineItemService do
+describe Shopping::UpdateLineItemService do
   before do 
     @cart = create(:cart)
     @item = create(:item)
@@ -8,22 +8,22 @@ describe UpdateLineItemService do
 
   describe '#perform!' do
     it 'validates presence of cart' do
-      service = UpdateLineItemService.new(nil, @item, 1)
+      service = Shopping::UpdateLineItemService.new(nil, @item, 1)
       expect{ service.perform! }.to raise_error(ServiceError, /cart can't be blank/i)
     end
 
     it 'validates presence of source' do
-      service = UpdateLineItemService.new(@cart, nil, 1)
+      service = Shopping::UpdateLineItemService.new(@cart, nil, 1)
       expect{ service.perform! }.to raise_error(ServiceError, /source can't be blank/i)
     end
 
     it 'validates presence of quantity' do
-      service = UpdateLineItemService.new(@cart, @item, nil)
+      service = Shopping::UpdateLineItemService.new(@cart, @item, nil)
       expect{ service.perform! }.to raise_error(ServiceError, /quantity can't be blank/i)
     end
 
     it 'validates unpurchased cart' do
-      service = UpdateLineItemService.new(create(:cart, purchased_at: 1.day.ago), @item, 1)
+      service = Shopping::UpdateLineItemService.new(create(:cart, purchased_at: 1.day.ago), @item, 1)
       expect{ service.perform! }.to raise_error(ServiceError, /transaction already in progress/i)
     end
 
@@ -33,7 +33,7 @@ describe UpdateLineItemService do
         source = create(:item)
         cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
         cart.reload
-        service = UpdateLineItemService.new(cart, source, 5)
+        service = Shopping::UpdateLineItemService.new(cart, source, 5)
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(5)
@@ -45,13 +45,13 @@ describe UpdateLineItemService do
         source = create(:item)
         cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
         cart.reload
-        service = UpdateLineItemService.new(cart, source, 0)
+        service = Shopping::UpdateLineItemService.new(cart, source, 0)
         service.perform!
         expect(cart.line_items.count).to eq(0)
       end
 
       it 'raises an error if no line item is found' do
-        service = UpdateLineItemService.new(cart, source, 1)
+        service = Shopping::UpdateLineItemService.new(cart, source, 1)
         expect{ service.perform! }.to raise_error(RuntimeError, /unable to update line item/i)
       end
     end
