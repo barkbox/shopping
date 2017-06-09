@@ -6,15 +6,16 @@
 
 ### Parameters
 
-Name : line_item_id
-Description : Line item id
+| Name | Description | Required | Scope |
+|------|-------------|----------|-------|
+| id | Line item id | true |  |
 
 ### Request
 
 #### Headers
 
-<pre>Host: example.org
-Content-Type: application/x-www-form-urlencoded
+<pre>Content-Type: application/vnd.api+json
+Host: example.org
 Cookie: </pre>
 
 #### Route
@@ -23,7 +24,7 @@ Cookie: </pre>
 
 #### Body
 
-<pre>data[attributes][quantity]=2</pre>
+<pre>{"data":{"id":1,"type":"line_items","attributes":{"quantity":2}}}</pre>
 
 ### Response
 
@@ -32,12 +33,12 @@ Cookie: </pre>
 <pre>X-Frame-Options: SAMEORIGIN
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;1c326b9996c085178e5280b199aca20c&quot;
+Content-Type: application/vnd.api+json
+ETag: W/&quot;916688394ba77bc9438bc63e086b4f6d&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: ebe85d85-6937-49b3-962a-364425ede66b
-X-Runtime: 0.022600
-Content-Length: 453</pre>
+X-Request-Id: dd82a9cd-5ad0-42c2-aa43-7155486cf707
+X-Runtime: 0.052721
+Content-Length: 472</pre>
 
 #### Status
 
@@ -45,43 +46,4 @@ Content-Length: 453</pre>
 
 #### Body
 
-<pre>{
-  "data": {
-    "id": "1",
-    "type": "shopping_carts",
-    "attributes": {
-      "user_id": null,
-      "purchased_at": null,
-      "created_at": "2017-02-09T19:51:51.407Z"
-    },
-    "relationships": {
-      "line_items": {
-        "data": [
-          {
-            "id": "1",
-            "type": "shopping_line_items"
-          }
-        ]
-      }
-    }
-  },
-  "included": [
-    {
-      "id": "1",
-      "type": "shopping_line_items",
-      "attributes": {
-        "sale_price": "5.0",
-        "list_price": "5.0",
-        "quantity": 2,
-        "created_at": "2017-02-09T19:51:51.411Z",
-        "updated_at": "2017-02-09T19:51:51.422Z"
-      },
-      "relationships": {
-        "source": {
-          "meta": {
-          }
-        }
-      }
-    }
-  ]
-}</pre>
+<pre>{"data":{"id":"1","type":"line_items","links":{"self":"http://example.org/api/v1/line_items/1"},"attributes":{"cart_id":1,"sale_price":"5.0","list_price":"5.0","quantity":2,"created_at":"2017-06-09T14:54:16.897Z","updated_at":"2017-06-09T14:54:16.912Z","source_id":4,"source_type":"Item","source_sku":"IMASKU"},"relationships":{"cart":{"links":{"self":"http://example.org/api/v1/line_items/1/relationships/cart","related":"http://example.org/api/v1/line_items/1/cart"}}}}}</pre>

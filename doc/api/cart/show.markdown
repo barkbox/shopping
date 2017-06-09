@@ -6,8 +6,9 @@
 
 ### Parameters
 
-Name : cart_id
-Description : Cart id
+| Name | Description | Required | Scope |
+|------|-------------|----------|-------|
+| cart_id | Cart id | true |  |
 
 ### Request
 
@@ -27,12 +28,12 @@ Cookie: </pre>
 <pre>X-Frame-Options: SAMEORIGIN
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;4d8051e903e41cae6619c11c8d5c0de2&quot;
+Content-Type: application/vnd.api+json
+ETag: W/&quot;979d6c2f56234daaca730a384a7b14d7&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 100a0bd7-fb55-4f06-b9ee-a9f6b596375a
-X-Runtime: 0.018734
-Content-Length: 176</pre>
+X-Request-Id: e47c4f34-314e-4aad-8d7c-29f214929393
+X-Runtime: 0.062848
+Content-Length: 382</pre>
 
 #### Status
 
@@ -40,20 +41,4 @@ Content-Length: 176</pre>
 
 #### Body
 
-<pre>{
-  "data": {
-    "id": "1",
-    "type": "shopping_carts",
-    "attributes": {
-      "user_id": null,
-      "purchased_at": null,
-      "created_at": "2017-02-09T19:51:51.494Z"
-    },
-    "relationships": {
-      "line_items": {
-        "meta": {
-        }
-      }
-    }
-  }
-}</pre>
+<pre>{"data":{"id":"1","type":"carts","links":{"self":"http://example.org/api/v1/carts/1"},"attributes":{"user_id":1,"purchased_at":null,"created_at":"2017-06-09T14:54:16.685Z","updated_at":"2017-06-09T14:54:16.685Z"},"relationships":{"line_items":{"links":{"self":"http://example.org/api/v1/carts/1/relationships/line_items","related":"http://example.org/api/v1/carts/1/line_items"}}}}}</pre>

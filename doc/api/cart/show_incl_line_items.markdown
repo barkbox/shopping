@@ -6,8 +6,9 @@
 
 ### Parameters
 
-Name : cart_id
-Description : Cart id
+| Name | Description | Required | Scope |
+|------|-------------|----------|-------|
+| cart_id | Cart id | true |  |
 
 ### Request
 
@@ -31,12 +32,12 @@ Cookie: </pre>
 <pre>X-Frame-Options: SAMEORIGIN
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
-Content-Type: application/json; charset=utf-8
-ETag: W/&quot;b5cf6fa590f18b9daa68afa53e61b175&quot;
+Content-Type: application/vnd.api+json
+ETag: W/&quot;ce1c907b374fc93348ebeb796649a12d&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: cf781322-4506-46e5-aa64-2fc8ed9c63b2
-X-Runtime: 0.008348
-Content-Length: 453</pre>
+X-Request-Id: 43983960-4e05-4ae9-a30c-ff94eeee8b11
+X-Runtime: 0.068351
+Content-Length: 899</pre>
 
 #### Status
 
@@ -44,43 +45,4 @@ Content-Length: 453</pre>
 
 #### Body
 
-<pre>{
-  "data": {
-    "id": "1",
-    "type": "shopping_carts",
-    "attributes": {
-      "user_id": null,
-      "purchased_at": null,
-      "created_at": "2017-02-09T19:51:51.569Z"
-    },
-    "relationships": {
-      "line_items": {
-        "data": [
-          {
-            "id": "1",
-            "type": "shopping_line_items"
-          }
-        ]
-      }
-    }
-  },
-  "included": [
-    {
-      "id": "1",
-      "type": "shopping_line_items",
-      "attributes": {
-        "sale_price": "5.0",
-        "list_price": "5.0",
-        "quantity": 1,
-        "created_at": "2017-02-09T19:51:51.576Z",
-        "updated_at": "2017-02-09T19:51:51.576Z"
-      },
-      "relationships": {
-        "source": {
-          "meta": {
-          }
-        }
-      }
-    }
-  ]
-}</pre>
+<pre>{"data":{"id":"1","type":"carts","links":{"self":"http://example.org/api/v1/carts/1"},"attributes":{"user_id":2,"purchased_at":null,"created_at":"2017-06-09T14:54:16.793Z","updated_at":"2017-06-09T14:54:16.793Z"},"relationships":{"line_items":{"links":{"self":"http://example.org/api/v1/carts/1/relationships/line_items","related":"http://example.org/api/v1/carts/1/line_items"},"data":[{"type":"line_items","id":"1"}]}}},"included":[{"id":"1","type":"line_items","links":{"self":"http://example.org/api/v1/line_items/1"},"attributes":{"cart_id":1,"sale_price":"5.0","list_price":"5.0","quantity":1,"created_at":"2017-06-09T14:54:16.798Z","updated_at":"2017-06-09T14:54:16.798Z","source_id":2,"source_type":"Item","source_sku":"IMASKU"},"relationships":{"cart":{"links":{"self":"http://example.org/api/v1/line_items/1/relationships/cart","related":"http://example.org/api/v1/line_items/1/cart"}}}}]}</pre>
