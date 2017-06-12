@@ -7,4 +7,8 @@ module Shopping
     yield @config if block_given?
     @config
   end
+
+  def self.config
+    @config
+  end
 end
