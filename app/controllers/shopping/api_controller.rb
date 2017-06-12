@@ -3,8 +3,8 @@ module Shopping
     include JSONAPI::ActsAsResourceController
     protect_from_forgery with: :null_session
 
-    # def context
-    #   { resource_owner: current_user }
-    # end
+    def context
+      { resource_owner: Shopping.config.current_user_method.call }
+    end
   end
 end
