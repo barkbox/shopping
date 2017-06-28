@@ -12,6 +12,8 @@ resource 'LineItem', type: :acceptance do
     parameter :cart_id, scope: [:data, :attributes], required: true
     parameter :source_id, scope: [:data, :attributes], required: true
     parameter :source_type, scope: [:data, :attributes], required: true
+    parameter :sale_price, scope: [:data, :attributes], required: true
+    parameter :list_price, scope: [:data, :attributes], required: true
 
     let(:cart) { create(:cart) }
     let(:cart_id) { cart.id }
@@ -23,8 +25,8 @@ resource 'LineItem', type: :acceptance do
                    "links"=>{"self"=>"http://example.org/api/v1/line_items/1"},
                    "attributes"=>
                     {"cart_id"=>1,
-                     "sale_price"=>nil,
-                     "list_price"=>nil,
+                     "sale_price"=>"1.0",
+                     "list_price"=>"1.0",
                      "quantity"=>1,
                      "created_at"=> Shopping::LineItem.first.created_at.as_json,
                      "updated_at"=> Shopping::LineItem.first.updated_at.as_json,
@@ -45,7 +47,9 @@ resource 'LineItem', type: :acceptance do
           attributes: {
             cart_id: cart.id,
             source_id: item.id,
-            source_type: item.class.name
+            source_type: item.class.name,
+            sale_price: 1.0,
+            list_price: 1.0
           }
         }
       }
