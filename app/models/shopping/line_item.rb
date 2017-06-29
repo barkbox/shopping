@@ -7,6 +7,8 @@ module Shopping
     validates :cart_id, presence: true
     validates :source_id, presence: true
     validates :source_type, presence: true
+    validates :list_price, presence: true, numericality: true
+    validates :sale_price, presence: true, numericality: true
     after_initialize :set_defaults
 
     def set_defaults
