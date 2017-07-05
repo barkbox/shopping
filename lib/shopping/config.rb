@@ -8,5 +8,9 @@ module Shopping
     def current_user_method(callable=nil)
       @current_user ||= callable
     end
+
+    def purchase_cart_service_class(klass)
+      @purchase_cart_service_class ||= (klass.is_a?(Class) ? klass : constantize(klass))
+    end
   end
 end
