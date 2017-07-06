@@ -2,7 +2,7 @@ module Shopping
   class LineItem < ActiveRecord::Base    
     belongs_to :cart
     belongs_to :source, polymorphic: true
-    validates :quantity, allow_nil: false, numericality: {only_integer: true, greater_than: -1}
+    validates :quantity, allow_nil: true, numericality: {only_integer: true, greater_than: -1}
     validate :unique_source_and_cart, on: :create
     validates :cart_id, presence: true
     validates :source_id, presence: true
