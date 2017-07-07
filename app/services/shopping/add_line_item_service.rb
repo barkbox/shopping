@@ -8,7 +8,7 @@ module Shopping
     validates :cart, :source, presence: true
     validate :unpurchased_cart
 
-    def initialize cart, source, quantity=1
+    def initialize cart, source, quantity=1, meta={}
       @cart = cart
       @source = source
       @quantity = quantity
@@ -29,11 +29,13 @@ module Shopping
     end
 
     def add!
-      line_item = @cart.line_items.new(source: @source, sale_price: @source.price)
-      line_item.list_price = @source.price
-      line_item.sale_price = @source.price
+      line_item = Shopping::LineItem.new()
+      line_item.cart_id = @cart.id
+      line_item.source_id = @source.id
+      line_item.source_type = @source.type
+      line_item.sale_price = line_item.list_price = @source.price
       line_item.quantity = @quantity
-      line_item.save!
+      line_itme.save!
     end
 
     protected

@@ -15,7 +15,7 @@ module Shopping
     end
 
     def validate!
-      raise ServiceError.new(self) unless valid?
+      raise Shopping::ServiceError.new(self) unless valid?
     end
 
     def log exception=nil
