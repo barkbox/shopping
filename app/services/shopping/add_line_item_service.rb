@@ -35,7 +35,7 @@ module Shopping
       line_item.source_type = @source.type
       line_item.sale_price = line_item.list_price = @source.price
       line_item.quantity = @quantity
-      line_itme.save!
+      line_item.save!
     end
 
     protected
