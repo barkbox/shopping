@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170526174702) do
+ActiveRecord::Schema.define(version: 20170712212136) do
 
   create_table "items", force: :cascade do |t|
     t.float    "price"
@@ -26,7 +26,10 @@ ActiveRecord::Schema.define(version: 20170526174702) do
     t.datetime "purchased_at"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.string   "origin"
   end
+
+  add_index "shopping_carts", ["origin"], name: "index_shopping_carts_on_origin"
 
   create_table "shopping_line_items", force: :cascade do |t|
     t.integer  "cart_id"
