@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170712212136) do
+ActiveRecord::Schema.define(version: 20170713182808) do
 
   create_table "items", force: :cascade do |t|
     t.float    "price"
@@ -31,15 +31,7 @@ ActiveRecord::Schema.define(version: 20170712212136) do
 
   add_index "shopping_carts", ["origin"], name: "index_shopping_carts_on_origin"
 
-  create_table "shopping_line_items", force: :cascade do |t|
-    t.integer  "cart_id"
-    t.integer  "source_id"
-    t.string   "source_type"
-    t.integer  "quantity"
-    t.decimal  "list_price"
-    t.decimal  "sale_price"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
+# Could not dump table "shopping_line_items" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
 end

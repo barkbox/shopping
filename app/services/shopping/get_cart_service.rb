@@ -6,10 +6,10 @@ module Shopping
     end
 
     def perform!
-      if @query.is_a?(Integer)
-        Shopping::Cart.find(@query)
-      else
+      if @query.is_a?(Hash)
         Shopping::Cart.where(@query.first)
+      else
+        Shopping::Cart.find(@query)
       end
     end
   end
