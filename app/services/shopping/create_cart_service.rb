@@ -1,8 +1,8 @@
 module Shopping
   class CreateCartService < Shopping::BaseService
 
-    def perform!
-      Shopping::Cart.create
+    def perform!(params)
+      Shopping::Cart.create!(params)
     end
   end
 end
