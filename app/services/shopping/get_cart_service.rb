@@ -6,7 +6,7 @@ module Shopping
     end
 
     def perform!
-      params = query.is_a?(Integer) ? {id: query} : query
+      params = @query.is_a?(Integer) ? {id: @query} : @query
 
       Shopping::Cart.where(params).first
     end
