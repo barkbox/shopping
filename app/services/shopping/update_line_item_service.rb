@@ -8,7 +8,7 @@ module Shopping
     validates :cart, :source, presence: true
     validate :unpurchased_cart
 
-    def initialize cart, source, quantity=1, meta={}
+    def initialize cart, source, quantity=nil, meta={}
       @cart = cart
       @source = source
       @quantity = quantity

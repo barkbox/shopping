@@ -9,11 +9,6 @@ module Shopping
     validates :source_type, presence: true
     validates :list_price, presence: true, numericality: true
     validates :sale_price, presence: true, numericality: true
-    after_initialize :set_defaults
-
-    def set_defaults
-      self.quantity ||= 1
-    end
 
     def unique_source_and_cart
       other = Shopping::LineItem.where(source_id: self.source_id, source_type: self.source_type, cart_id: self.cart_id)
