@@ -1,2 +1,0 @@
-class PurchaseableItem < Item
-end

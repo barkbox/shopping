@@ -45,7 +45,8 @@ resource 'Cart', type: :acceptance do
           {"user_id"=>cart.user_id,
            "purchased_at"=>nil,
            "created_at"=> cart.created_at.as_json,
-           "updated_at"=> cart.updated_at.as_json },
+           "updated_at"=> cart.updated_at.as_json,
+           "origin" => nil},
          "relationships"=>
           {"line_items"=>
             {"links"=>
@@ -65,7 +66,7 @@ resource 'Cart', type: :acceptance do
             "updated_at"=> line_item.updated_at.as_json,
             "source_id" => line_item.source_id,
             "source_type" => line_item.source_type,
-            "source_sku" => line_item.source.sku},
+            "source_sku" => line_item.source.sku,},
           "relationships"=>
            {
             "cart"=>
@@ -77,7 +78,7 @@ resource 'Cart', type: :acceptance do
     example 'Show incl line items', :run do
       do_request
 
-      expect(status).to be 200
+      expect(status).to eq 200
       expect(JSON.parse(response_body)).to eq(expected)
     end
   end
