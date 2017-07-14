@@ -21,7 +21,8 @@ resource 'Cart', type: :acceptance do
           {"user_id"=>cart.user_id, 
            "purchased_at"=>nil, 
            "created_at"=> cart.created_at.as_json,
-           "updated_at"=> cart.updated_at.as_json}, "relationships"=>{"line_items"=>{"links"=>{"self"=>"http://example.org/api/v1/carts/1/relationships/line_items", "related"=>"http://example.org/api/v1/carts/1/line_items"}}}}} 
+           "updated_at"=> cart.updated_at.as_json,
+           "origin" => nil,}, "relationships"=>{"line_items"=>{"links"=>{"self"=>"http://example.org/api/v1/carts/1/relationships/line_items", "related"=>"http://example.org/api/v1/carts/1/line_items"}}}}} 
     }
     
     example 'Show' do
