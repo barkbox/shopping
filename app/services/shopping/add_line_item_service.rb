@@ -19,7 +19,9 @@ module Shopping
         cart_id: @cart.id,
         source_id: @source.id,
         source_type: @source.type,
-        quantity: @quantity
+        quantity: @quantity,
+        sale_price: @source.price,
+        list_price: @source.price
       }
     end
 
@@ -29,13 +31,7 @@ module Shopping
     end
 
     def add!
-      line_item = Shopping::LineItem.new()
-      line_item.cart_id = @cart.id
-      line_item.source_id = @source.id
-      line_item.source_type = @source.type
-      line_item.sale_price = line_item.list_price = @source.price
-      line_item.quantity = @quantity
-      line_item.save!
+      line_item = Shopping::LineItem.create!(to_hash)
     end
 
     protected
