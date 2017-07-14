@@ -28,7 +28,8 @@ describe Shopping::AddLineItemService do
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(1)
-        expect(cart.line_items.first.source).to eq(source)
+        expect(cart.line_items.first.source_id).to eq(source.id)
+        expect(cart.line_items.first.source_type).to eq(source.type)
         expect(cart.line_items.first.sale_price).to eq(source.price)
       end
 
