@@ -33,7 +33,8 @@ module Shopping
     def update!
       line_item = @cart.line_items.where(source_id: @source.id, source_type: @source.type, sale_price: @source.price).first
       line_item.quantity = @quantity
-      line_item.meta = line_item.meta.merge(meta)
+      original_meta = line_item.meta || {}
+      line_item.meta = original_meta.merge(meta)
       line_item.save!
     end
 
