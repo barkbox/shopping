@@ -1,0 +1,2 @@
+class PurchaseableItem < Item
+end

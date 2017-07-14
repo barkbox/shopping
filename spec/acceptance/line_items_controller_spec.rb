@@ -27,7 +27,7 @@ resource 'LineItem', type: :acceptance do
                     {"cart_id"=>1,
                      "sale_price"=>"1.0",
                      "list_price"=>"1.0",
-                     "quantity"=>1,
+                     "quantity"=>nil,
                      "created_at"=> Shopping::LineItem.first.created_at.as_json,
                      "updated_at"=> Shopping::LineItem.first.updated_at.as_json,
                      "source_id"=> item.id,
