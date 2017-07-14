@@ -10,6 +10,8 @@ module Shopping
     validates :list_price, presence: true, numericality: true
     validates :sale_price, presence: true, numericality: true
 
+    attr_accessible :cart_id, :source_id, :source_type, :quantity, :list_price, :sale_price, :meta
+
     def unique_source_and_cart
       other = Shopping::LineItem.where(source_id: self.source_id, source_type: self.source_type, cart_id: self.cart_id)
       if other.count > 0
