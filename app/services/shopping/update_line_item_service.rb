@@ -18,7 +18,7 @@ module Shopping
       {
         cart_id: @cart.id,
         source_id: @source.id,
-        source_type: @source.type,
+        source_type: @source.class.name,
         quantity: @quantity
       }
     end
