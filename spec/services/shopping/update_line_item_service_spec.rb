@@ -9,17 +9,17 @@ describe Shopping::UpdateLineItemService do
   describe '#perform!' do
     it 'validates presence of cart' do
       service = Shopping::UpdateLineItemService.new(nil, @item, 1)
-      expect{ service.perform! }.to raise_error(ServiceError, /cart can't be blank/i)
+      expect{ service.perform! }.to raise_error(Shopping::ServiceError, /cart can't be blank/i)
     end
 
     it 'validates presence of source' do
       service = Shopping::UpdateLineItemService.new(@cart, nil, 1)
-      expect{ service.perform! }.to raise_error(ServiceError, /source can't be blank/i)
+      expect{ service.perform! }.to raise_error(Shopping::ServiceError, /source can't be blank/i)
     end
 
     it 'validates unpurchased cart' do
       service = Shopping::UpdateLineItemService.new(create(:cart, purchased_at: 1.day.ago), @item, 1)
-      expect{ service.perform! }.to raise_error(ServiceError, /transaction already in progress/i)
+      expect{ service.perform! }.to raise_error(Shopping::ServiceError, /transaction already in progress/i)
     end
 
     shared_examples_for 'it updates a line item in the cart' do

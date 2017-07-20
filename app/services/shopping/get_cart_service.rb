@@ -6,9 +6,11 @@ module Shopping
     end
 
     def perform!
-      params = query.is_a?(Integer) ? {id: query} : query
-
-      Shopping::Cart.where(params).first
+      if @query.is_a?(Hash)
+        Shopping::Cart.where(@query).first
+      else
+        Shopping::Cart.find(@query)
+      end
     end
   end
 end

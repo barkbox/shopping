@@ -3,14 +3,16 @@ module Shopping
 
     attr_accessor :cart, 
                   :source,
-                  :quantity
+                  :quantity,
+                  :meta
 
     validates :cart, :source, presence: true
     validate :unpurchased_cart
 
-    def initialize cart, source, quantity=1, meta={}
+    def initialize cart, source, quantity=nil, meta={}
       @cart = cart
       @source = source
+      @meta = meta
       @quantity = quantity
     end
 
@@ -29,8 +31,10 @@ module Shopping
     end
 
     def update!
-      line_item = @cart.line_items.find_by!(source: @source, sale_price: @source.price)
+      line_item = @cart.line_items.where(source_id: @source.id, source_type: @source.type, sale_price: @source.price).first
       line_item.quantity = @quantity
+      original_meta = line_item.meta || {}
+      line_item.meta = original_meta.merge(meta)
       line_item.save!
     end
 

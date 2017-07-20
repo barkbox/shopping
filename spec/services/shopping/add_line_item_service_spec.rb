@@ -9,17 +9,17 @@ describe Shopping::AddLineItemService do
   describe '#perform!' do
     it 'validates presence of cart' do
       service = Shopping::AddLineItemService.new(nil, @item)
-      expect{ service.perform! }.to raise_error(ServiceError, /cart can't be blank/i)
+      expect{ service.perform! }.to raise_error(Shopping::ServiceError, /cart can't be blank/i)
     end
 
     it 'validates presence of source' do
       service = Shopping::AddLineItemService.new(@cart, nil)
-      expect{ service.perform! }.to raise_error(ServiceError, /source can't be blank/i)
+      expect{ service.perform! }.to raise_error(Shopping::ServiceError, /source can't be blank/i)
     end
 
     it 'validates unpurchased cart' do
       service = Shopping::AddLineItemService.new(create(:cart, purchased_at: 1.day.ago), @item)
-      expect{ service.perform! }.to raise_error(ServiceError, /transaction already in progress/i)
+      expect{ service.perform! }.to raise_error(Shopping::ServiceError, /transaction already in progress/i)
     end
 
     shared_examples_for 'it adds an item to the cart' do
@@ -28,7 +28,8 @@ describe Shopping::AddLineItemService do
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(1)
-        expect(cart.line_items.first.source).to eq(source)
+        expect(cart.line_items.first.source_id).to eq(source.id)
+        expect(cart.line_items.first.source_type).to eq(source.type)
         expect(cart.line_items.first.sale_price).to eq(source.price)
       end
 
@@ -37,7 +38,8 @@ describe Shopping::AddLineItemService do
         service.perform!
         expect(cart.line_items.count).to eq(1)
         expect(cart.line_items.first.quantity).to eq(2)
-        expect(cart.line_items.first.source).to eq(source)
+        expect(cart.line_items.first.source_id).to eq(source.id)
+        expect(cart.line_items.first.source_type).to eq(source.type)
       end
 
       it 'is unable to create a duplicate line item' do
