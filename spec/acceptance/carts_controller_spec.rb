@@ -14,15 +14,15 @@ resource 'Cart', type: :acceptance do
     
     let(:expected) {
       {"data"=>
-        {"id"=>"1", 
+        {"id"=>"#{cart.id}", 
          "type"=>"carts", 
-         "links"=>{"self"=>"http://example.org/api/v1/carts/1"},
+         "links"=>{"self"=>"http://example.org/api/v1/carts/#{cart.id}"},
          "attributes"=>
           {"user_id"=>cart.user_id, 
            "purchased_at"=>nil, 
            "created_at"=> cart.created_at.as_json,
            "updated_at"=> cart.updated_at.as_json,
-           "origin" => nil,}, "relationships"=>{"line_items"=>{"links"=>{"self"=>"http://example.org/api/v1/carts/1/relationships/line_items", "related"=>"http://example.org/api/v1/carts/1/line_items"}}}}} 
+           "origin" => nil,}, "relationships"=>{"line_items"=>{"links"=>{"self"=>"http://example.org/api/v1/carts/#{cart.id}/relationships/line_items", "related"=>"http://example.org/api/v1/carts/#{cart.id}/line_items"}}}}} 
     }
     
     example 'Show' do
@@ -38,9 +38,9 @@ resource 'Cart', type: :acceptance do
     
     let(:expected) {
       {"data"=>
-        {"id"=>"1",
+        {"id"=>"#{cart.id}",
          "type"=>"carts",
-         "links"=>{"self"=>"http://example.org/api/v1/carts/1"},
+         "links"=>{"self"=>"http://example.org/api/v1/carts/#{cart.id}"},
          "attributes"=>
           {"user_id"=>cart.user_id,
            "purchased_at"=>nil,
@@ -50,15 +50,15 @@ resource 'Cart', type: :acceptance do
          "relationships"=>
           {"line_items"=>
             {"links"=>
-              {"self"=>"http://example.org/api/v1/carts/1/relationships/line_items",
-               "related"=>"http://example.org/api/v1/carts/1/line_items"},
-             "data"=>[{"type"=>"line_items", "id"=>"1"}]}}},
+              {"self"=>"http://example.org/api/v1/carts/#{cart.id}/relationships/line_items",
+               "related"=>"http://example.org/api/v1/carts/#{cart.id}/line_items"},
+             "data"=>[{"type"=>"line_items", "id"=>"#{line_item.id}"}]}}},
        "included"=>
-        [{"id"=>"1",
+        [{"id"=>"#{line_item.id}",
           "type"=>"line_items",
-          "links"=>{"self"=>"http://example.org/api/v1/line_items/1"},
+          "links"=>{"self"=>"http://example.org/api/v1/line_items/#{line_item.id}"},
           "attributes"=>
-           {"cart_id"=>1,
+           {"cart_id"=>cart.id,
             "sale_price"=>"5.0",
             "list_price"=>"5.0",
             "quantity"=>1,
@@ -71,8 +71,8 @@ resource 'Cart', type: :acceptance do
            {
             "cart"=>
              {"links"=>
-               {"self"=>"http://example.org/api/v1/line_items/1/relationships/cart",
-                "related"=>"http://example.org/api/v1/line_items/1/cart"}}}}]}
+               {"self"=>"http://example.org/api/v1/line_items/#{line_item.id}/relationships/cart",
+                "related"=>"http://example.org/api/v1/line_items/#{line_item.id}/cart"}}}}]}
     }
 
     example 'Show incl line items', :run do
