@@ -19,25 +19,26 @@ resource 'LineItem', type: :acceptance do
     let(:cart_id) { cart.id }
     let(:item) { create(:item) }
     let(:expected){
+      li = Shopping::LineItem.first
       {"data"=>
-                  {"id"=>"1",
+                  {"id"=>"#{li.id}",
                    "type"=>"line_items",
-                   "links"=>{"self"=>"http://example.org/api/v1/line_items/1"},
+                   "links"=>{"self"=>"http://example.org/api/v1/line_items/#{li.id}"},
                    "attributes"=>
-                    {"cart_id"=>1,
+                    {"cart_id"=> cart_id,
                      "sale_price"=>"1.0",
                      "list_price"=>"1.0",
                      "quantity"=>nil,
-                     "created_at"=> Shopping::LineItem.first.created_at.as_json,
-                     "updated_at"=> Shopping::LineItem.first.updated_at.as_json,
+                     "created_at"=> li.created_at.as_json,
+                     "updated_at"=> li.updated_at.as_json,
                      "source_id"=> item.id,
                      "source_type"=>"Item",
                      "source_sku"=>"IMASKU"},
                    "relationships"=>
                     {"cart"=>
                       {"links"=>
-                        {"self"=>"http://example.org/api/v1/line_items/1/relationships/cart",
-                         "related"=>"http://example.org/api/v1/line_items/1/cart"}}}}}
+                        {"self"=>"http://example.org/api/v1/line_items/#{li.id}/relationships/cart",
+                         "related"=>"http://example.org/api/v1/line_items/#{li.id}/cart"}}}}}
     }
 
     example 'Create' do
@@ -71,11 +72,11 @@ resource 'LineItem', type: :acceptance do
     let(:id) { line_item.id }
     let(:expected){
       {"data"=>
-        {"id"=>"1",
+        {"id"=>"#{id}",
          "type"=>"line_items",
-         "links"=>{"self"=>"http://example.org/api/v1/line_items/1"},
+         "links"=>{"self"=>"http://example.org/api/v1/line_items/#{id}"},
          "attributes"=>
-          {"cart_id"=>1,
+          {"cart_id"=>cart_id,
            "sale_price"=>"5.0",
            "list_price"=>"5.0",
            "quantity"=>2,
@@ -87,8 +88,8 @@ resource 'LineItem', type: :acceptance do
          "relationships"=>
           {"cart"=>
             {"links"=>
-              {"self"=>"http://example.org/api/v1/line_items/1/relationships/cart",
-               "related"=>"http://example.org/api/v1/line_items/1/cart"}}}}}
+              {"self"=>"http://example.org/api/v1/line_items/#{id}/relationships/cart",
+               "related"=>"http://example.org/api/v1/line_items/#{id}/cart"}}}}}
     }
 
     example 'Update' do
