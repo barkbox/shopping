@@ -26,7 +26,7 @@ describe Shopping::UpdateLineItemService do
       it 'should update an existing line item' do
         cart = create(:cart)
         source = create(:item)
-        cart.line_items << create(:line_item, source: source, sale_price: source.price, quantity: 1)
+        cart.line_items << create(:line_item, source_id: source.id, source_type: source.class.name, sale_price: source.price, quantity: 1)
         cart.reload
         service = Shopping::UpdateLineItemService.new(cart, source, 5)
         service.perform!

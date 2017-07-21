@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20170713213910) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "items", force: :cascade do |t|
     t.float    "price"
     t.datetime "created_at", null: false
@@ -30,9 +33,18 @@ ActiveRecord::Schema.define(version: 20170713213910) do
     t.string   "origin"
   end
 
-  add_index "shopping_carts", ["origin"], name: "index_shopping_carts_on_origin"
+  add_index "shopping_carts", ["origin"], name: "index_shopping_carts_on_origin", using: :btree
 
-# Could not dump table "shopping_line_items" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "shopping_line_items", force: :cascade do |t|
+    t.integer  "cart_id"
+    t.integer  "source_id"
+    t.string   "source_type"
+    t.integer  "quantity"
+    t.decimal  "list_price"
+    t.decimal  "sale_price"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.jsonb    "meta"
+  end
 
 end
