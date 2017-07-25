@@ -11,6 +11,8 @@
 | cart_id | Data attributes cart | true | data[attributes] |
 | source_id | Data attributes source | true | data[attributes] |
 | source_type | Data attributes source type | true | data[attributes] |
+| sale_price | Data attributes sale price | true | data[attributes] |
+| list_price | Data attributes list price | true | data[attributes] |
 
 ### Request
 
@@ -26,7 +28,7 @@ Cookie: </pre>
 
 #### Body
 
-<pre>{"data":{"attributes":{"cart_id":1,"source_id":6,"source_type":"Item"},"type":"line_items"}}</pre>
+<pre>{"data":{"attributes":{"cart_id":6,"source_id":6,"source_type":"Item","sale_price":1.0,"list_price":1.0},"type":"line_items"}}</pre>
 
 ### Response
 
@@ -36,12 +38,12 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
-Location: http://example.org/api/v1/line_items/1
-ETag: W/&quot;1726ebd6e46c47e4cb9c9c7a710cf676&quot;
+Location: http://example.org/api/v1/line_items/6
+ETag: W/&quot;b977c5c036ad0f1f2a6c93a74ceaa1ab&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 0b068a83-f596-4a16-ba83-9aabd89855c3
-X-Runtime: 0.037149
-Content-Length: 470</pre>
+X-Request-Id: 3e5081a7-0f8e-4685-9095-5f014fd0a87a
+X-Runtime: 0.039891
+Content-Length: 475</pre>
 
 #### Status
 
@@ -49,4 +51,4 @@ Content-Length: 470</pre>
 
 #### Body
 
-<pre>{"data":{"id":"1","type":"line_items","links":{"self":"http://example.org/api/v1/line_items/1"},"attributes":{"cart_id":1,"sale_price":null,"list_price":null,"quantity":1,"created_at":"2017-06-09T14:54:16.991Z","updated_at":"2017-06-09T14:54:16.991Z","source_id":6,"source_type":"Item","source_sku":"IMASKU"},"relationships":{"cart":{"links":{"self":"http://example.org/api/v1/line_items/1/relationships/cart","related":"http://example.org/api/v1/line_items/1/cart"}}}}}</pre>
+<pre>{"data":{"id":"6","type":"line_items","links":{"self":"http://example.org/api/v1/line_items/6"},"attributes":{"cart_id":6,"sale_price":"1.0","list_price":"1.0","quantity":null,"created_at":"2017-07-25T14:34:51.553Z","updated_at":"2017-07-25T14:34:51.553Z","source_id":6,"source_type":"Item","source_sku":"IMASKU"},"relationships":{"cart":{"links":{"self":"http://example.org/api/v1/line_items/6/relationships/cart","related":"http://example.org/api/v1/line_items/6/cart"}}}}}</pre>

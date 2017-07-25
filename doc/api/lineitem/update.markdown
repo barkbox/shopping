@@ -20,11 +20,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>PUT /api/v1/line_items/1</pre>
+<pre>PUT /api/v1/line_items/4</pre>
 
 #### Body
 
-<pre>{"data":{"id":1,"type":"line_items","attributes":{"quantity":2}}}</pre>
+<pre>{"data":{"id":4,"type":"line_items","attributes":{"quantity":2}}}</pre>
 
 ### Response
 
@@ -34,10 +34,10 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
-ETag: W/&quot;916688394ba77bc9438bc63e086b4f6d&quot;
+ETag: W/&quot;b67681f4ee0cec71d72fb98664de4416&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: dd82a9cd-5ad0-42c2-aa43-7155486cf707
-X-Runtime: 0.052721
+X-Request-Id: e7ad2ce2-83c3-4545-b3ff-e41bacd2bf00
+X-Runtime: 0.050729
 Content-Length: 472</pre>
 
 #### Status
@@ -46,4 +46,4 @@ Content-Length: 472</pre>
 
 #### Body
 
-<pre>{"data":{"id":"1","type":"line_items","links":{"self":"http://example.org/api/v1/line_items/1"},"attributes":{"cart_id":1,"sale_price":"5.0","list_price":"5.0","quantity":2,"created_at":"2017-06-09T14:54:16.897Z","updated_at":"2017-06-09T14:54:16.912Z","source_id":4,"source_type":"Item","source_sku":"IMASKU"},"relationships":{"cart":{"links":{"self":"http://example.org/api/v1/line_items/1/relationships/cart","related":"http://example.org/api/v1/line_items/1/cart"}}}}}</pre>
+<pre>{"data":{"id":"4","type":"line_items","links":{"self":"http://example.org/api/v1/line_items/4"},"attributes":{"cart_id":4,"sale_price":"5.0","list_price":"5.0","quantity":2,"created_at":"2017-07-25T14:34:51.439Z","updated_at":"2017-07-25T14:34:51.452Z","source_id":4,"source_type":"Item","source_sku":"IMASKU"},"relationships":{"cart":{"links":{"self":"http://example.org/api/v1/line_items/4/relationships/cart","related":"http://example.org/api/v1/line_items/4/cart"}}}}}</pre>
