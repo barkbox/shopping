@@ -11,6 +11,10 @@ module Shopping
 
     attr_accessible :user_id, :order_id, :purchased_at, :origin
 
+    def purchased?
+      purchased_at.present?
+    end
+
     def lock!
       locked_at = Time.zone.now
       save!
