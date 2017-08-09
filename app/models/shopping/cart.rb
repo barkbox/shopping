@@ -24,7 +24,7 @@ module Shopping
     private
 
       def cannot_lock_purchased_cart
-        errors.add(:locked_at, "Can't change lock state of purchased cart") if changes.keys.include(:locked_at) && cart.purchased?
+        errors.add(:locked_at, "Can't change lock state of purchased cart") if changes.keys.include?(:locked_at) && cart.purchased?
       end
   end
 end
