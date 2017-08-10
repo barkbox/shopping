@@ -3,7 +3,7 @@ module Shopping
     MUTABLE_WHILE_LOCKED = %w(locked_at failed_at purchased_at)
     has_many :line_items
 
-    validate :cannot_lock_purchased_cart, :cannot_alter_locked_cart
+    validate :cannot_alter_locked_cart, :cannot_alter_purchased_cart
 
     def self.method_missing(name, *args, &block)
       return if name == :attr_accessible
@@ -32,8 +32,12 @@ module Shopping
 
     private
 
-    def cannot_lock_purchased_cart
-      self.errors.add(:locked_at, "Can't change lock state of purchased cart") if changes.keys.include?("locked_at") && self.purchased?
+    def cannot_alter_purchased_cart
+      if self.purchased?
+        unless self.changed_attributes.keys.include?("purchased_at") && self.changed_attributes["purchased_at"] == nil
+          self.errors.add(:purchased_at, "Can't change state of purchased cart")
+        end
+      end
     end
 
     def cannot_alter_locked_cart
