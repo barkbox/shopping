@@ -3,7 +3,7 @@ require 'rails_helper'
 module Shopping
   RSpec.describe LineItem, type: :model do
 
-    let(:line_item){build(:line_item)}
+    let(:line_item){ build(:line_item) }
 
     context "validations" do
       describe "quantity" do
@@ -56,6 +56,15 @@ module Shopping
         it "must be present" do
           line_item.cart = nil
           expect{line_item.save!}.to raise_error(ActiveRecord::RecordInvalid)
+        end
+      end
+
+      describe "purchased cart" do
+        it "should prevent any line item changes" do
+          line_item.save
+          line_item.cart.update!(purchased_at: Time.zone.now)
+          line_item.quantity = line_item.quantity + 1
+          expect{line_item.save!}.to raise_error(ActiveRecord::RecordInvalid, /Cannot change `quantity', cart is purchased/i)
         end
       end
     end
