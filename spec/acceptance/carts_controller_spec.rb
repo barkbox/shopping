@@ -22,7 +22,20 @@ resource 'Cart', type: :acceptance do
            "purchased_at"=>nil, 
            "created_at"=> cart.created_at.as_json,
            "updated_at"=> cart.updated_at.as_json,
-           "origin" => nil,}, "relationships"=>{"line_items"=>{"links"=>{"self"=>"http://example.org/api/v1/carts/#{cart.id}/relationships/line_items", "related"=>"http://example.org/api/v1/carts/#{cart.id}/line_items"}}}}} 
+           "origin" => nil,}, "relationships"=>{
+            "line_items" => 
+              { "links" => { 
+                "self" => "http://example.org/api/v1/carts/#{cart.id}/relationships/line_items", 
+                "related"=>"http://example.org/api/v1/carts/#{cart.id}/line_items"
+                }
+              },
+            "cart_purchases" => 
+              { "links" => {
+                "self" => "http://example.org/api/v1/carts/#{cart.id}/relationships/cart_purchases", 
+                "related"=>"http://example.org/api/v1/carts/#{cart.id}/cart_purchases"
+              }
+            }
+          }}} 
     }
     
     example 'Show' do
@@ -52,7 +65,13 @@ resource 'Cart', type: :acceptance do
             {"links"=>
               {"self"=>"http://example.org/api/v1/carts/#{cart.id}/relationships/line_items",
                "related"=>"http://example.org/api/v1/carts/#{cart.id}/line_items"},
-             "data"=>[{"type"=>"line_items", "id"=>"#{line_item.id}"}]}}},
+             "data"=>[{"type"=>"line_items", "id"=>"#{line_item.id}"}]},
+            "cart_purchases" => 
+              { "links" => {
+                "self" => "http://example.org/api/v1/carts/#{cart.id}/relationships/cart_purchases", 
+                "related"=>"http://example.org/api/v1/carts/#{cart.id}/cart_purchases"
+              }
+            }}},
        "included"=>
         [{"id"=>"#{line_item.id}",
           "type"=>"line_items",

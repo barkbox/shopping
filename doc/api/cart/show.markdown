@@ -19,7 +19,7 @@ Cookie: </pre>
 
 #### Route
 
-<pre>GET /api/v1/carts/2</pre>
+<pre>GET /api/v1/carts/3</pre>
 
 ### Response
 
@@ -29,11 +29,11 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
-ETag: W/&quot;dfeac6512ba8173c57c41c84563db8c7&quot;
+ETag: W/&quot;3f523a4c565536765e4eb5e7554a9e95&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: df942d94-44e5-403f-a89a-c6ac68698137
-X-Runtime: 0.052835
-Content-Length: 396</pre>
+X-Request-Id: 07c61987-04ad-400f-8a7d-9181e629f05c
+X-Runtime: 0.040552
+Content-Length: 558</pre>
 
 #### Status
 
@@ -41,4 +41,4 @@ Content-Length: 396</pre>
 
 #### Body
 
-<pre>{"data":{"id":"2","type":"carts","links":{"self":"http://example.org/api/v1/carts/2"},"attributes":{"user_id":2,"purchased_at":null,"created_at":"2017-07-25T14:34:51.237Z","updated_at":"2017-07-25T14:34:51.237Z","origin":null},"relationships":{"line_items":{"links":{"self":"http://example.org/api/v1/carts/2/relationships/line_items","related":"http://example.org/api/v1/carts/2/line_items"}}}}}</pre>
+<pre>{"data":{"id":"3","type":"carts","links":{"self":"http://example.org/api/v1/carts/3"},"attributes":{"user_id":3,"purchased_at":null,"created_at":"2017-08-10T19:58:25.085Z","updated_at":"2017-08-10T19:58:25.085Z","origin":null},"relationships":{"line_items":{"links":{"self":"http://example.org/api/v1/carts/3/relationships/line_items","related":"http://example.org/api/v1/carts/3/line_items"}},"cart_purchases":{"links":{"self":"http://example.org/api/v1/carts/3/relationships/cart_purchases","related":"http://example.org/api/v1/carts/3/cart_purchases"}}}}}</pre>
