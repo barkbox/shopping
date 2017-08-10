@@ -46,6 +46,7 @@ module Shopping
       it "prevents any changes to the instance when set" do
         expect{cart.update!({user_id: 100000})}.to raise_error(ActiveRecord::RecordInvalid)
         expect{cart.update!({order_id: 100000})}.to raise_error(ActiveRecord::RecordInvalid)
+        expect{cart.update!({purchased_at: Time.zone.now})}.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
 
