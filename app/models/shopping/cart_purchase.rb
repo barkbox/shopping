@@ -9,6 +9,26 @@ module Shopping
 
     attr_accessible :cart_id, :succeeded_at, :failed_at
 
+    def fail!
+      self.update!({failed_at: Time.zone.now})
+    end
+
+    def succeed!
+      self.update!({succeeded_at: Time.zone.now})
+    end
+
+    def self.incomplete
+      self.where(succeeded_at: nil, failed_at: nil)
+    end
+
+    def self.failed
+      self.where.not(failed_at: nil)
+    end
+
+    def self.successful
+      self.where.not(succeeded_at: nil)
+    end
+
     private
 
     def unpurchased_cart
