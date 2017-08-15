@@ -20,7 +20,7 @@ Cookie: </pre>
 
 #### Route
 
-<pre>DELETE /api/v1/line_items/5</pre>
+<pre>DELETE /api/v1/line_items/4</pre>
 
 ### Response
 
@@ -30,8 +30,8 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Cache-Control: no-cache
-X-Request-Id: 6922ca79-d3af-4d3d-96ce-621397df2f2e
-X-Runtime: 0.012826</pre>
+X-Request-Id: 7ab150f2-725b-4694-a10d-35603ad70d2f
+X-Runtime: 0.024449</pre>
 
 #### Status
 

@@ -1,14 +1,11 @@
 module Shopping
   class Cart < ActiveRecord::Base
+    extend Shopping::AttributeAccessibleHelper
     MUTABLE_WHILE_LOCKED = %w(locked_at failed_at purchased_at)
     has_many :line_items
+    has_many :cart_purchases
 
     validate :cannot_alter_locked_cart, :cannot_alter_purchased_cart
-
-    def self.method_missing(name, *args, &block)
-      return if name == :attr_accessible
-      super(name, *args, &block)
-    end
 
     attr_accessible :user_id, :order_id, :purchased_at, :origin, :locked_at
 
