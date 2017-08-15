@@ -40,5 +40,17 @@ module Shopping
       end
     end
 
+    describe "#fail!" do
+      it "marks the cart_purchase as failed" do
+        expect{cart_purchase.fail!}.to change{cart_purchase.failed_at}.from(nil).to(an_instance_of(ActiveSupport::TimeWithZone))
+      end
+    end
+
+    describe "#succeed!" do
+      it "marks the cart_purchase as succeeded" do
+        expect{cart_purchase.succeed!}.to change{cart_purchase.succeeded_at}.from(nil).to(an_instance_of(ActiveSupport::TimeWithZone))
+      end
+    end
+
   end
 end
