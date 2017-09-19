@@ -5,6 +5,6 @@ Shopping::Engine.routes.draw do
   end
   jsonapi_resources :line_items, except: :index do
   end
-  jsonapi_resources :cart_purchases, only: :create do
+  jsonapi_resources :cart_purchases, only: [:create, :show] do
   end
 end
