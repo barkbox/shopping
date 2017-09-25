@@ -6,8 +6,12 @@ module Shopping
     has_many :line_items
     has_many :cart_purchases
 
+    def meta
+      @model.meta
+    end
+
     def self.updatable_fields(context)
-      super - [:user_id, :updated_at, :created_at, :purchased_at, :origin, :meta]
+      super - [:user_id, :updated_at, :created_at, :purchased_at, :origin]
     end
 
     def self.creatable_fields(context)
