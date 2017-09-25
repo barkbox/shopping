@@ -33,7 +33,8 @@ resource 'LineItem', type: :acceptance do
                      "updated_at"=> li.updated_at.as_json,
                      "source_id"=> item.id,
                      "source_type"=>"Item",
-                     "source_sku"=>"IMASKU"},
+                     "source_sku"=>"IMASKU",
+                     "options"=>{}},
                    "relationships"=>
                     {"cart"=>
                       {"links"=>
@@ -84,7 +85,8 @@ resource 'LineItem', type: :acceptance do
            "updated_at"=> line_item.reload.updated_at.as_json,
            "source_id"=> item.id,
            "source_type"=>"Item",
-           "source_sku"=>"IMASKU"},
+           "source_sku"=>"IMASKU",
+           "options"=>{}},
          "relationships"=>
           {"cart"=>
             {"links"=>

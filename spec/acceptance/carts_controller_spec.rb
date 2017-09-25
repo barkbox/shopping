@@ -85,7 +85,8 @@ resource 'Cart', type: :acceptance do
             "updated_at"=> line_item.updated_at.as_json,
             "source_id" => line_item.source_id,
             "source_type" => line_item.source_type,
-            "source_sku" => line_item.source.sku,},
+            "source_sku" => line_item.source.sku,
+            "options"=>{}},
           "relationships"=>
            {
             "cart"=>
