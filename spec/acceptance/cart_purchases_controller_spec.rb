@@ -10,7 +10,7 @@ resource 'CartPurchase', type: :acceptance do
   let(:item) { create(:item) }
   let!(:line_item) { create(:line_item, cart_id: cart.id, source: item, quantity: 1, sale_price: item.price) }
 
-  post '/api/v1/cart_purchases' do
+  post '/cart_purchases' do
     parameter :cart_id, scope: [:data, :attributes], required: true
 
     let(:cart) { create(:cart, user_id: 1) }
@@ -20,7 +20,7 @@ resource 'CartPurchase', type: :acceptance do
       {"data"=>
         {"id"=>cp.id.to_s,
          "type"=>"cart_purchases",
-         "links"=>{"self"=>"http://example.org/api/v1/cart_purchases/#{cp.id}"},
+         "links"=>{"self"=>"http://example.org/cart_purchases/#{cp.id}"},
          "attributes"=>
           {"cart_id"=>cart.id,
            "created_at"=>cp.created_at.as_json,
@@ -30,8 +30,8 @@ resource 'CartPurchase', type: :acceptance do
           {"cart"=>
             {"links"=>
               {"self"=>
-                "http://example.org/api/v1/cart_purchases/#{cp.id}/relationships/cart",
-               "related"=>"http://example.org/api/v1/cart_purchases/#{cp.id}/cart"}}}}}
+                "http://example.org/cart_purchases/#{cp.id}/relationships/cart",
+               "related"=>"http://example.org/cart_purchases/#{cp.id}/cart"}}}}}
     }
     before { line_item }
 

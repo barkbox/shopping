@@ -8,7 +8,7 @@ resource 'LineItem', type: :acceptance do
     header 'Content-Type', 'application/vnd.api+json'
   end
 
-  post '/api/v1/line_items' do
+  post '/line_items' do
     parameter :cart_id, scope: [:data, :attributes], required: true
     parameter :source_id, scope: [:data, :attributes], required: true
     parameter :source_type, scope: [:data, :attributes], required: true
@@ -23,7 +23,7 @@ resource 'LineItem', type: :acceptance do
       {"data"=>
                   {"id"=>"#{li.id}",
                    "type"=>"line_items",
-                   "links"=>{"self"=>"http://example.org/api/v1/line_items/#{li.id}"},
+                   "links"=>{"self"=>"http://example.org/line_items/#{li.id}"},
                    "attributes"=>
                     {"cart_id"=> cart_id,
                      "sale_price"=>"1.0",
@@ -38,8 +38,8 @@ resource 'LineItem', type: :acceptance do
                    "relationships"=>
                     {"cart"=>
                       {"links"=>
-                        {"self"=>"http://example.org/api/v1/line_items/#{li.id}/relationships/cart",
-                         "related"=>"http://example.org/api/v1/line_items/#{li.id}/cart"}}}}}
+                        {"self"=>"http://example.org/line_items/#{li.id}/relationships/cart",
+                         "related"=>"http://example.org/line_items/#{li.id}/cart"}}}}}
     }
 
     example 'Create' do
@@ -63,7 +63,7 @@ resource 'LineItem', type: :acceptance do
     end
   end
 
-  put '/api/v1/line_items/:id' do
+  put '/line_items/:id' do
     parameter :id, 'Line item id', required: true
 
     let(:cart) { create(:cart) }
@@ -75,7 +75,7 @@ resource 'LineItem', type: :acceptance do
       {"data"=>
         {"id"=>"#{id}",
          "type"=>"line_items",
-         "links"=>{"self"=>"http://example.org/api/v1/line_items/#{id}"},
+         "links"=>{"self"=>"http://example.org/line_items/#{id}"},
          "attributes"=>
           {"cart_id"=>cart_id,
            "sale_price"=>"5.0",
@@ -90,8 +90,8 @@ resource 'LineItem', type: :acceptance do
          "relationships"=>
           {"cart"=>
             {"links"=>
-              {"self"=>"http://example.org/api/v1/line_items/#{id}/relationships/cart",
-               "related"=>"http://example.org/api/v1/line_items/#{id}/cart"}}}}}
+              {"self"=>"http://example.org/line_items/#{id}/relationships/cart",
+               "related"=>"http://example.org/line_items/#{id}/cart"}}}}}
     }
 
     example 'Update' do
@@ -114,7 +114,7 @@ resource 'LineItem', type: :acceptance do
     end
   end
 
-  delete '/api/v1/line_items/:id' do
+  delete '/line_items/:id' do
     parameter :line_item_id, 'Line item id', required: true
 
     let(:cart) { create(:cart) }
