@@ -19,7 +19,7 @@ describe Shopping::UpdateLineItemService do
 
     it 'validates unpurchased cart' do
       service = Shopping::UpdateLineItemService.new(create(:cart, purchased_at: 1.day.ago), @item, 1)
-      expect{ service.perform! }.to raise_error(Shopping::ServiceError, /transaction already in progress/i)
+      expect{ service.perform! }.to raise_error(Shopping::ServiceError, /can't update purchased line item/i)
     end
 
     shared_examples_for 'it updates a line item in the cart' do

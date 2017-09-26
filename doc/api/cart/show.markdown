@@ -2,24 +2,25 @@
 
 ## Show
 
-### GET /api/v1/carts/:id
+### GET /carts/:id
 
 ### Parameters
 
 | Name | Description | Required | Scope |
 |------|-------------|----------|-------|
-| cart_id | Cart id | true |  |
+| cart_id | Cart ID | true |  |
 
 ### Request
 
 #### Headers
 
-<pre>Host: example.org
+<pre>Content-Type: application/vnd.api+json
+Host: example.org
 Cookie: </pre>
 
 #### Route
 
-<pre>GET /api/v1/carts/3</pre>
+<pre>GET /carts/2</pre>
 
 ### Response
 
@@ -29,11 +30,11 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
-ETag: W/&quot;3f523a4c565536765e4eb5e7554a9e95&quot;
+ETag: W/&quot;c0c1faf8e3136d728caaec3985cc7680&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 07c61987-04ad-400f-8a7d-9181e629f05c
-X-Runtime: 0.040552
-Content-Length: 558</pre>
+X-Request-Id: fb0dc11c-738d-4781-9291-53caae862b31
+X-Runtime: 0.054465
+Content-Length: 523</pre>
 
 #### Status
 
@@ -41,4 +42,4 @@ Content-Length: 558</pre>
 
 #### Body
 
-<pre>{"data":{"id":"3","type":"carts","links":{"self":"http://example.org/api/v1/carts/3"},"attributes":{"user_id":3,"purchased_at":null,"created_at":"2017-08-10T19:58:25.085Z","updated_at":"2017-08-10T19:58:25.085Z","origin":null},"relationships":{"line_items":{"links":{"self":"http://example.org/api/v1/carts/3/relationships/line_items","related":"http://example.org/api/v1/carts/3/line_items"}},"cart_purchases":{"links":{"self":"http://example.org/api/v1/carts/3/relationships/cart_purchases","related":"http://example.org/api/v1/carts/3/cart_purchases"}}}}}</pre>
+<pre>{"data":{"id":"2","type":"carts","links":{"self":"http://example.org/carts/2"},"attributes":{"user_id":2,"purchased_at":null,"created_at":"2017-09-26T14:27:55.168Z","updated_at":"2017-09-26T14:27:55.168Z","origin":null},"relationships":{"line_items":{"links":{"self":"http://example.org/carts/2/relationships/line_items","related":"http://example.org/carts/2/line_items"}},"cart_purchases":{"links":{"self":"http://example.org/carts/2/relationships/cart_purchases","related":"http://example.org/carts/2/cart_purchases"}}}}}</pre>

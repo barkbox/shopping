@@ -2,7 +2,7 @@
 
 ## Create
 
-### POST /api/v1/line_items
+### POST /line_items
 
 ### Parameters
 
@@ -24,11 +24,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>POST /api/v1/line_items</pre>
+<pre>POST /line_items</pre>
 
 #### Body
 
-<pre>{"data":{"attributes":{"cart_id":5,"source_id":5,"source_type":"Item","sale_price":1.0,"list_price":1.0},"type":"line_items"}}</pre>
+<pre>{"data":{"attributes":{"cart_id":7,"source_id":6,"source_type":"Item","sale_price":1.0,"list_price":1.0},"type":"line_items"}}</pre>
 
 ### Response
 
@@ -38,12 +38,12 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
-Location: http://example.org/api/v1/line_items/5
-ETag: W/&quot;08a42f7d5947144c62d3ac154fa45b47&quot;
+Location: http://example.org/line_items/6
+ETag: W/&quot;5e6f308fdf147dc832aa9ee22876ee6a&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 6148ecbc-c823-4193-b9b8-bf7cd7793d68
-X-Runtime: 0.036876
-Content-Length: 475</pre>
+X-Request-Id: 312c321a-dbbb-4074-8016-e0672f665e60
+X-Runtime: 0.047316
+Content-Length: 467</pre>
 
 #### Status
 
@@ -51,4 +51,4 @@ Content-Length: 475</pre>
 
 #### Body
 
-<pre>{"data":{"id":"5","type":"line_items","links":{"self":"http://example.org/api/v1/line_items/5"},"attributes":{"cart_id":5,"sale_price":"1.0","list_price":"1.0","quantity":null,"created_at":"2017-08-10T19:58:25.197Z","updated_at":"2017-08-10T19:58:25.197Z","source_id":5,"source_type":"Item","source_sku":"IMASKU"},"relationships":{"cart":{"links":{"self":"http://example.org/api/v1/line_items/5/relationships/cart","related":"http://example.org/api/v1/line_items/5/cart"}}}}}</pre>
+<pre>{"data":{"id":"6","type":"line_items","links":{"self":"http://example.org/line_items/6"},"attributes":{"cart_id":7,"sale_price":"1.0","list_price":"1.0","quantity":null,"created_at":"2017-09-26T14:27:55.428Z","updated_at":"2017-09-26T14:27:55.428Z","source_id":6,"source_type":"Item","source_sku":"IMASKU","options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/line_items/6/relationships/cart","related":"http://example.org/line_items/6/cart"}}}}}</pre>

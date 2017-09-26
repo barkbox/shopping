@@ -10,7 +10,8 @@ module Shopping
                :updated_at, 
                :source_id, 
                :source_type, 
-               :source_sku
+               :source_sku,
+               :options
 
     has_one :cart
 
@@ -19,7 +20,7 @@ module Shopping
     end
 
     def self.updatable_fields(context)
-      [:quantity]
+      [:quantity, :options]
     end
 
     def self.creatable_fields(context)
