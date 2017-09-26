@@ -2,6 +2,7 @@
 
 ## Cart
 
+* [Create with user and origin](cart/create_with_user_and_origin.markdown)
 * [Show](cart/show.markdown)
 * [Show incl line items](cart/show_incl_line_items.markdown)
 

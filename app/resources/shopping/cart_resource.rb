@@ -11,7 +11,7 @@ module Shopping
     end
 
     def self.creatable_fields(context)
-      super - [:updated_at, :created_at, :purchased_at]
+      super - [:updated_at, :created_at, :purchased_at, :order_id, :invoice_id]
     end
     
   end
