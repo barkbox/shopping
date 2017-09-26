@@ -5,6 +5,7 @@ Shopping::Engine.routes.draw do
   end
   jsonapi_resources :line_items, except: :index do
   end
-  jsonapi_resources :cart_purchases, only: [:create, :show] do
+  jsonapi_resources :cart_purchases, only: [:create, :show, :update] do
+    # TODO how to limit to just PATCH?
   end
 end

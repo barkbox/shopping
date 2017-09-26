@@ -18,6 +18,6 @@ module Shopping
         end
       end
     end
-    
+
   end
 end
