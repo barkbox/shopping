@@ -17,26 +17,6 @@ module Shopping
         end
       end
 
-      describe "sale price" do
-        it "must be present" do
-          line_item.sale_price = nil
-          expect{line_item.save!}.to raise_error(ActiveRecord::RecordInvalid)
-        end
-        it "must be numeric" do
-          expect{line_item.sale_price = "What's up"}.to raise_error(ArgumentError)
-        end
-      end
-
-      describe "list price" do
-        it "must be present" do
-          line_item.list_price = nil
-          expect{line_item.save!}.to raise_error(ActiveRecord::RecordInvalid)
-        end
-        it "must be numeric" do
-          expect{line_item.list_price = "What's up"}.to raise_error(ArgumentError)
-        end
-      end
-
       describe "source/cart combination" do
         let(:dupe){create(:line_item, source: line_item.source, cart: line_item.cart)}
 
