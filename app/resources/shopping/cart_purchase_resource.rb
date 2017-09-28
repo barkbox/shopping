@@ -10,7 +10,7 @@ module Shopping
     end
 
     def self.creatable_fields(context)
-      super - [:updated_at, :created_at, :succeeded_at, :failed_at]
+      [:cart_id, :options]
     end
     
   end
