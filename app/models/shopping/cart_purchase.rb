@@ -7,7 +7,7 @@ module Shopping
     validate :unpurchased_cart
     validate :not_failed
 
-    attr_accessible :cart_id, :succeeded_at, :failed_at
+    attr_accessible :cart_id, :succeeded_at, :failed_at, :options
 
     def fail!
       self.update!({failed_at: Time.zone.now})
