@@ -2,7 +2,7 @@ module Shopping
   class CartPurchaseResource < JSONAPI::Resource
     model_name 'Shopping::CartPurchase'
     
-    attributes :cart_id, :created_at, :succeeded_at, :failed_at
+    attributes :cart_id, :created_at, :succeeded_at, :failed_at, :options
     has_one :cart
 
     def self.updatable_fields(context)
