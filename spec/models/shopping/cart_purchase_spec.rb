@@ -13,7 +13,8 @@ module Shopping
         expect{cart_purchase.save!}.to raise_error(ActiveRecord::RecordInvalid)
       end
     
-      it "must be unpurchased at time of creation" do
+      it "must not have any successful cart purchases at time of creation" do
+        create(:cart_purchase, cart_id: cart.id, succeeded_at: Time.zone.now)
         cart.update!({purchased_at: Time.zone.now})
         expect{cart_purchase.save!}.to raise_error(ActiveRecord::RecordInvalid)
       end
