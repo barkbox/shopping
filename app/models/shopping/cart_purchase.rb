@@ -32,7 +32,9 @@ module Shopping
     private
 
     def unpurchased_cart
-      self.errors.add(:cart, 'must not be purchased') if self.cart.present? && (self.cart.purchased? || Shopping::CartPurchase.where('cart_id=? and succeeded_at is not null', self.cart_id).exists?)
+      if self.cart.present? && Shopping::CartPurchase.where('cart_id=? and succeeded_at is not null', self.cart_id).exists?
+        self.errors.add(:cart, 'must not have a successful cart purchase') 
+      end
     end
 
     def not_failed
