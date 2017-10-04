@@ -1,12 +1,3 @@
-# o Require login:
-#   x /cart_purchases POST
-#   x /cart_purchases/:id GET
-#   o /cart_purchases/:id PATCH
-#   o /carts/:id GET (if user_id is set)
-#   o /carts/:id PATCH (if user_id is set)
-#   o /line_items/:id GET PATCH (if user_id of associated cart is set)
-# o You can create/update carts and line items without logging in if no user is assigned to the cart
-
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require 'support/rspec_api_documentation'
