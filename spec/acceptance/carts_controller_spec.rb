@@ -1,23 +1,10 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require 'support/rspec_api_documentation'
-
-def log_in_user(resource_owner_id)
-  # token = double :acceptable? => true, :resource_owner_id => resource_owner_id
-  user = Struct.new(:id)
-  allow_any_instance_of(Shopping::Config).to receive(:current_user_method).and_return(lambda { user.new(resource_owner_id) })
-  # allow(self).to receive(:doorkeeper_token) {token}
-  # allow_any_instance_of(Shopping::ApiController).to receive(:doorkeeper_token) { token }
-end
-
-
-def log_out_user
-  # token = double :acceptable? => false, :accessible? => false
-  # allow_any_instance_of(Shopping::ApiController).to receive(:doorkeeper_token) { token }
-  allow_any_instance_of(Shopping::Config).to receive(:current_user_method).and_return(lambda { nil })
-end
+require 'helpers/authentication_helpers'
 
 resource 'Cart', type: :acceptance do
+  include AuthenticationHelpers
 
   before do
     header 'Content-Type', 'application/vnd.api+json'
@@ -78,7 +65,8 @@ resource 'Cart', type: :acceptance do
            "purchased_at"=>nil,
            "created_at"=> cart.created_at.as_json,
            "updated_at"=> cart.updated_at.as_json,
-           "origin" => nil},
+           "origin" => nil,
+           "options" => {}},
          "relationships"=>
           {"line_items"=>
             {"links"=>
@@ -114,7 +102,8 @@ resource 'Cart', type: :acceptance do
                 "related"=>"http://example.org/line_items/#{line_item.id}/cart"}}}}]}
     }
 
-    example 'Show incl line items', :run do
+    example 'Show including line items (with logged in cart owner)', :run do
+      log_in_user(cart.user_id)
       do_request
 
       expect(status).to eq 200
