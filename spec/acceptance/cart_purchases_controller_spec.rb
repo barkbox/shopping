@@ -1,10 +1,8 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require 'support/rspec_api_documentation'
-require 'helpers/authentication_helpers'
 
 resource 'CartPurchase', type: :acceptance do
-  include AuthenticationHelpers
 
   before do
     header 'Content-Type', 'application/vnd.api+json'
@@ -179,15 +177,4 @@ resource 'CartPurchase', type: :acceptance do
     end
   end
 
-
-  def with_exception(exn)
-    Shopping.config.purchase_cart_service_class.throw_error(exn)
-    yield
-    Shopping.config.purchase_cart_service_class.throw_error(nil)
-  end
-
-  def response_json
-    JSON.parse(response_body, symbolize_names: true)
-
-  end
 end

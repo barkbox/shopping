@@ -4,8 +4,6 @@ require 'support/rspec_api_documentation'
 require 'helpers/authentication_helpers'
 
 resource 'Cart', type: :acceptance do
-  include AuthenticationHelpers
-
   before do
     header 'Content-Type', 'application/vnd.api+json'
   end
@@ -45,7 +43,7 @@ resource 'Cart', type: :acceptance do
           }}}
     }
 
-    example 'Show' do
+    example 'Show (with logged in cart owner)' do
       log_in_user(cart.user_id)
       do_request
 
@@ -168,7 +166,6 @@ resource 'Cart', type: :acceptance do
 
     example 'no logged in user and cart is owned' do
       do_request
-      p JSON.parse(response_body)
       expect(status).to be 403
       expect(JSON.parse(response_body)).to eq(expected)
     end

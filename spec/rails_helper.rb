@@ -14,6 +14,7 @@ Rails.backtrace_cleaner.remove_silencers!
 
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+Dir["#{File.dirname(__FILE__)}/helpers/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -22,8 +23,11 @@ RSpec.configure do |config|
   config.order = "random"
   
   config.include Request::Helpers, type: :acceptance
+  config.include AcceptanceHelpers, type: :acceptance
+  config.include AuthenticationHelpers, type: :acceptance
   config.include Serializer::Helpers, type: :serializer
   config.include FactoryGirl::Syntax::Methods
+
 end
 
 RspecApiDocumentation.configure do |config|
