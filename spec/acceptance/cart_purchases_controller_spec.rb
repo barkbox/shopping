@@ -43,28 +43,28 @@ resource 'CartPurchase', type: :acceptance do
       expect(response_json).to eq(expected)
     end
 
-    example 'non-owner is logged in' do
-      expected = {:errors=>
+    describe 'forbidden' do
+      let(:expected) do
+       {:errors=>
         [{:title=>"Show Forbidden",
           :detail=>"You don't have permission to show this shopping/cart purchase.",
           :code=>"403",
           :status=>"403"}]}
-      log_in_user(4)
-      do_request
-      expect(status).to eq(403)
-      expect(response_json).to eq(expected)
-    end
+      end
 
-    example 'no one is logged in' do
-      expected = {:errors=>
-        [{:title=>"Show Forbidden",
-          :detail=>"You don't have permission to show this shopping/cart purchase.",
-          :code=>"403",
-          :status=>"403"}]}
-      do_request
-      expect(status).to eq(403)
-    end
+      example 'non-owner is logged in' do
+        log_in_user(user_id + 1)
+        do_request
+        expect(status).to eq(403)
+        expect(response_json).to eq(expected)
+      end
 
+      example 'no one is logged in' do
+        do_request
+        expect(status).to eq(403)
+        expect(response_json).to eq(expected)
+      end
+    end
   end
 
   post '/cart_purchases' do
@@ -104,7 +104,6 @@ resource 'CartPurchase', type: :acceptance do
     end
 
     context 'user is logged in' do
-
       example 'Create' do
         log_in_user(cart.user_id)
         do_request params
