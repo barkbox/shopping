@@ -54,7 +54,8 @@ resource 'CartPurchase', type: :acceptance do
           {"cart_id"=>cart.id,
            "created_at"=>cp.created_at.as_json,
            "succeeded_at"=>nil,
-           "failed_at"=>nil},
+           "failed_at"=>nil,
+           "options" => {}},
          "relationships"=>
           {"cart"=>
             {"links"=>
