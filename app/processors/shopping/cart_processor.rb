@@ -8,5 +8,11 @@ module Shopping
       end
     end
 
+    before_replace_fields do
+      cart = Shopping::Cart.find(params[:resource_id]) rescue nil
+      if cart.present? && cart.user_id.present? && cart.user_id != resource_owner_id
+        raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::Cart)
+      end
+    end
   end
 end
