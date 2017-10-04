@@ -10,7 +10,6 @@ module Shopping
 
     def create_resource
       cart_id = params[:data][:attributes][:cart_id]
-      binding.pry
       if !(cart = Cart.find(cart_id)) || !cart.user_id.present? || cart.user_id != resource_owner_id
         raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::CartPurchase)
       end
