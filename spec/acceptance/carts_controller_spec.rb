@@ -48,7 +48,7 @@ resource 'Cart', type: :acceptance do
       do_request
 
       expect(status).to be 200
-      expect(JSON.parse(response_body)).to eq(expected)
+      expect(response_json).to eq(expected.deep_symbolize_keys)
     end
   end
 
@@ -107,7 +107,7 @@ resource 'Cart', type: :acceptance do
       do_request
 
       expect(status).to eq 200
-      expect(JSON.parse(response_body)).to eq(expected)
+      expect(response_json).to eq(expected.deep_symbolize_keys)
     end
   end
 
@@ -128,10 +128,10 @@ resource 'Cart', type: :acceptance do
             status: '404',
           }
         ]
-      }.to_json
+      }
 
       expect(status).to be 404
-      expect(response_body).to eq(expected)
+      expect(response_json).to eq(expected.deep_symbolize_keys)
     end
   end
 
@@ -149,7 +149,7 @@ resource 'Cart', type: :acceptance do
     example 'logged in user is not owner of cart' do
       do_request
       expect(status).to be 403
-      expect(JSON.parse(response_body)).to eq(expected)
+      expect(response_json).to eq(expected.deep_symbolize_keys)
     end
   end
 
@@ -167,7 +167,7 @@ resource 'Cart', type: :acceptance do
     example 'no logged in user and cart is owned' do
       do_request
       expect(status).to be 403
-      expect(JSON.parse(response_body)).to eq(expected)
+      expect(response_json).to eq(expected.deep_symbolize_keys)
     end
   end
 
@@ -216,7 +216,7 @@ resource 'Cart', type: :acceptance do
       do_request params
 
       expect(status).to be 201
-      expect(JSON.parse(response_body)).to eq(expected)
+      expect(response_json).to eq(expected.deep_symbolize_keys)
     end
   end
 end
