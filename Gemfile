@@ -16,5 +16,4 @@ gemspec
 
 group :development, :test do
   gem 'rspec_api_documentation'
-  gem 'doorkeeper', '4.2.5'
 end

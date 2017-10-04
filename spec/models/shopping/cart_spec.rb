@@ -3,12 +3,6 @@ require 'rails_helper'
 module Shopping
   RSpec.describe Cart, type: :model do
     let(:cart){ create(:cart) }
-
-    describe "#meta" do
-      it "defaults to {}" do
-        expect(cart.meta).to eq({})
-      end
-    end
     
     describe "lock!" do
 

@@ -49,7 +49,7 @@ resource 'CartPurchase', type: :acceptance do
       {"data"=>
         {"id"=>cp.id.to_s,
          "type"=>"cart_purchases",
-         "links"=>{"self"=>"http://example.org/api/v1/cart_purchases/#{cp.id}"},
+         "links"=>{"self"=>"http://example.org/cart_purchases/#{cp.id}"},
          "attributes"=>
           {"cart_id"=>cart.id,
            "created_at"=>cp.created_at.as_json,
@@ -59,8 +59,8 @@ resource 'CartPurchase', type: :acceptance do
           {"cart"=>
             {"links"=>
               {"self"=>
-                "http://example.org/api/v1/cart_purchases/#{cp.id}/relationships/cart",
-               "related"=>"http://example.org/api/v1/cart_purchases/#{cp.id}/cart"}}}}}
+                "http://example.org/cart_purchases/#{cp.id}/relationships/cart",
+               "related"=>"http://example.org/cart_purchases/#{cp.id}/cart"}}}}}
     }
     # before { line_item }
     let(:params) do
@@ -93,7 +93,7 @@ resource 'CartPurchase', type: :acceptance do
     end
   end
 
-  get '/api/v1/cart_purchases/:id' do
+  get '/cart_purchases/:id' do
     parameter :id, scope: [:data], required: true
 
     let(:user_id) { 12345 }
@@ -171,7 +171,7 @@ resource 'CartPurchase', type: :acceptance do
     end
   end
 
-  patch '/api/v1/cart_purchases/:id' do
+  patch '/cart_purchases/:id' do
     parameter :id, scope: [:data], required: true
     # parameter :user_id, scope: [:data, :attributes], required: true
 
@@ -186,7 +186,7 @@ resource 'CartPurchase', type: :acceptance do
       {"data"=>
         {"id"=>cp.id.to_s,
          "type"=>"cart_purchases",
-         "links"=>{"self"=>"http://example.org/api/v1/cart_purchases/#{cp.id}"},
+         "links"=>{"self"=>"http://example.org/cart_purchases/#{cp.id}"},
          "attributes"=>
           {"cart_id"=>cart.id,
            "created_at"=>cp.created_at.as_json,
@@ -196,8 +196,8 @@ resource 'CartPurchase', type: :acceptance do
           {"cart"=>
             {"links"=>
               {"self"=>
-                "http://example.org/api/v1/cart_purchases/#{cp.id}/relationships/cart",
-               "related"=>"http://example.org/api/v1/cart_purchases/#{cp.id}/cart"}}}}}
+                "http://example.org/cart_purchases/#{cp.id}/relationships/cart",
+               "related"=>"http://example.org/cart_purchases/#{cp.id}/cart"}}}}}
     }
     let(:params) do
       {
