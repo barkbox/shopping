@@ -1,5 +1,15 @@
 module Shopping
-  class CartPurchaseProcessor < JSONAPI::Processor
+  class CartPurchaseProcessor < BaseProcessor
+
+    before_show do
+      # doesnt seem to allow user_id to be passed thru params
+      # fetchable_fields is called after this
+      cart_purchase = CartPurchase.find(params[:id])
+      if cart_purchase.cart.user_id != context[:resource_owner].id
+        # raise 'some error object that responds to `status`'
+        raise JSONAPI::Error.new( { status: :forbidden, code: JSONAPI::FORBIDDEN } )
+      end
+    end
 
     def create_resource
       cart_id = params[:data][:attributes][:cart_id]

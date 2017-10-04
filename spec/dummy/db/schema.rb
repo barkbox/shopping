@@ -37,11 +37,12 @@ ActiveRecord::Schema.define(version: 20170928153825) do
     t.integer  "user_id"
     t.integer  "order_id"
     t.datetime "purchased_at"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.string   "origin"
     t.datetime "locked_at"
     t.datetime "failed_at"
+    t.jsonb    "options",      default: {}
   end
 
   add_index "shopping_carts", ["origin"], name: "index_shopping_carts_on_origin", using: :btree

@@ -5,22 +5,20 @@ module Shopping
     attributes :cart_id, :created_at, :succeeded_at, :failed_at, :options
     has_one :cart
 
-    def fetchable_fields
-      # check if has a user actually
-      if @model.cart.user_id == context[:resource_owner].id
-        super
-      else
-        # TODO figure out exactly what to return
-        raise 'not authorized'
-      end
-    end
+    # def fetchable_fields
+    #   # check if has a user actually
+    #   if @model.cart.user_id == context[:resource_owner].id
+    #     super
+    #   else
+    #     # TODO figure out exactly what to return
+    #     raise 'not authorized'
+    #   end
+
+      # binding.pry
+    # end
 
     def self.updatable_fields(context)
-      if @model.cart.user_id = context[:resource_owner].id
-        super - [:cart_id, :updated_at, :created_at]
-      else
-        super - [:cart_id, :updated_at, :created_at, :succeeded_at, :failed_at]
-      end
+      super - [:cart_id, :updated_at, :created_at, :succeeded_at, :failed_at]
     end
 
     def self.creatable_fields(context)

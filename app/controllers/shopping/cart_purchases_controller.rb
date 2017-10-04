@@ -1,10 +1,5 @@
 module Shopping
   class CartPurchasesController < ApiController
-    before_action :hello
-
-    def hello
-      # binding.pry
-    end
 
 # DONT DO THIS
 # lean on the resource and not controller

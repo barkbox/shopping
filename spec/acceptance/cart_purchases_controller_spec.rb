@@ -95,7 +95,6 @@ resource 'CartPurchase', type: :acceptance do
 
   get '/api/v1/cart_purchases/:id' do
     parameter :id, scope: [:data], required: true
-    # parameter :user_id, scope: [:data, :attributes], required: true
 
     let(:user_id) { 12345 }
     let(:cart) { create(:cart, user_id: user_id) }
@@ -130,12 +129,15 @@ resource 'CartPurchase', type: :acceptance do
       }
     end
 
-    context 'user is not logged in' do
+    context 'associated cart has an owner and current user is not logged in' do
       example do
         log_out_user
         do_request params
-        expect(status).to eq(401)
-        expect(response_body).to eq('')
+        p response_headers
+        # TODO update this
+        expect(status).to eq(403)
+        response = JSON.parse(response_body)
+        expect(response['errors'].first['meta']['exception']).to eq('some error object that responds to `status`')
       end
     end
 
@@ -146,8 +148,6 @@ resource 'CartPurchase', type: :acceptance do
 
       example do
         do_request params
-        # p response_headers
-        # p JSON.parse(response_body)
         expect(status).to eq(200)
         expect(JSON.parse(response_body)).to eq(expected)
       end
@@ -166,7 +166,7 @@ resource 'CartPurchase', type: :acceptance do
         # TODO update this
         expect(status).to eq(500)
         response = JSON.parse(response_body)
-        expect(response['errors'].first['meta']['exception']).to eq('not authorized')
+        # expect(response['errors'].first['meta']['exception']).to eq('not authorized')
       end
     end
   end
@@ -209,6 +209,7 @@ resource 'CartPurchase', type: :acceptance do
       }
     end
 
+    example 'FIX' do
       do_request params
 
       expect(status).to eq(201)
@@ -289,4 +290,4 @@ resource 'CartPurchase', type: :acceptance do
     # end
 
   end
-# end
+end
