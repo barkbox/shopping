@@ -28,7 +28,8 @@ resource 'Cart', type: :acceptance do
            "purchased_at"=>nil,
            "created_at"=> cart.created_at.as_json,
            "updated_at"=> cart.updated_at.as_json,
-           "origin" => nil,}, "relationships"=>{
+           "origin" => nil,
+           "options" => {}}, "relationships"=>{
             "line_items" =>
               { "links" => {
                 "self" => "http://example.org/carts/#{cart.id}/relationships/line_items",
@@ -45,6 +46,7 @@ resource 'Cart', type: :acceptance do
     }
 
     example 'Show' do
+      log_in_user(cart.user_id)
       do_request
 
       expect(status).to be 200
