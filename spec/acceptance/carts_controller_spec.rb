@@ -46,7 +46,6 @@ resource 'Cart', type: :acceptance do
     example 'Show (with logged in cart owner)' do
       log_in_user(cart.user_id)
       do_request
-
       expect(status).to be 200
       expect(response_json).to eq(expected.deep_symbolize_keys)
     end
@@ -191,7 +190,8 @@ resource 'Cart', type: :acceptance do
            "purchased_at"=>nil,
            "created_at"=>"#{Shopping::Cart.last.created_at.as_json}",
            "updated_at"=>"#{Shopping::Cart.last.updated_at.as_json}",
-           "origin"=>"text"},
+           "origin"=>"text"
+           },
          "relationships"=>
           {"line_items"=>
             {"links"=>
@@ -204,11 +204,23 @@ resource 'Cart', type: :acceptance do
         }}}}
     }
 
-    example 'Create with user and origin' do
+    example 'Create with user and origin with logged in user' do
+      log_in_user(1)
       do_request params
-
       expect(status).to be 201
       expect(response_json).to eq(expected.deep_symbolize_keys)
+    end
+
+    example 'Create with user_id without logged in user' do
+      expected =
+        {:errors=>
+          [{:title=>"Create Forbidden",
+            :detail=>"You don't have permission to create this shopping/cart.",
+            :code=>"403",
+            :status=>"403"}]}
+      do_request params
+      expect(status).to be 403
+      expect(response_json).to eq(expected)
     end
   end
 
@@ -250,13 +262,20 @@ resource 'Cart', type: :acceptance do
             {"links"=>
               {"self"=>"http://example.org/carts/#{Shopping::Cart.last.id}/relationships/cart_purchases",
                "related"=>"http://example.org/carts/#{Shopping::Cart.last.id}/cart_purchases"}
-        }}}}
+        }}}}.deep_symbolize_keys
     }
 
-    example 'Update unowned cart with no logged in user' do
+    example 'Update user id of unowned cart with no logged in user' do
+      expected = 
+        {:errors=>
+          [{:title=>"Update Forbidden",
+            :detail=>"You don't have permission to update this shopping/cart.",
+            :code=>"403",
+            :status=>"403"}]}
+
       do_request params
-      expect(status).to be 200
-      expect(response_json).to eq(expected.deep_symbolize_keys)
+      expect(status).to be 403
+      expect(response_json).to eq(expected)
     end
 
     example 'Update owned cart with logged in owner' do
@@ -264,7 +283,7 @@ resource 'Cart', type: :acceptance do
       log_in_user(cart.user_id)
       do_request params
       expect(status).to be 200
-      expect(response_json).to eq(expected.deep_symbolize_keys)
+      expect(response_json).to eq(expected)
     end
 
     context 'forbidden' do

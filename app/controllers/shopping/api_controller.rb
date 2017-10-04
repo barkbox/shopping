@@ -24,9 +24,17 @@ module Shopping
     end
 
     def context
-      # why not just put in current_user here
-      # https://github.com/cerebris/jsonapi-resources/issues/580
-      { resource_owner: Shopping.config.current_user_method.call }
+      { resource_owner: resource_owner }
     end
+
+    def resource_owner
+      if Shopping.config.current_user_method.respond_to?(:call)
+        Shopping.config.current_user_method.call
+      elsif Shopping.config.current_user_method.is_a?(Symbol)
+        send(Shopping.config.current_user_method)
+      else
+        nil
+      end
+    end 
   end
 end
