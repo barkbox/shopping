@@ -167,7 +167,6 @@ resource 'Cart', type: :acceptance do
     }
 
     example 'no logged in user and cart is owned' do
-      log_out_user
       do_request
       p JSON.parse(response_body)
       expect(status).to be 403

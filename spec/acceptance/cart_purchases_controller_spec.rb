@@ -10,24 +10,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require 'support/rspec_api_documentation'
-
-def log_in_user(resource_owner_id)
-  token = double :acceptable? => true, :resource_owner_id => resource_owner_id
-  user = Struct.new(:id)
-  allow_any_instance_of(Shopping::Config).to receive(:current_user_method).and_return(lambda { user.new(resource_owner_id) })
-  allow(self).to receive(:doorkeeper_token) {token}
-  allow_any_instance_of(Shopping::ApiController).to receive(:doorkeeper_token) { token }
-end
-
-def log_out_user
-  # token = double 'token'
-  token = double :acceptable? => false, :accessible? => false
-  # allow(token).to receive(:acceptable?).and_return(false)
-  # allow(token).to receive(:accessible?).and_return(false)
-  allow_any_instance_of(Shopping::ApiController).to receive(:doorkeeper_token) { token }
-end
+require 'helpers/authentication_helpers'
 
 resource 'CartPurchase', type: :acceptance do
+  include AuthenticationHelpers
+
   before do
     header 'Content-Type', 'application/vnd.api+json'
   end
@@ -61,9 +48,8 @@ resource 'CartPurchase', type: :acceptance do
             {"links"=>
               {"self"=>
                 "http://example.org/cart_purchases/#{cp.id}/relationships/cart",
-               "related"=>"http://example.org/cart_purchases/#{cp.id}/cart"}}}}}
+               "related"=>"http://example.org/cart_purchases/#{cp.id}/cart"}}}}}.deep_symbolize_keys
     }
-    # before { line_item }
     let(:params) do
       {
         data: {
@@ -76,158 +62,29 @@ resource 'CartPurchase', type: :acceptance do
     context 'user is logged in' do
 
       example 'Create' do
-        log_in_user(user_id)
+        log_in_user(cart.user_id)
         do_request params
+        pp response_json
         expect(status).to eq(201)
-        expect(JSON.parse(response_body)).to eq(expected)
+        expect(response_json).to eq(expected)
       end
     end
 
     context 'user is not logged in' do
-      # change to user token is expired/revoked?
+      let(:expected){
+        {:errors=>
+          [{:title=>"Create Forbidden",
+            :detail=>
+             "You don't have permission to create this shopping/cart purchase.",
+            :code=>"403",
+            :status=>"403"}]}
+      }
       example 'Create' do
         log_out_user
         do_request params
-        expect(status).to eq(401)
-        expect(response_body).to eq('')
-      end
-    end
-  end
-
-  get '/cart_purchases/:id' do
-    parameter :id, scope: [:data], required: true
-
-    let(:user_id) { 12345 }
-    let(:cart) { create(:cart, user_id: user_id) }
-    let!(:line_item) { create(:line_item, cart_id: cart.id, source_id: item.id, source_type: item.type) }
-    let!(:cart_purchase) { create :cart_purchase, cart: cart }
-    let(:id) { cart_purchase.id}
-    let(:expected) {
-      cp = Shopping::CartPurchase.first
-      {data:
-        {id: cp.id.to_s,
-         type: "cart_purchases",
-         links: {self: "http://example.org/cart_purchases/#{cp.id}"},
-         attributes:
-          {cart_id: cart.id,
-           created_at: cp.created_at.as_json,
-           succeeded_at: nil,
-           failed_at: nil,
-           options: {}},
-         relationships:
-          {cart:
-            {links:
-              {self:
-                "http://example.org/cart_purchases/#{cp.id}/relationships/cart",
-               related: "http://example.org/cart_purchases/#{cp.id}/cart"}}}}}
-    }
-    let(:params) do
-      {
-        data: {
-          type: "cart_purchases",
-          id: cart_purchase.id
-        }
-      }
-    end
-
-    context 'associated cart has an owner and current user is not logged in' do
-      example do
-        log_out_user
-        do_request params
-        p response_headers
-        # TODO update this
         expect(status).to eq(403)
-        response = JSON.parse(response_body)
-        expect(response['errors'].first['meta']['exception']).to eq('some error object that responds to `status`')
+        expect(response_json).to eq(expected)
       end
-    end
-
-    context 'current user is owner of the associated cart' do
-      before do
-        log_in_user(user_id)
-      end
-
-      example do
-        do_request params
-        expect(status).to eq(200)
-        expect(JSON.parse(response_body)).to eq(expected)
-      end
-    end
-
-    context 'current user is not owner of associated cart' do
-      before do
-        log_in_user(12039812)
-      end
-
-      example do
-        do_request params
-        # p response_headers
-        # p JSON.parse(response_body)
-
-        # TODO update this
-        expect(status).to eq(500)
-        response = JSON.parse(response_body)
-        # expect(response['errors'].first['meta']['exception']).to eq('not authorized')
-      end
-    end
-  end
-
-  patch '/cart_purchases/:id' do
-    parameter :id, scope: [:data], required: true
-    # parameter :user_id, scope: [:data, :attributes], required: true
-
-    let(:user_id) { 12345 }
-    let(:cart) { create(:cart, user_id: user_id) }
-    let!(:line_item) { create(:line_item, cart_id: cart.id, source_id: item.id, source_type: item.type) }
-    let!(:cart_purchase) { create :cart_purchase, cart: cart }
-    let(:id) { cart_purchase.id}
-    let(:time) { Time.zone.now }
-    let(:expected) {
-      cp = Shopping::CartPurchase.first
-      {"data"=>
-        {"id"=>cp.id.to_s,
-         "type"=>"cart_purchases",
-         "links"=>{"self"=>"http://example.org/cart_purchases/#{cp.id}"},
-         "attributes"=>
-          {"cart_id"=>cart.id,
-           "created_at"=>cp.created_at.as_json,
-           "succeeded_at"=> time,
-           "failed_at"=>nil},
-         "relationships"=>
-          {"cart"=>
-            {"links"=>
-              {"self"=>
-                "http://example.org/cart_purchases/#{cp.id}/relationships/cart",
-               "related"=>"http://example.org/cart_purchases/#{cp.id}/cart"}}}}}
-    }
-    let(:params) do
-      {
-        data: {
-          type: "cart_purchases",
-          id: cart_purchase.id,
-          attributes: { succeeded_at: time }
-        }
-      }
-    end
-
-    example 'FIX' do
-      do_request params
-
-      expect(status).to eq(201)
-      expect(response_json).to eq(expected)
-    end
-
-    context 'user is not logged in' do
-    end
-
-    context 'current user is owner of the associated cart' do
-      # succeeded_at
-      # failed_at
-    end
-
-    context 'current user is not owner of associated cart' do
-      # succeeded_at
-      # failed_at
     end
 
     example 'When an associated record is not included or not found', document: false do
@@ -243,7 +100,7 @@ resource 'CartPurchase', type: :acceptance do
         }
       }
       expected_error = { errors: [{title: "Bad Request", detail: {}, code: "400", status: "400"}] }
-
+      log_in_user(cart.user_id)
       with_exception(ActiveRecord::RecordNotFound) do
         do_request params
       end
@@ -263,6 +120,7 @@ resource 'CartPurchase', type: :acceptance do
           }
         }
       }
+      log_in_user(cart.user_id)
 
       with_exception(NameError) do
         do_request params
@@ -276,6 +134,7 @@ resource 'CartPurchase', type: :acceptance do
     end
   end
 
+
   def with_exception(exn)
     Shopping.config.purchase_cart_service_class.throw_error(exn)
     yield
@@ -284,11 +143,6 @@ resource 'CartPurchase', type: :acceptance do
 
   def response_json
     JSON.parse(response_body, symbolize_names: true)
-    # example 'Create with existing locked cart purchase' do
-    # end
-
-    # example 'Create with existing failed cart purchase' do
-    # end
 
   end
 end
