@@ -5,7 +5,7 @@ module Shopping
     end
 
     def current_user_method(callable=nil)
-      @current_user ||= callable
+      @method ||= callable
     end
 
     def purchase_cart_service_class(klass=nil)

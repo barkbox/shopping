@@ -1,8 +1,18 @@
 module Shopping
-  class CartPurchaseProcessor < JSONAPI::Processor
+  class CartPurchaseProcessor < BaseProcessor
+
+    after_show do
+      user_id = result.resource.cart.user_id rescue nil
+      if !user_id.present? || user_id != resource_owner_id
+        raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::CartPurchase)
+      end
+    end
 
     def create_resource
       cart_id = params[:data][:attributes][:cart_id]
+      if !(cart = Cart.find(cart_id)) || !cart.user_id.present? || cart.user_id != resource_owner_id
+        raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::CartPurchase)
+      end
 
       begin
         service = Shopping.config.purchase_cart_service_class.new(cart_id, params[:data][:attributes])
