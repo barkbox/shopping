@@ -1,12 +1,12 @@
 module Shopping
   class ApiController < ApplicationController
     include JSONAPI::ActsAsResourceController
-    protect_from_forgery with: :null_session
+    # protect_from_forgery with: :null_session
     rescue_from Shopping::NotAuthorizedError, with: :reject_forbidden_request
 
     # before_action :verify_content_type_header
-
     # before_action :doorkeeper_authorize!
+    before_action :authenticate_user!
     # if this is inheriting from the host ApplicationController
     # does it have access to current user?
 
@@ -35,6 +35,6 @@ module Shopping
       else
         nil
       end
-    end 
+    end
   end
 end
