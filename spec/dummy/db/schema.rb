@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170928153825) do
+ActiveRecord::Schema.define(version: 20171011205729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 20170928153825) do
 
   create_table "shopping_cart_purchases", force: :cascade do |t|
     t.integer  "cart_id"
-    t.time     "succeeded_at"
-    t.time     "failed_at"
+    t.datetime "succeeded_at"
+    t.datetime "failed_at"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.jsonb    "options",      default: {}, null: false
