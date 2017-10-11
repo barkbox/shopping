@@ -165,60 +165,54 @@ resource 'Cart', type: :acceptance do
   end
 
   post '/carts' do
-    parameter :origin, 'Origin', scope: [:data, :attributes]
+    parameter :origin, 'Origin', required: true, scope: [:data, :attributes]
     parameter :user_id, 'User ID', scope: [:data, :attributes]
 
-    let(:params){
-      {data:
-        {
+    example 'Create with user and origin with logged in user' do
+      params = {
+        data: {
           type: 'carts',
-          attributes: {
-            origin: 'text',
-            user_id: 1
-          }
+          attributes: { origin: 'text', user_id: 1 }
         }
       }
-    }
 
-    let(:expected){
-      {"data"=>
-        {"id"=>"#{Shopping::Cart.last.id}",
-         "type"=>"carts",
-         "links"=>{"self"=>"http://example.org/carts/#{Shopping::Cart.last.id}"},
-         "attributes"=>
-          {"user_id"=>1,
-           "purchased_at"=>nil,
-           "created_at"=>"#{Shopping::Cart.last.created_at.as_json}",
-           "updated_at"=>"#{Shopping::Cart.last.updated_at.as_json}",
-           "origin"=>"text"
-           },
-         "relationships"=>
-          {"line_items"=>
-            {"links"=>
-              {"self"=>"http://example.org/carts/#{Shopping::Cart.last.id}/relationships/line_items",
-               "related"=>"http://example.org/carts/#{Shopping::Cart.last.id}/line_items"}},
-           "cart_purchases"=>
-            {"links"=>
-              {"self"=>"http://example.org/carts/#{Shopping::Cart.last.id}/relationships/cart_purchases",
-               "related"=>"http://example.org/carts/#{Shopping::Cart.last.id}/cart_purchases"}
-        }}}}
-    }
-
-    example 'Create with user and origin with logged in user' do
       log_in_user(1)
+
       do_request params
+
       expect(status).to be 201
-      expect(response_json).to eq(expected.deep_symbolize_keys)
+      expect(response_json).to eq(expected_from_post(Shopping::Cart.last))
+    end
+
+    example 'Create without user_id because there is no logged in user' do
+      params = { data: { type: 'carts', attributes: { origin: 'text' } } }
+
+      do_request params
+
+      expect(status).to eq(201), "expected 201, got #{status} (#{response_body})"
+      expect(response_json[:data][:type]).to eq("carts")
+      expect(response_json[:data][:attributes][:user_id]).to be_nil
+      expect(response_json[:data][:attributes][:origin]).to eq("text")
     end
 
     example 'Create with user_id without logged in user' do
-      expected =
-        {:errors=>
-          [{:title=>"Create Forbidden",
-            :detail=>"You don't have permission to create this shopping/cart.",
-            :code=>"403",
-            :status=>"403"}]}
+      params = {
+        data: {
+          type: 'carts',
+          attributes: { origin: 'text', user_id: 1 }
+        }
+      }
+      expected = {
+        :errors=> [{
+          title: "Create Forbidden",
+          detail: "You don't have permission to create this shopping/cart.",
+          code: "403",
+          status: "403"
+        }]
+      }
+
       do_request params
+
       expect(status).to be 403
       expect(response_json).to eq(expected)
     end
@@ -310,5 +304,36 @@ resource 'Cart', type: :acceptance do
         expect(response_json).to eq(expected.deep_symbolize_keys)
       end
     end
+  end
+
+  def expected_from_post(cart)
+    {
+      data: {
+        id: Shopping::Cart.last.id.to_s,
+        type: "carts",
+        links: { self: "http://example.org/carts/#{cart.id}" },
+        attributes: {
+          user_id: 1,
+          purchased_at: nil,
+          created_at: "#{cart.created_at.as_json}",
+          updated_at: "#{cart.updated_at.as_json}",
+          origin: "text"
+        },
+        relationships: {
+          line_items: {
+            links: {
+              self: "http://example.org/carts/#{cart.id}/relationships/line_items",
+              related: "http://example.org/carts/#{cart.id}/line_items"
+            }
+          },
+          cart_purchases: {
+            links: {
+              self: "http://example.org/carts/#{cart.id}/relationships/cart_purchases",
+              related: "http://example.org/carts/#{cart.id}/cart_purchases"
+            }
+          }
+        }
+      }
+    }
   end
 end
