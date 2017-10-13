@@ -35,7 +35,7 @@ module Shopping
         before{ cart.update!({purchased_at: Time.zone.now })}
         
         it "raises an error" do
-          expect{ cart.unlock! }.to raise_error(ActiveRecord::RecordInvalid)
+          expect{ cart.reload.unlock! }.to raise_error(ActiveRecord::RecordInvalid)
         end
       end
     end

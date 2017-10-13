@@ -1,14 +1,7 @@
 module Shopping
   class ApiController < ApplicationController
     include JSONAPI::ActsAsResourceController
-    protect_from_forgery with: :null_session
     rescue_from Shopping::NotAuthorizedError, with: :reject_forbidden_request
-
-    # before_action :verify_content_type_header
-
-    # before_action :doorkeeper_authorize!
-    # if this is inheriting from the host ApplicationController
-    # does it have access to current user?
 
     def reject_forbidden_request(e)
       type = e.resource_klass.name.underscore.humanize(capitalize: false)
