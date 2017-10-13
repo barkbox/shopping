@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shopping (0.3.1)
+    shopping (0.3.2)
       jsonapi-resources
       rails (= 4.2.8)
 
