@@ -113,8 +113,9 @@ resource 'LineItem', type: :acceptance do
                "related"=>"http://example.org/line_items/#{li.id}/cart"}
         }}}}.deep_symbolize_keys
     }
-    let(:params) do
-      {
+
+    example 'Create with an unowned cart' do
+      params = {
         data:{
           type: "line_items",
           attributes: {
@@ -126,20 +127,57 @@ resource 'LineItem', type: :acceptance do
           }
         }
       }
-    end
 
-    example 'Create with an unowned cart' do
       do_request params
       expect(status).to eq(201)
       expect(response_json).to eq(expected)
     end
 
     example 'Create with an owned cart and logged in owner' do
+      params = {
+        data:{
+          type: "line_items",
+          attributes: {
+            cart_id: cart.id,
+            source_id: item.id,
+            source_type: item.class.name,
+            sale_price: 1.0,
+            list_price: 1.0
+          }
+        }
+      }
       cart.update(user_id: 1)
       log_in_user(1)
-      do_request
-      expect(status).to eq(201)
+      do_request params
+      expect(status).to eq(201), "expected 201, got #{status}: #{response_json}"
       expect(response_json).to eq(expected)
+    end
+
+    example 'Create with a club plan' do
+      cart = create(:cart)
+      params = {
+        data: {
+          type: "line_items",
+          attributes: {
+            cart_id: cart.id,
+            source_id: item.id,
+            source_type: item.class.name,
+            options: {
+              club: "extra-toy"
+            }
+          }
+        }
+      }
+      club_source = create(:item)
+      existing_source = double(:existing_source)
+      source_class = double(:source_class, find_club_plan: club_source, find: existing_source)
+      Shopping.config.source_class(source_class)
+      log_in_user(cart.user_id)
+
+      do_request params
+
+      expect(status).to eq(201), "expected 201, got #{status}: #{response_json}"
+      expect(response_json[:data][:attributes][:source_id]).to eq(club_source.id)
     end
 
     context 'forbidden' do
@@ -152,16 +190,42 @@ resource 'LineItem', type: :acceptance do
       end
 
       example 'Create with an owned cart and a different logged in user' do
+        params = {
+          data:{
+            type: "line_items",
+            attributes: {
+              cart_id: cart.id,
+              source_id: item.id,
+              source_type: item.class.name,
+              sale_price: 1.0,
+              list_price: 1.0
+            }
+          }
+        }
+
         cart.update(user_id: 1)
         log_in_user(2)
-        do_request
+        do_request params
         expect(status).to eq(403)
         expect(response_json).to eq(expected)
       end
 
       example 'Create with an owned cart and no logged in user' do
+        params = {
+          data:{
+            type: "line_items",
+            attributes: {
+              cart_id: cart.id,
+              source_id: item.id,
+              source_type: item.class.name,
+              sale_price: 1.0,
+              list_price: 1.0
+            }
+          }
+        }
+
         cart.update(user_id: 1)
-        do_request
+        do_request params
         expect(status).to eq(403)
         expect(response_json).to eq(expected)
       end

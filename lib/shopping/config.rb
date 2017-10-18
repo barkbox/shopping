@@ -1,15 +1,19 @@
 module Shopping
   class Config
-    def logger(logger=nil)
+    def logger(logger = nil)
       @logger ||= logger
     end
 
-    def current_user_method(callable=nil)
+    def current_user_method(callable = nil)
       @method ||= callable
     end
 
-    def purchase_cart_service_class(klass=nil)
+    def purchase_cart_service_class(klass = nil)
       @purchase_cart_service_class ||= (klass.is_a?(Class) ? klass : constantize(klass))
+    end
+
+    def source_class(klass = nil)
+      @source_class ||= klass
     end
   end
 end
