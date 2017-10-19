@@ -170,8 +170,8 @@ resource 'LineItem', type: :acceptance do
       }
       club_source = create(:item)
       existing_source = double(:existing_source)
-      source_class = double(:source_class, find_club_plan: club_source, find: existing_source)
-      Shopping.config.source_class(source_class)
+      plan_class = double(:plan_class, find_club_plan: club_source, find: existing_source)
+      Shopping.config.plan_class(plan_class)
       log_in_user(cart.user_id)
 
       do_request params

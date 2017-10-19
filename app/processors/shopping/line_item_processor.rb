@@ -8,7 +8,7 @@ module Shopping
       end
 
       if club
-        source = Shopping.config.source_class.find_club_plan(club, existing_source)
+        source = Shopping.config.plan_class.find_club_plan(club, existing_source)
         params[:data][:attributes].merge!(
           source_id: source.id,
           source_type: source.class.name)
@@ -44,7 +44,7 @@ module Shopping
 
     def existing_source
       source_id = params[:data][:attributes][:source_id]
-      Shopping.config.source_class.find(source_id)
+      Shopping.config.plan_class.find(source_id)
     end
   end
 end

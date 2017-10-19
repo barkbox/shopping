@@ -12,8 +12,8 @@ module Shopping
       @purchase_cart_service_class ||= (klass.is_a?(Class) ? klass : constantize(klass))
     end
 
-    def source_class(klass = nil)
-      @source_class ||= klass
+    def plan_class(klass = nil)
+      @plan_class ||= klass
     end
   end
 end
