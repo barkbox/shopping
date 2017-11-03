@@ -17,6 +17,17 @@ module Shopping
       self.update!({succeeded_at: Time.zone.now})
     end
 
+    def retry!
+      if(self.new_record? || self.succeeded_at.present? || !self.failed_at.present?)
+        self.errors.add(:retry, "cannot retry open or successful cart purchases")
+        raise ActiveRecord::RecordInvalid.new(self)
+      end
+
+      new_cart_purchase = Shopping::CartPurchase.create!(cart_id: self.cart_id, options: self.options)
+      service = Shopping.config.purchase_cart_service_class.new(self.cart_id, self.options)
+      service.perform!
+    end
+
     def self.incomplete
       self.where(succeeded_at: nil, failed_at: nil)
     end

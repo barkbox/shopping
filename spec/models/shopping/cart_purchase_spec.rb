@@ -53,5 +53,55 @@ module Shopping
       end
     end
 
+    describe '#retry!' do
+      context 'when the cart_purchase has succeeded' do
+        it "throws an error" do
+          cart_purchase.succeed!
+          expect{cart_purchase.retry!}.to raise_error(ActiveRecord::RecordInvalid)
+        end
+      end
+
+      context 'when the cart_purchase is open' do
+        it "throws an error" do
+          cart_purchase.save!
+          expect{cart_purchase.retry!}.to raise_error(ActiveRecord::RecordInvalid)
+        end
+      end
+
+      context "when the cart_purchase has failed" do
+        
+        class FakePurchaseCartService
+          attr_accessor :cart, :options
+          def initialize(cart_id, options)
+            @options = options
+            @cart = Shopping::Cart.find(cart_id)
+            @cp = @cart.cart_purchases.incomplete.last
+          end
+
+          def perform!
+            @cart.failed_at = nil
+            @cart.save!
+            @cart.purchased_at = Time.zone.now
+            @cart.save!
+            @cp.succeed!
+          end
+
+        end
+
+        it "retries the cart purchase" do
+          options = {"fake_token" =>  'my token', "some_other_stuff" => { "in_here" => 'yeah'}}
+          allow(Shopping.config).to receive(:purchase_cart_service_class).and_return(FakePurchaseCartService)
+          cart_purchase.options = options
+          cart_purchase.save!
+          cart_purchase.fail!
+          cart_purchase.retry!
+
+          new_cp = Shopping::CartPurchase.last
+          expect(new_cp.succeeded_at).to be_present
+          expect(cart.reload.purchased_at).to be_present
+        end
+      end
+    end
+
   end
 end
