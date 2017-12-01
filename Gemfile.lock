@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shopping (0.3.3)
+    shopping (0.3.4)
       jsonapi-resources
       rails (= 4.2.8)
 
@@ -68,7 +68,7 @@ GEM
     factory_girl_rails (4.8.0)
       factory_girl (~> 4.8.0)
       railties (>= 3.0.0)
-    globalid (0.4.0)
+    globalid (0.4.1)
       activesupport (>= 4.2.0)
     i18n (0.8.1)
     json (2.1.0)
@@ -79,12 +79,13 @@ GEM
     kramdown (1.13.2)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
-    mail (2.6.6)
-      mime-types (>= 1.16, < 4)
+    mail (2.7.0)
+      mini_mime (>= 0.1.1)
     method_source (0.8.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mini_mime (1.0.0)
     mini_portile2 (2.1.0)
     minitest (5.10.2)
     mustache (1.0.5)
@@ -187,4 +188,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   1.14.6
+   1.16.0

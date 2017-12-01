@@ -129,6 +129,30 @@ resource 'CartPurchase', type: :acceptance do
       end
     end
 
+    example 'When the user has another purchase of the same origin in progress', document: false do
+      params = {
+        data: {
+          type: "cart_purchases",
+          attributes: {
+            cart_id: cart.id,
+            options: {
+              address_id: nil
+            }
+          }
+        }
+      }
+      other_cart = create(:cart, origin: 'subscription', user_id: cart.user_id)
+      create(:cart_purchase, cart_id: other_cart.id)
+
+      cart.update(origin: 'subscription')
+      expected_error = { errors: [{title: "Bad Request", detail: "Cannot purchase while another purchase is in progress", code: "400", status: "400"}]}
+      log_in_user(cart.user_id)
+
+      do_request params
+      expect(status).to eq(400)
+      expect(response_json).to eq(expected_error)
+    end
+
     example 'When an associated record is not included or not found', document: false do
       params = {
         data: {
