@@ -14,7 +14,8 @@ module Shopping
         raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::CartPurchase)
       end
 
-      if (other_cart = Cart.where(origin: cart.origin, failed_at: nil, purchased_at: nil, user_id: cart.user_id).where.not(id: cart.id).first) && other_cart.cart_purchases.incomplete.exists?
+      other_cart = Cart.where(origin: cart.origin, failed_at: nil, purchased_at: nil, user_id: cart.user_id).where.not(id: cart.id).first
+      if other_cart.present? && other_cart.cart_purchases.incomplete.exists?
         raise Shopping::PurchaseInProgressError.new("cannot purchase this cart while another purchase is in progress", resource_klass: Shopping::CartPurchase)
       end
 
