@@ -14,18 +14,19 @@ module Shopping
         raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::CartPurchase)
       end
 
+      if (other_cart = Cart.where(origin: cart.origin, failed_at: nil, purchased_at: nil, user_id: cart.user_id).where.not(id: cart.id).first) && other_cart.cart_purchases.incomplete.exists?
+        raise Shopping::PurchaseInProgressError.new("cannot purchase this cart while another purchase is in progress", resource_klass: Shopping::CartPurchase)
+      end
+
       begin
         service = Shopping.config.purchase_cart_service_class.new(cart_id, params[:data][:attributes])
         service.perform!
+      return JSONAPI::ResourceOperationResult.new((result == :completed ? :created : :accepted), resource, result_options)
       rescue ActiveRecord::RecordNotFound => e
         return json_api_error(400, JSONAPI::Exceptions::BadRequest.new(e))
       rescue => e
         return json_api_error(500,  JSONAPI::Exceptions::InternalServerError.new(e, internal_server_error_overrides))
       end
-
-      resource = resource_klass.create(context)
-      result = resource.replace_fields({type: 'cart_purchases', attributes: params[:data][:attributes]})
-      return JSONAPI::ResourceOperationResult.new((result == :completed ? :created : :accepted), resource, result_options)
     end
 
     private

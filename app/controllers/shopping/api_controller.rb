@@ -2,6 +2,7 @@ module Shopping
   class ApiController < ApplicationController
     include JSONAPI::ActsAsResourceController
     rescue_from Shopping::NotAuthorizedError, with: :reject_forbidden_request
+    rescue_from Shopping::PurchaseInProgressError, with: :reject_duplicate_purchase
 
     def reject_forbidden_request(e)
       type = e.resource_klass.name.underscore.humanize(capitalize: false)
@@ -14,6 +15,19 @@ module Shopping
       )
 
       render json: { errors: [error] }, status: 403
+    end
+
+    def reject_duplicate_purchase(e)
+      type = e.resource_klass.name.underscore.humanize(capitalize: false)
+      action = params[:action].humanize(capitalize: false)
+      error = JSONAPI::Error.new(
+        code: JSONAPI::BAD_REQUEST,
+        status: :bad_request,
+        title: "Bad Request",
+        detail: "Cannot purchase while another purchase is in progress"
+      )
+
+      render json: { errors: [error] }, status: 400
     end
 
     def context
