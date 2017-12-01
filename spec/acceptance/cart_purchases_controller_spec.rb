@@ -149,7 +149,6 @@ resource 'CartPurchase', type: :acceptance do
       log_in_user(cart.user_id)
 
       do_request params
-      p response_json
       expect(status).to eq(400)
       expect(response_json).to eq(expected_error)
     end
