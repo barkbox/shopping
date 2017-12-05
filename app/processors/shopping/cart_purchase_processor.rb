@@ -26,14 +26,28 @@ module Shopping
         service.perform!
         return JSONAPI::ResourceOperationResult.new((result == :completed ? :created : :accepted), resource, result_options)
       rescue ActiveRecord::RecordNotFound => e
+        resource.options = resource.options.merge({error: {class: e.class.name, message: e.message}})
+        resource.failed_at = Time.zone.now
+        resource.send(:save)
         return json_api_error(400, JSONAPI::Exceptions::BadRequest.new(e))
       rescue => e
-        return json_api_error(500,  JSONAPI::Exceptions::InternalServerError.new(e, internal_server_error_overrides))
+        resource.options = resource.options.merge({error: {class: e.class.name, message: e.message}})
+        resource.failed_at = Time.zone.now
+        resource.send(:save)
+        return handle_error(e)
       end
       return JSONAPI::ResourceOperationResult.new((result == :completed ? :created : :accepted), resource, result_options)
     end
 
     private
+
+    def handle_error(e)
+      if e.status_code
+        return json_api_error(e.status_code, JSONAPI::Exceptions::BadRequest.new(e))
+      else
+        return json_api_error(500,  JSONAPI::Exceptions::InternalServerError.new(e, internal_server_error_overrides))
+      end
+    end
 
     def json_api_error(status, exn)
        JSONAPI::ErrorsOperationResult.new(status, exn.errors, {})
