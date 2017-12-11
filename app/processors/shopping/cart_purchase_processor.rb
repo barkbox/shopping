@@ -22,7 +22,7 @@ module Shopping
       begin
         resource = resource_klass.create(context)
         result = resource.replace_fields({type: 'cart_purchases', attributes: params[:data][:attributes]})
-        service = Shopping.config.purchase_cart_service_class.new(cart_id, params[:data][:attributes])
+        service = Shopping.config.purchase_cart_service_class.new(cart, resource)
         service.perform!
         return JSONAPI::ResourceOperationResult.new((result == :completed ? :created : :accepted), resource, result_options)
       rescue ActiveRecord::RecordNotFound => e
@@ -36,7 +36,6 @@ module Shopping
         resource.send(:save)
         return handle_error(e)
       end
-      return JSONAPI::ResourceOperationResult.new((result == :completed ? :created : :accepted), resource, result_options)
     end
 
     private
