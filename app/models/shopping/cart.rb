@@ -10,7 +10,11 @@ module Shopping
     attr_accessible :user_id, :order_id, :purchased_at, :origin, :locked_at
 
     def purchased?
-      purchased_at.present?
+      self.purchased_at.present?
+    end
+
+    def failed?
+      self.failed_at.present?
     end
 
     def locked?
