@@ -8,7 +8,7 @@
 
 | Name | Description | Required | Scope |
 |------|-------------|----------|-------|
-| origin | Origin | false | data[attributes] |
+| origin | Origin | true | data[attributes] |
 | user_id | User ID | false | data[attributes] |
 
 ### Request
@@ -36,8 +36,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: d310461e-9cae-443c-8191-82efe46c4cec
-X-Runtime: 0.010510
+X-Request-Id: f0c563f3-4e13-4bc1-b4be-ba741fdaed82
+X-Runtime: 0.003661
 Content-Length: 136</pre>
 
 #### Status

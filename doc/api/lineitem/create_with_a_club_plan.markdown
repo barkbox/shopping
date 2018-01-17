@@ -1,6 +1,6 @@
 # LineItem API
 
-## Create with an owned cart and logged in owner
+## Create with a club plan
 
 ### POST /line_items
 
@@ -28,7 +28,7 @@ Cookie: </pre>
 
 #### Body
 
-<pre>{"data":{"attributes":{"cart_id":45,"source_id":30,"source_type":"Item","sale_price":1.0,"list_price":1.0},"type":"line_items"}}</pre>
+<pre>{"data":{"attributes":{"cart_id":43,"source_id":28,"source_type":"Item","options":{"club":"extra-toy"}},"type":"line_items"}}</pre>
 
 ### Response
 
@@ -38,12 +38,12 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
-Location: http://example.org/line_items/29
-ETag: W/&quot;173cb2040d5026c7b5c291c0b77c4387&quot;
+Location: http://example.org/line_items/28
+ETag: W/&quot;7445707261d2b20f0af15ec619c4a8c8&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: af60e6fa-96b4-43fc-bbe6-0887a0eeac8e
-X-Runtime: 0.081347
-Content-Length: 473</pre>
+X-Request-Id: 86696768-1187-4d83-b616-babfceca921c
+X-Runtime: 0.065508
+Content-Length: 471</pre>
 
 #### Status
 
@@ -51,4 +51,4 @@ Content-Length: 473</pre>
 
 #### Body
 
-<pre>{"data":{"id":"29","type":"line_items","links":{"self":"http://example.org/line_items/29"},"attributes":{"cart_id":45,"sale_price":"1.0","list_price":"1.0","quantity":null,"created_at":"2018-01-17T19:36:06.818Z","updated_at":"2018-01-17T19:36:06.818Z","source_id":30,"source_type":"Item","source_sku":"IMASKU","options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/line_items/29/relationships/cart","related":"http://example.org/line_items/29/cart"}}}}}</pre>
+<pre>{"data":{"id":"28","type":"line_items","links":{"self":"http://example.org/line_items/28"},"attributes":{"cart_id":43,"sale_price":null,"list_price":null,"quantity":null,"created_at":"2018-01-17T19:36:06.751Z","updated_at":"2018-01-17T19:36:06.751Z","source_id":29,"source_type":"Item","source_sku":"IMASKU","options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/line_items/28/relationships/cart","related":"http://example.org/line_items/28/cart"}}}}}</pre>
