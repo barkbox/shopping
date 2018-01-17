@@ -129,8 +129,141 @@ resource 'Cart', type: :acceptance do
       }
 
       expect(status).to be 404
-      expect(response_json).to eq(expected.deep_symbolize_keys)
+      expect(response_json).to eq(expected)
     end
+  end
+
+  get '/carts?filter[state]=purchased', document: true do
+    parameter :state, 'State', required: true
+
+    example 'with a logged in user with purchased carts' do
+      cart.purchased_at = Time.zone.now
+      cart.save
+      cart2 = create(:cart, user_id: cart.user_id)
+      expected_response = {:data=>
+        [{:id=>"#{cart.id}",
+          :type=>"carts",
+          :links=>{:self=>"http://example.org/carts/#{cart.id}"},
+          :attributes=>
+           {:user_id=>cart.user_id,
+            :purchased_at=>cart.purchased_at.as_json,
+            :created_at=>cart.created_at.as_json,
+            :updated_at=>cart.updated_at.as_json,
+            :origin=>nil},
+          :relationships=>
+           {:line_items=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/line_items",
+                :related=>"http://example.org/carts/#{cart.id}/line_items"}},
+            :cart_purchases=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/cart_purchases",
+                :related=>"http://example.org/carts/#{cart.id}/cart_purchases"}}}}]}
+
+      log_in_user(cart.user_id)
+      do_request
+
+      expect(status).to be 200
+      expect(response_json).to eq(expected_response)
+    end
+
+    example 'with a logged out user' do
+      do_request
+      expect(status).to be(403)
+    end
+
+  end
+
+  get '/carts?filter[state]=failed', document: true do
+    parameter :state, 'State', required: true
+
+    example 'with a logged in user with failed carts' do
+      cart.failed_at = Time.zone.now
+      cart.save
+      cart2 = create(:cart, user_id: cart.user_id, failed_at: Time.zone.now, purchased_at: Time.zone.now)
+      
+      expected_response = {:data=>
+        [{:id=>"#{cart.id}",
+          :type=>"carts",
+          :links=>{:self=>"http://example.org/carts/#{cart.id}"},
+          :attributes=>
+           {:user_id=>cart.user_id,
+            :purchased_at=>nil,
+            :created_at=>cart.created_at.as_json,
+            :updated_at=>cart.updated_at.as_json,
+            :origin=>nil},
+          :relationships=>
+           {:line_items=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/line_items",
+                :related=>"http://example.org/carts/#{cart.id}/line_items"}},
+            :cart_purchases=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/cart_purchases",
+                :related=>"http://example.org/carts/#{cart.id}/cart_purchases"}}}}]}
+
+      log_in_user(cart.user_id)
+      do_request
+
+      expect(status).to be 200
+      expect(response_json).to eq(expected_response)
+    end
+
+    example 'with a logged out user' do
+      do_request
+      expect(status).to be(403)
+    end
+
+  end
+
+  get '/carts?filter[state]=open', document: true do
+    parameter :state, 'State', required: true
+
+    example 'with a logged in user with open carts' do
+      cart2 = create(:cart, user_id: cart.user_id, failed_at: Time.zone.now, purchased_at: Time.zone.now)
+      
+      expected_response = {:data=>
+        [{:id=>"#{cart.id}",
+          :type=>"carts",
+          :links=>{:self=>"http://example.org/carts/#{cart.id}"},
+          :attributes=>
+           {:user_id=>cart.user_id,
+            :purchased_at=>nil,
+            :created_at=>cart.created_at.as_json,
+            :updated_at=>cart.updated_at.as_json,
+            :origin=>nil},
+          :relationships=>
+           {:line_items=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/line_items",
+                :related=>"http://example.org/carts/#{cart.id}/line_items"}},
+            :cart_purchases=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/cart_purchases",
+                :related=>"http://example.org/carts/#{cart.id}/cart_purchases"}}}}]}
+
+      log_in_user(cart.user_id)
+      do_request
+
+      expect(status).to be 200
+      expect(response_json).to eq(expected_response)
+    end
+
+    example 'with a logged out user' do
+      do_request
+      expect(status).to be(403)
+    end
+
+  end
+
+  get '/carts?filter[state]=failed', document: true do
+    parameter :state, 'State', required: true
+
+  end
+
+  get '/carts?filter[state]=open', document: true do
+    parameter :state, 'State', required: true
+
   end
 
   get '/carts?filter[origin]=:origin', document: true do 
