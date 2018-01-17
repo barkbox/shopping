@@ -133,6 +133,66 @@ resource 'Cart', type: :acceptance do
     end
   end
 
+  get '/carts?filter[origin]=:origin', document: true do 
+    parameter :origin, 'Origin', required: true
+    let(:origin){ 'origin' }
+
+    example 'logged in user with existing carts with matching origin' do
+      cart.origin = origin
+      cart.save
+      cart2 = create(:cart, origin: origin, user_id: cart.user_id, created_at: 1.hour.from_now )
+      expected_response = {:data=>
+        [{:id=>cart2.id.to_s,
+          :type=>"carts",
+          :links=>{:self=>"http://example.org/carts/#{cart2.id}"},
+          :attributes=>
+           {:user_id=>cart2.user_id,
+            :purchased_at=>nil,
+            :created_at=>cart2.created_at.as_json,
+            :updated_at=>cart2.updated_at.as_json,
+            :origin=>"origin"},
+          :relationships=>
+           {:line_items=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart2.id}/relationships/line_items",
+                :related=>"http://example.org/carts/#{cart2.id}/line_items"}},
+            :cart_purchases=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart2.id}/relationships/cart_purchases",
+                :related=>"http://example.org/carts/#{cart2.id}/cart_purchases"}}}},
+         {:id=>cart.id.to_s,
+          :type=>"carts",
+          :links=>{:self=>"http://example.org/carts/#{cart.id}"},
+          :attributes=>
+           {:user_id=>cart.user_id,
+            :purchased_at=>nil,
+            :created_at=>cart.created_at.as_json,
+            :updated_at=>cart.updated_at.as_json,
+            :origin=>"origin"},
+          :relationships=>
+           {:line_items=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/line_items",
+                :related=>"http://example.org/carts/#{cart.id}/line_items"}},
+            :cart_purchases=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/cart_purchases",
+                :related=>"http://example.org/carts/#{cart.id}/cart_purchases"}}}}]}
+      log_in_user(cart.user_id)
+
+      do_request
+
+      expect(status).to be(200)
+      expect(response_json).to eq(expected_response)
+    end
+
+    example 'logged out user' do
+      do_request
+
+      expect(status).to be(403)
+    end
+  end
+
   get '/carts?filter[user_id]=:user_id', document: true do
     parameter :user_id, 'User ID', required: true
     let(:user_id){ cart.user_id }
@@ -227,13 +287,42 @@ resource 'Cart', type: :acceptance do
           attributes: { origin: 'text', user_id: 1 }
         }
       }
-
       log_in_user(1)
 
       do_request params
 
+      cart = Shopping::Cart.first
+      expected_response = {
+        data: {
+          id: cart.id.to_s,
+          type: "carts",
+          links: { self: "http://example.org/carts/#{cart.id}" },
+          attributes: {
+            user_id: 1,
+            purchased_at: nil,
+            created_at: "#{cart.created_at.as_json}",
+            updated_at: "#{cart.updated_at.as_json}",
+            origin: "text"
+          },
+          relationships: {
+            line_items: {
+              links: {
+                self: "http://example.org/carts/#{cart.id}/relationships/line_items",
+                related: "http://example.org/carts/#{cart.id}/line_items"
+              }
+            },
+            cart_purchases: {
+              links: {
+                self: "http://example.org/carts/#{cart.id}/relationships/cart_purchases",
+                related: "http://example.org/carts/#{cart.id}/cart_purchases"
+              }
+            }
+          }
+        }
+      }
+
       expect(status).to be 201
-      expect(response_json).to eq(expected_from_post(Shopping::Cart.last))
+      expect(response_json).to eq(expected_response)
     end
 
     example 'Create without user_id because there is no logged in user' do
@@ -356,36 +445,5 @@ resource 'Cart', type: :acceptance do
         expect(response_json).to eq(expected.deep_symbolize_keys)
       end
     end
-  end
-
-  def expected_from_post(cart)
-    {
-      data: {
-        id: Shopping::Cart.last.id.to_s,
-        type: "carts",
-        links: { self: "http://example.org/carts/#{cart.id}" },
-        attributes: {
-          user_id: 1,
-          purchased_at: nil,
-          created_at: "#{cart.created_at.as_json}",
-          updated_at: "#{cart.updated_at.as_json}",
-          origin: "text"
-        },
-        relationships: {
-          line_items: {
-            links: {
-              self: "http://example.org/carts/#{cart.id}/relationships/line_items",
-              related: "http://example.org/carts/#{cart.id}/line_items"
-            }
-          },
-          cart_purchases: {
-            links: {
-              self: "http://example.org/carts/#{cart.id}/relationships/cart_purchases",
-              related: "http://example.org/carts/#{cart.id}/cart_purchases"
-            }
-          }
-        }
-      }
-    }
   end
 end
