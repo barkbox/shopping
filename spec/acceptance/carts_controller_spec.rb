@@ -133,6 +133,58 @@ resource 'Cart', type: :acceptance do
     end
   end
 
+  get '/carts?filter[user_id]=:user_id', document: true do
+    parameter :user_id, 'User ID', required: true
+    let(:user_id){ cart.user_id }
+
+    example 'logged in user with matching user_id' do
+      expected_response = {:data=>
+        [{:id=> cart.id.to_s,
+          :type=>"carts",
+          :links=>{:self=>"http://example.org/carts/#{cart.id}"},
+          :attributes=>
+           {:user_id=>cart.user_id,
+            :purchased_at=>nil,
+            :created_at=> cart.created_at.as_json,
+            :updated_at=> cart.created_at.as_json,
+            :origin=>nil},
+          :relationships=>
+           {:line_items=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/line_items",
+                :related=>"http://example.org/carts/#{cart.id}/line_items"}},
+            :cart_purchases=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart.id}/relationships/cart_purchases",
+                :related=>"http://example.org/carts/#{cart.id}/cart_purchases"}}}}]}
+
+      log_in_user(cart.user_id)
+      do_request
+
+      expect(status).to be 200
+      expect(response_json).to eq(expected_response)
+    end
+
+    example 'logged in user with mismatched user_id' do
+      expected_error = {:errors=>[{:title=>"Index Forbidden", :detail=>"You don't have permission to index this shopping/cart.", :code=>"403", :status=>"403"}]}
+      
+      log_in_user(cart.user_id + 1)
+      do_request
+      
+      expect(status).to be 403
+      expect(response_json).to eq(expected_error)
+    end
+
+    example 'logged out user' do
+      expected_error = {:errors=>[{:title=>"Index Forbidden", :detail=>"You don't have permission to index this shopping/cart.", :code=>"403", :status=>"403"}]}
+
+      do_request
+
+      expect(status).to be 403
+      expect(response_json).to eq(expected_error)
+    end
+  end
+
 
   context 'forbidden' do
     let(:expected) {

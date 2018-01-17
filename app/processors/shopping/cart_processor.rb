@@ -15,6 +15,12 @@ module Shopping
       end
     end
 
+    before_find do
+      if params[:filters] && params[:filters][:user_id]
+        verify_user_id(params[:filters][:user_id].to_i)
+      end
+    end
+
     before_replace_fields do
       cart = Shopping::Cart.find(params[:resource_id]) rescue nil
       
@@ -29,5 +35,14 @@ module Shopping
       end
 
     end
+
+    private
+
+    def verify_user_id(user_id)
+      if resource_owner_id != user_id
+        raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::Cart)
+      end
+    end
+
   end
 end
