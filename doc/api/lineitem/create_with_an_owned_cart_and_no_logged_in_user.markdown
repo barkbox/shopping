@@ -28,7 +28,7 @@ Cookie: </pre>
 
 #### Body
 
-<pre>{"data":{"type":"line_items","attributes":{"cart_id":16,"source_id":9,"source_type":"Item","sale_price":1.0,"list_price":1.0}}}</pre>
+<pre>{"data":{"attributes":{"cart_id":47,"source_id":32,"source_type":"Item","sale_price":1.0,"list_price":1.0},"type":"line_items"}}</pre>
 
 ### Response
 
@@ -39,8 +39,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: a5d10a97-0106-4938-9109-43d5327d0d14
-X-Runtime: 0.003247
+X-Request-Id: 5d197364-9ff7-49ff-b1c8-ff9b872d5c71
+X-Runtime: 0.006740
 Content-Length: 141</pre>
 
 #### Status

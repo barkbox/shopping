@@ -1,14 +1,14 @@
 # Cart API
 
-## Update owned cart with no logged in user
+## with a logged out user
 
-### PATCH /carts/:id
+### GET /carts?filter[state]=purchased
 
 ### Parameters
 
 | Name | Description | Required | Scope |
 |------|-------------|----------|-------|
-| id |  id | true |  |
+| state | State | true |  |
 
 ### Request
 
@@ -20,11 +20,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>PATCH /carts/26</pre>
+<pre>GET /carts?filter[state]=purchased</pre>
 
-#### Body
+#### Query Parameters
 
-<pre>{"data":{"id":26,"type":"carts","attributes":{"user_id":1}}}</pre>
+<pre>filter: {&quot;state&quot;=&gt;&quot;purchased&quot;}</pre>
 
 ### Response
 
@@ -35,9 +35,9 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: cbb9483d-1321-4062-97dc-8837304efd18
-X-Runtime: 0.011607
-Content-Length: 136</pre>
+X-Request-Id: d346621b-abf0-4239-acaa-895f3e8a477f
+X-Runtime: 0.010989
+Content-Length: 134</pre>
 
 #### Status
 
@@ -48,8 +48,8 @@ Content-Length: 136</pre>
 <pre>{
   "errors": [
     {
-      "title": "Update Forbidden",
-      "detail": "You don't have permission to update this shopping/cart.",
+      "title": "Index Forbidden",
+      "detail": "You don't have permission to index this shopping/cart.",
       "code": "403",
       "status": "403"
     }
