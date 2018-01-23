@@ -11,6 +11,7 @@ module Shopping
                :source_id, 
                :source_type, 
                :source_sku,
+               :source_name,
                :options
 
     has_one :cart

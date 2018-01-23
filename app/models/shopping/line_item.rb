@@ -13,7 +13,7 @@ module Shopping
     validates :source_type, presence: true
 
     attr_accessible :cart_id, :source_id, :source_type, :quantity, :list_price, :sale_price, :options
-    before_create :set_prices
+    before_create :set_prices, :set_name
 
     def unique_source_and_cart
       other = Shopping::LineItem.where(source_id: self.source_id, source_type: self.source_type, cart_id: self.cart_id)
@@ -30,9 +30,13 @@ module Shopping
       end
     end
 
+    def set_name
+      self.source_name ||= source.try(:name)
+    end
+
     def set_prices
-      self.list_price ||= source.try(:list_price)
-      self.sale_price ||= source.try(:sale_price)
+      self.list_price ||= source.try(:price)
+      self.sale_price ||= source.try(:price)
     end
   end
 end

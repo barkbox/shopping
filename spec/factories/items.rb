@@ -4,5 +4,6 @@ FactoryGirl.define do
     sku "IMASKU"
     price 5.0
     type "Item"
+    name "An Item"
   end
 end

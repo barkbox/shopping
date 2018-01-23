@@ -49,5 +49,25 @@ module Shopping
       end
     end
 
+    describe "list price and sale price" do
+      it "should be set from the source price if present" do
+        source = line_item.source
+        line_item.save!
+        expect(line_item.sale_price).to be_present
+        expect(line_item.list_price).to be_present
+        expect(line_item.sale_price).to eq(source.price)
+        expect(line_item.list_price).to eq(source.price)
+      end
+    end
+
+    describe "source_name" do
+      it "should be set from the source's name if present" do
+        source = line_item.source
+        line_item.save!
+        expect(line_item.source_name).to eq(source.name)
+        expect(line_item.source_name).to be_present
+      end
+    end
+
   end
 end
