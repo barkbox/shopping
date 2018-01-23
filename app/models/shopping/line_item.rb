@@ -30,9 +30,13 @@ module Shopping
       end
     end
 
+    def set_item_name
+      self.source_name ||= source.try(:name)
+    end
+
     def set_prices
-      self.list_price ||= source.try(:list_price)
-      self.sale_price ||= source.try(:sale_price)
+      self.list_price ||= source.try(:price)
+      self.sale_price ||= source.try(:price)
     end
   end
 end

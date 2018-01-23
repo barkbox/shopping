@@ -50,13 +50,13 @@ module Shopping
     end
 
     describe "list price and sale price" do
-      it "should be set from the source if those properties are present" do
+      it "should be set from the source price if present" do
         source = line_item.source
         line_item.save!
         expect(line_item.sale_price).to be_present
         expect(line_item.list_price).to be_present
-        expect(line_item.sale_price).to eq(source.sale_price)
-        expect(line_item.list_price).to eq(source.list_price)
+        expect(line_item.sale_price).to eq(source.price)
+        expect(line_item.list_price).to eq(source.price)
       end
     end
 
