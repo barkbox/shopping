@@ -60,5 +60,14 @@ module Shopping
       end
     end
 
+    describe "source_name" do
+      it "should be set from the source's name if present" do
+        source = line_item.source
+        line_item.save!
+        expect(line_item.source_name).to eq(source.name)
+        expect(line_item.source_name).to be_present
+      end
+    end
+
   end
 end
