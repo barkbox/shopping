@@ -41,7 +41,7 @@ module Shopping
     private
 
     def handle_error(e)
-      if e.status_code
+      if e.respond_to? :status_code
         return json_api_error(e.status_code, JSONAPI::Exceptions::BadRequest.new(e))
       else
         return json_api_error(500,  JSONAPI::Exceptions::InternalServerError.new(e, internal_server_error_overrides))
