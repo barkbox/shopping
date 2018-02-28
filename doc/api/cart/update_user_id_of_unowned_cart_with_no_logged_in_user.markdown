@@ -20,11 +20,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>PATCH /carts/24</pre>
+<pre>PATCH /carts/25</pre>
 
 #### Body
 
-<pre>{"data":{"id":24,"type":"carts","attributes":{"user_id":1}}}</pre>
+<pre>{"data":{"id":25,"type":"carts","attributes":{"user_id":1}}}</pre>
 
 ### Response
 
@@ -35,8 +35,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 72dda590-e38b-4aaa-882c-9415ca8a36ee
-X-Runtime: 0.015395
+X-Request-Id: b7c8c4ed-51f9-44fb-aeba-c734e7136816
+X-Runtime: 0.005383
 Content-Length: 136</pre>
 
 #### Status

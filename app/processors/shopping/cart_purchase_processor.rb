@@ -22,18 +22,22 @@ module Shopping
       begin
         resource = resource_klass.create(context)
         result = resource.replace_fields({type: 'cart_purchases', attributes: params[:data][:attributes]})
-        service = Shopping.config.purchase_cart_service_class.new(cart, resource)
+        service = Shopping.config.purchase_cart_service_class.new(cart, resource.source_model)
         service.perform!
         return JSONAPI::ResourceOperationResult.new((result == :completed ? :created : :accepted), resource, result_options)
       rescue ActiveRecord::RecordNotFound => e
-        resource.options = resource.options.merge({error: {class: e.class.name, message: e.message}})
-        resource.failed_at = Time.zone.now
-        resource.send(:save)
+        if !resource.source_model.failed_at.present?
+          resource.options = resource.options.merge({error: {class: e.class.name, message: e.message}})
+          resource.failed_at = Time.zone.now
+          resource.send(:save)
+        end
         return json_api_error(400, JSONAPI::Exceptions::BadRequest.new(e))
       rescue => e
-        resource.options = resource.options.merge({error: {class: e.class.name, message: e.message}})
-        resource.failed_at = Time.zone.now
-        resource.send(:save)
+        if !resource.source_model.failed_at.present?
+          resource.options = resource.options.merge({error: {class: e.class.name, message: e.message} } )
+          resource.failed_at = Time.zone.now
+          resource.send(:save)
+        end
         return handle_error(e)
       end
     end

@@ -25,7 +25,7 @@ Cookie: </pre>
 
 #### Body
 
-<pre>{"data":{"type":"cart_purchases","attributes":{"cart_id":6}}}</pre>
+<pre>{"data":{"type":"cart_purchases","attributes":{"cart_id":50}}}</pre>
 
 ### Response
 
@@ -36,11 +36,11 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
 Location: http://example.org/cart_purchases/4
-ETag: W/&quot;d7700d329a7bafa8d168c27dbc3c254a&quot;
+ETag: W/&quot;7fd51f9ccde1365682087512488bf982&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: f4a46041-1d19-44f2-834a-51d96030f70b
-X-Runtime: 0.073459
-Content-Length: 369</pre>
+X-Request-Id: 14e10b6d-1902-4e43-8e25-1c770d890506
+X-Runtime: 0.055264
+Content-Length: 370</pre>
 
 #### Status
 
@@ -48,4 +48,4 @@ Content-Length: 369</pre>
 
 #### Body
 
-<pre>{"data":{"id":"4","type":"cart_purchases","links":{"self":"http://example.org/cart_purchases/4"},"attributes":{"cart_id":6,"created_at":"2018-01-17T19:36:04.600Z","succeeded_at":null,"failed_at":null,"options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/cart_purchases/4/relationships/cart","related":"http://example.org/cart_purchases/4/cart"}}}}}</pre>
+<pre>{"data":{"id":"4","type":"cart_purchases","links":{"self":"http://example.org/cart_purchases/4"},"attributes":{"cart_id":50,"created_at":"2018-02-28T15:46:47.915Z","succeeded_at":null,"failed_at":null,"options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/cart_purchases/4/relationships/cart","related":"http://example.org/cart_purchases/4/cart"}}}}}</pre>

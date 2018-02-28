@@ -2,7 +2,7 @@
 
 ## with a logged out user
 
-### GET /carts?filter[state]=purchased
+### GET /carts?filter[state]=open
 
 ### Parameters
 
@@ -20,11 +20,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>GET /carts?filter[state]=purchased</pre>
+<pre>GET /carts?filter[state]=open</pre>
 
 #### Query Parameters
 
-<pre>filter: {&quot;state&quot;=&gt;&quot;purchased&quot;}</pre>
+<pre>filter: {&quot;state&quot;=&gt;&quot;open&quot;}</pre>
 
 ### Response
 
@@ -35,8 +35,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: d346621b-abf0-4239-acaa-895f3e8a477f
-X-Runtime: 0.010989
+X-Request-Id: f328c202-cbc0-45b5-8f96-35b83ac7ca29
+X-Runtime: 0.001892
 Content-Length: 134</pre>
 
 #### Status

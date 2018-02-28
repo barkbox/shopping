@@ -34,11 +34,11 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
-ETag: W/&quot;c1e1729b33f326d9ba539189f9b876e0&quot;
+ETag: W/&quot;f4b9339afd176aae0909b2701a102e30&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: f87f54fe-f08e-4731-8c3f-b892f4922b32
-X-Runtime: 0.071475
-Content-Length: 369</pre>
+X-Request-Id: 9f0cba6e-9cfb-496c-9b31-16baf5f55554
+X-Runtime: 0.064673
+Content-Length: 370</pre>
 
 #### Status
 
@@ -46,4 +46,4 @@ Content-Length: 369</pre>
 
 #### Body
 
-<pre>{"data":{"id":"5","type":"cart_purchases","links":{"self":"http://example.org/cart_purchases/5"},"attributes":{"cart_id":7,"created_at":"2018-01-17T19:36:04.670Z","succeeded_at":null,"failed_at":null,"options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/cart_purchases/5/relationships/cart","related":"http://example.org/cart_purchases/5/cart"}}}}}</pre>
+<pre>{"data":{"id":"5","type":"cart_purchases","links":{"self":"http://example.org/cart_purchases/5"},"attributes":{"cart_id":51,"created_at":"2018-02-28T15:46:47.966Z","succeeded_at":null,"failed_at":null,"options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/cart_purchases/5/relationships/cart","related":"http://example.org/cart_purchases/5/cart"}}}}}</pre>
