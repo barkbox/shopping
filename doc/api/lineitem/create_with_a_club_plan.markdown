@@ -28,7 +28,7 @@ Cookie: </pre>
 
 #### Body
 
-<pre>{"data":{"attributes":{"cart_id":43,"source_id":28,"source_type":"Item","options":{"club":"extra-toy"}},"type":"line_items"}}</pre>
+<pre>{"data":{"attributes":{"cart_id":2,"source_id":2,"source_type":"Item","options":{"club":"extra-toy"}},"type":"line_items"}}</pre>
 
 ### Response
 
@@ -38,12 +38,12 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
-Location: http://example.org/line_items/28
-ETag: W/&quot;7445707261d2b20f0af15ec619c4a8c8&quot;
+Location: http://example.org/line_items/2
+ETag: W/&quot;91e663ceca4b96f4dec102a9b75618c7&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 86696768-1187-4d83-b616-babfceca921c
-X-Runtime: 0.065508
-Content-Length: 471</pre>
+X-Request-Id: b52af5d3-61ae-4b50-9595-2ded5859eeae
+X-Runtime: 0.076967
+Content-Length: 491</pre>
 
 #### Status
 
@@ -51,4 +51,4 @@ Content-Length: 471</pre>
 
 #### Body
 
-<pre>{"data":{"id":"28","type":"line_items","links":{"self":"http://example.org/line_items/28"},"attributes":{"cart_id":43,"sale_price":null,"list_price":null,"quantity":null,"created_at":"2018-01-17T19:36:06.751Z","updated_at":"2018-01-17T19:36:06.751Z","source_id":29,"source_type":"Item","source_sku":"IMASKU","options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/line_items/28/relationships/cart","related":"http://example.org/line_items/28/cart"}}}}}</pre>
+<pre>{"data":{"id":"2","type":"line_items","links":{"self":"http://example.org/line_items/2"},"attributes":{"cart_id":2,"sale_price":"5.0","list_price":"5.0","quantity":null,"created_at":"2018-02-28T15:46:45.642Z","updated_at":"2018-02-28T15:46:45.642Z","source_id":3,"source_type":"Item","source_sku":"IMASKU","source_name":"An Item","options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/line_items/2/relationships/cart","related":"http://example.org/line_items/2/cart"}}}}}</pre>

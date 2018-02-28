@@ -20,7 +20,7 @@ Cookie: </pre>
 
 #### Route
 
-<pre>GET /line_items/25</pre>
+<pre>GET /line_items/11</pre>
 
 ### Response
 
@@ -31,8 +31,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 81da2c64-a97b-4dc0-b84c-115784ccdee0
-X-Runtime: 0.009152
+X-Request-Id: b174f6d7-29aa-45da-802f-2fe7b398c4f2
+X-Runtime: 0.010616
 Content-Length: 137</pre>
 
 #### Status
