@@ -12,7 +12,7 @@ module Shopping
     validates :source_id, presence: true
     validates :source_type, presence: true
 
-    attr_accessible :cart_id, :source_id, :source_type, :quantity, :list_price, :sale_price, :options
+    attr_accessible :cart_id, :source, :source_id, :source_type, :quantity, :list_price, :sale_price, :options
     before_create :set_prices, :set_name
 
     def unique_source_and_cart
