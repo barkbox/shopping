@@ -12,6 +12,7 @@ module Shopping
       @cart = cart
       @source = source
       @quantity = quantity
+      @meta = meta
     end
 
     def to_hash
@@ -21,7 +22,8 @@ module Shopping
         source_type: @source.class.name,
         quantity: @quantity,
         sale_price: @source.price,
-        list_price: @source.price
+        list_price: @source.price,
+        options: @meta
       }
     end
 
