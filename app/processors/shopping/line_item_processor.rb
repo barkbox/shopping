@@ -15,6 +15,17 @@ module Shopping
       end
     end
 
+
+    after_find do 
+      unauthorized = result.resources.any? do |line_item|
+        line_item_belongs_to_current_user(line_item)
+      end
+
+      if unauthorized 
+        raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::Cart)
+      end
+    end
+
     after_show do
       user_id = result.resource.cart.user_id rescue nil
       if user_id.present? && user_id != resource_owner_id
@@ -45,6 +56,11 @@ module Shopping
     def existing_source
       source_id = params[:data][:attributes][:source_id]
       Shopping.config.plan_class.find(source_id)
+    end
+
+    def line_item_belongs_to_current_user(line_item)
+      cart = line_item.cart
+      (cart.present? && cart.user_id.present? && cart.user_id != resource_owner_id)
     end
   end
 end
