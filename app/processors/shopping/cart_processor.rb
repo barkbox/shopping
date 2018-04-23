@@ -23,6 +23,12 @@ module Shopping
       end
     end
 
+    after_find do
+      result.resources = result.resources.select do |ele|
+        ele.user_id == resource_owner_id
+      end
+    end
+
     before_replace_fields do
       cart = Shopping::Cart.find(params[:resource_id]) rescue nil
       
