@@ -31,6 +31,7 @@ resource 'CartPurchase', type: :acceptance do
            :created_at=>"#{cart_purchase.created_at.as_json}",
            :succeeded_at=>nil,
            :failed_at=>nil,
+           :canceled_at=>nil,
            :options=>{}},
          :relationships=>
           {:cart=>
@@ -86,6 +87,7 @@ resource 'CartPurchase', type: :acceptance do
            "created_at"=>cp.created_at.as_json,
            "succeeded_at"=>nil,
            "failed_at"=>nil,
+           "canceled_at"=>nil,
            "options" => {}},
          "relationships"=>
           {"cart"=>

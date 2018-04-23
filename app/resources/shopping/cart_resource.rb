@@ -7,15 +7,17 @@ module Shopping
     has_many :cart_purchases
 
     filters :user_id, :origin
-    
+
     filter :state, apply: ->(records, value, _options){
       case value[0]
       when 'purchased'
-        records.where('purchased_at IS NOT NULL')
+        records.purchased
       when 'failed'
-        records.where(purchased_at: nil).where.not(failed_at: nil)
+        records.failed
       when 'open'
-        records.where(purchased_at: nil, failed_at: nil)
+        records.open
+      when 'canceled'
+        records.canceled
       end
     }
 
