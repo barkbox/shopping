@@ -10,6 +10,13 @@ module Shopping
     attr_accessible :user_id, :order_id, :purchased_at, :origin, :locked_at, :options
 
     default_scope { order(created_at: :desc) }
+    scope :purchased, ->{ where.not(purchased_at: nil) }
+    scope :failed, ->{ where.not(failed_at: nil).where(purchased_at: nil) }
+    scope :open, -> { where(failed_at: nil, purchased_at: nil) }
+    scope :canceled, -> {
+      joins('left join shopping_cart_purchases on shopping_cart_purchases.cart_id = shopping_carts.id')
+      .where('shopping_cart_purchases.canceled_at is not null')
+    }
 
     def purchased?
       self.purchased_at.present?
@@ -21,6 +28,10 @@ module Shopping
 
     def locked?
       self.locked_at.present?
+    end
+
+    def canceled?
+      self.cart_purchases.where.not(canceled_at: nil).exists?
     end
 
     def lock!

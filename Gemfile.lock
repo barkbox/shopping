@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shopping (0.4.6)
+    shopping (0.4.7)
       jsonapi-resources
       rails (= 4.2.8)
 
@@ -92,7 +92,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.1)
     mustache (1.0.5)
-    nokogiri (1.8.1)
+    nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     pg (0.20.0)
     pry (0.10.4)
