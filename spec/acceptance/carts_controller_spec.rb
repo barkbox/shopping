@@ -412,6 +412,80 @@ resource 'Cart', type: :acceptance do
     end
   end
 
+  get '/carts?filter[origin]=add_to_box&include=line_items&filter[user_id]=:user_id', document: true do
+    
+    parameter :user_id, 'User ID', required: true
+    let(:user_id){ cart.user_id }
+
+    example 'muliple users logged with with user filter param' do 
+      cart2 = create(:cart, user_id: cart.user_id, origin: 'add_to_box')
+      cart3 = create(:cart, user_id: cart.user_id + 1, origin: 'add_to_box')
+
+      expected_response = {:data=>
+        [{:id=> cart2.id.to_s,
+          :type=>"carts",
+          :links=>{:self=>"http://example.org/carts/#{cart2.id}"},
+          :attributes=>
+           {:user_id=>cart.user_id,
+            :purchased_at=>nil,
+            :created_at=> cart2.created_at.as_json,
+            :updated_at=> cart2.created_at.as_json,
+            :origin=>cart2.origin},
+          :relationships=>
+           {:line_items=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart2.id}/relationships/line_items",
+                :related=>"http://example.org/carts/#{cart2.id}/line_items"},
+                :data=>[]},
+            :cart_purchases=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart2.id}/relationships/cart_purchases",
+                :related=>"http://example.org/carts/#{cart2.id}/cart_purchases"}}}}]}
+
+      log_in_user(cart.user_id)
+      do_request
+
+      expect(status).to be 200
+      expect(response_json).to eq(expected_response)
+    end
+  end
+
+  get '/carts?filter[origin]=add_to_box&include=line_items', document: true do
+    
+    let(:user_id){ cart.user_id }
+
+    example 'muliple users logged without user filter parameter' do 
+      cart2 = create(:cart, user_id: cart.user_id, origin: 'add_to_box')
+      cart3 = create(:cart, user_id: cart.user_id + 1, origin: 'add_to_box')
+
+      expected_response = {:data=>
+        [{:id=> cart2.id.to_s,
+          :type=>"carts",
+          :links=>{:self=>"http://example.org/carts/#{cart2.id}"},
+          :attributes=>
+           {:user_id=>cart.user_id,
+            :purchased_at=>nil,
+            :created_at=> cart2.created_at.as_json,
+            :updated_at=> cart2.created_at.as_json,
+            :origin=>cart2.origin},
+          :relationships=>
+           {:line_items=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart2.id}/relationships/line_items",
+                :related=>"http://example.org/carts/#{cart2.id}/line_items"},
+                :data=>[]},
+            :cart_purchases=>
+             {:links=>
+               {:self=>"http://example.org/carts/#{cart2.id}/relationships/cart_purchases",
+                :related=>"http://example.org/carts/#{cart2.id}/cart_purchases"}}}}]}
+
+      log_in_user(cart.user_id)
+      do_request
+
+      expect(status).to be 200
+      expect(response_json).to eq(expected_response)
+    end
+  end
 
   context 'forbidden' do
     let(:expected) {
