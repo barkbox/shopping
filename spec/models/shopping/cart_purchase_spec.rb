@@ -32,6 +32,11 @@ module Shopping
         expect{create(:cart_purchase, cart_id: cart_purchase.cart_id)}.to raise_error(ActiveRecord::RecordInvalid)
       end
 
+      it "can be set on a persisted cart" do
+        cp = create(:cart_purchase, cart_id: cart.id)
+        expect{ cp.update!(succeeded_at: Time.zone.now) }.to_not raise_error
+      end
+
     end
 
     describe "canceled_at" do
