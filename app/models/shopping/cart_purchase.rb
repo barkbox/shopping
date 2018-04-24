@@ -1,6 +1,6 @@
 module Shopping
   class CartPurchase < ActiveRecord::Base
-    MUTABLE_PROPERTIES = %w(canceled_at).freeze
+    MUTABLE_PROPERTIES = %w(canceled_at succeeded_at).freeze
 
     extend Shopping::AttributeAccessibleHelper
     belongs_to :cart
