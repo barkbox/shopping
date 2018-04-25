@@ -1,8 +1,9 @@
 module Shopping
   class CartPurchase < ActiveRecord::Base
+    extend Shopping::AttributeAccessibleHelper
+
     MUTABLE_PROPERTIES = %w(canceled_at succeeded_at).freeze
 
-    extend Shopping::AttributeAccessibleHelper
     belongs_to :cart
 
     validates :cart_id, presence: true
@@ -11,7 +12,7 @@ module Shopping
     validate :can_cancel
     validate :only_updating_mutable
 
-    attr_accessible :cart_id, :succeeded_at, :failed_at, :options
+    attr_accessible :cart_id, :succeeded_at, :failed_at, :options, :canceled_at
 
     def canceled?
       self.canceled_at.present?
