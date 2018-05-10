@@ -16,13 +16,13 @@ resource 'CartPurchase', type: :acceptance do
     let(:line_item) { create(:line_item, cart_id: cart.id, source_id: item.id, source_type: item.type) }
     let(:user_id) { 1 }
     let(:cart) { create(:cart, user_id: user_id) }
-    let(:cart_purchase){ create(:cart_purchase, cart_id: cart.id)}
-    let(:id){ cart_purchase.id}
+    let(:cart_purchase) { create(:cart_purchase, cart_id: cart.id) }
+    let(:id) { cart_purchase.id }
 
     parameter :cart_purchase_id, 'Cart Purchase ID', required: true
 
-    example 'owner is logged in' do
-      expected = {:data=>
+    let(:expected) do
+      {:data=>
         {:id=>"#{id}",
          :type=>"cart_purchases",
          :links=>{:self=>"http://example.org/cart_purchases/#{id}"},
@@ -38,7 +38,17 @@ resource 'CartPurchase', type: :acceptance do
             {:links=>
               {:self=>"http://example.org/cart_purchases/#{id}/relationships/cart",
                :related=>"http://example.org/cart_purchases/#{id}/cart"}}}}}
+    end
+
+    example 'owner is logged in' do
       log_in_user(user_id)
+      do_request(cart_purchase_id: cart_purchase.id)
+      expect(status).to eq(200)
+      expect(response_json).to eq(expected)
+    end
+
+    example 'admin is logged in' do
+      log_in_user(user_id + 1, :admin)
       do_request(cart_purchase_id: cart_purchase.id)
       expect(status).to eq(200)
       expect(response_json).to eq(expected)
@@ -114,6 +124,15 @@ resource 'CartPurchase', type: :acceptance do
       end
     end
 
+    context 'admin is logged in' do
+      example 'Create' do
+        log_in_user(cart.user_id + 1, :admin)
+        do_request params
+        expect(status).to eq(201)
+        expect(response_json).to eq(expected)
+      end
+    end
+
     context 'user is not logged in' do
       let(:expected){
         {:errors=>
@@ -177,7 +196,6 @@ resource 'CartPurchase', type: :acceptance do
 
       expect(response_json).to eq(expected_error)
     end
-
 
     example 'When an internal server error occurs' do
       params = {

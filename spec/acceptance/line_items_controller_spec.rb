@@ -54,6 +54,14 @@ resource 'LineItem', type: :acceptance do
       expect(response_json).to eq(expected)
     end
 
+    example 'Find with an owned cart and logged in admin' do
+      cart.update!(user_id: 1)
+      log_in_user(cart.user_id + 1, :admin)
+      do_request
+      expect(status).to eq(200)
+      expect(response_json).to eq(expected)
+    end
+
     example 'Find with an owned cart and no logged in user' do
       expected = {:errors=>
         [{:title=>"Show Forbidden",
@@ -150,6 +158,26 @@ resource 'LineItem', type: :acceptance do
       }
       cart.update(user_id: 1)
       log_in_user(1)
+      do_request params
+      expect(status).to eq(201), "expected 201, got #{status}: #{response_json}"
+      expect(response_json).to eq(expected)
+    end
+
+    example 'Create with an owned cart and logged in admin' do
+      params = {
+        data:{
+          type: "line_items",
+          attributes: {
+            cart_id: cart.id,
+            source_id: item.id,
+            source_type: item.class.name,
+            sale_price: 1.0,
+            list_price: 1.0
+          }
+        }
+      }
+      cart.update(user_id: 1)
+      log_in_user(2, :admin)
       do_request params
       expect(status).to eq(201), "expected 201, got #{status}: #{response_json}"
       expect(response_json).to eq(expected)
@@ -288,6 +316,14 @@ resource 'LineItem', type: :acceptance do
     example 'Update with owned cart and logged in owner' do
       cart.update!(user_id: 1)
       log_in_user(cart.user_id)
+      do_request params
+      expect(status).to be 200
+      expect(response_json).to eq(expected)
+    end
+
+    example 'Update with owned cart and logged in admin' do
+      cart.update!(user_id: 1)
+      log_in_user(cart.user_id + 1, :admin)
       do_request params
       expect(status).to be 200
       expect(response_json).to eq(expected)
@@ -434,6 +470,26 @@ resource 'LineItem', type: :acceptance do
       expect(response_json).to eq(expected)
     end
 
+    example 'Create with an owned cart and logged in admin' do
+      params = {
+        data:{
+          type: "line_items",
+          attributes: {
+            cart_id: cart.id,
+            source_id: item.id,
+            source_type: item.class.name,
+            sale_price: 1.0,
+            list_price: 1.0
+          }
+        }
+      }
+      cart.update(user_id: 1)
+      log_in_user(2, :admin)
+      do_request params
+      expect(status).to eq(201), "expected 201, got #{status}: #{response_json}"
+      expect(response_json).to eq(expected)
+    end
+
     context 'forbidden' do
       let(:expected) do
         {"errors"=>
@@ -549,6 +605,14 @@ resource 'LineItem', type: :acceptance do
       expect(response_json).to eq(expected)
     end
 
+    example 'Find line_items with an owned cart and logged in admin' do
+      cart.update!(user_id: 1)
+      log_in_user(cart.user_id + 1, :admin)
+      do_request
+      expect(status).to eq(200)
+      expect(response_json).to eq(expected)
+    end
+
     example 'Find line_items with an owned cart and no logged in user' do
       expected = {:errors=>
         [{:title=>"Index Forbidden",
@@ -644,6 +708,26 @@ resource 'LineItem', type: :acceptance do
       }
       cart.update(user_id: 1)
       log_in_user(1)
+      do_request params
+      expect(status).to eq(201), "expected 201, got #{status}: #{response_json}"
+      expect(response_json).to eq(expected)
+    end
+
+    example 'Create with an owned cart and logged in admin' do
+      params = {
+        data:{
+          type: "line_items",
+          attributes: {
+            cart_id: cart.id,
+            source_id: item.id,
+            source_type: item.class.name,
+            sale_price: 1.0,
+            list_price: 1.0
+          }
+        }
+      }
+      cart.update(user_id: 1)
+      log_in_user(2, :admin)
       do_request params
       expect(status).to eq(201), "expected 201, got #{status}: #{response_json}"
       expect(response_json).to eq(expected)
@@ -756,6 +840,14 @@ resource 'LineItem', type: :acceptance do
     example 'Update with owned cart and logged in owner' do
       cart.update!(user_id: 1)
       log_in_user(cart.user_id)
+      do_request params
+      expect(status).to be 200
+      expect(response_json).to eq(expected)
+    end
+
+    example 'Update with owned cart and logged in admin' do
+      cart.update!(user_id: 1)
+      log_in_user(cart.user_id + 1, :admin)
       do_request params
       expect(status).to be 200
       expect(response_json).to eq(expected)

@@ -3,14 +3,14 @@ module Shopping
 
     after_show do
       user_id = result.resource.cart.user_id rescue nil
-      if !user_id.present? || user_id != resource_owner_id
+      if !user_id.present? || (!current_user_is_admin? && user_id != resource_owner_id)
         raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::CartPurchase)
       end
     end
 
     def create_resource
       cart_id = params[:data][:attributes][:cart_id]
-      if !(cart = Cart.find(cart_id)) || !cart.user_id.present? || cart.user_id != resource_owner_id
+      if !(cart = Cart.find(cart_id)) || !cart.user_id.present? || (!current_user_is_admin? && cart.user_id != resource_owner_id)
         raise Shopping::NotAuthorizedError.new('not authorized', resource_klass: Shopping::CartPurchase)
       end
 
