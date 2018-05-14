@@ -31,7 +31,10 @@ module Shopping
     end
 
     def context
-      { resource_owner: resource_owner }
+      {
+        resource_owner: resource_owner,
+        is_admin: is_admin?
+      }
     end
 
     def resource_owner
@@ -42,6 +45,16 @@ module Shopping
       else
         nil
       end
-    end 
+    end
+
+    def is_admin?
+      if Shopping.config.admin_method.respond_to?(:call)
+        Shopping.config.admin_method.call
+      elsif Shopping.config.admin_method.is_a?(Symbol)
+        send(Shopping.config.admin_method)
+      else
+        nil
+      end
+    end
   end
 end

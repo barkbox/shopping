@@ -5,7 +5,7 @@ module Shopping
     end
 
     def current_user_is_admin?
-      context[:resource_owner].try(:is_shopping_admin?)
+      context[:is_admin]
     end
   end
 end

@@ -8,6 +8,10 @@ module Shopping
       @method ||= callable
     end
 
+    def admin_method(callable=nil)
+      @method ||= callable
+    end
+
     def purchase_cart_service_class(klass = nil)
       @purchase_cart_service_class ||= (klass.is_a?(Class) ? klass : constantize(klass))
     end
