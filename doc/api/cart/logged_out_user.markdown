@@ -2,13 +2,13 @@
 
 ## logged out user
 
-### GET /carts?filter[user_id]=:user_id
+### GET /carts?filter[origin]=:origin
 
 ### Parameters
 
 | Name | Description | Required | Scope |
 |------|-------------|----------|-------|
-| user_id | User ID | true |  |
+| origin | Origin | true |  |
 
 ### Request
 
@@ -20,11 +20,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>GET /carts?filter[user_id]=19</pre>
+<pre>GET /carts?filter[origin]=origin</pre>
 
 #### Query Parameters
 
-<pre>filter: {&quot;user_id&quot;=&gt;&quot;19&quot;}</pre>
+<pre>filter: {&quot;origin&quot;=&gt;&quot;origin&quot;}</pre>
 
 ### Response
 
@@ -35,8 +35,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: e3151b4c-820b-401c-9f1a-9c763592c8eb
-X-Runtime: 0.002933
+X-Request-Id: 2b498412-a9e0-48eb-b274-db6d18d2ea59
+X-Runtime: 0.001537
 Content-Length: 134</pre>
 
 #### Status

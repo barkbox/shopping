@@ -20,11 +20,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>PATCH /line_items/7</pre>
+<pre>PATCH /line_items/57</pre>
 
 #### Body
 
-<pre>{"data":{"id":7,"type":"line_items","attributes":{"quantity":2}}}</pre>
+<pre>{"data":{"id":57,"type":"line_items","attributes":{"quantity":2}}}</pre>
 
 ### Response
 
@@ -35,8 +35,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 10d079b7-c75b-454a-b5a8-0d4d47fe1961
-X-Runtime: 0.016874
+X-Request-Id: f4b69b98-075a-490a-8103-c80de70152c1
+X-Runtime: 0.004138
 Content-Length: 141</pre>
 
 #### Status

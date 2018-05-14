@@ -20,7 +20,7 @@ Cookie: </pre>
 
 #### Route
 
-<pre>GET /carts/17</pre>
+<pre>GET /carts/43</pre>
 
 ### Response
 
@@ -31,8 +31,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 58de3490-d589-4191-9886-7a4875d43efe
-X-Runtime: 0.004878
+X-Request-Id: ef0be5cb-f393-434c-a551-a7552116fb7e
+X-Runtime: 0.002693
 Content-Length: 132</pre>
 
 #### Status
