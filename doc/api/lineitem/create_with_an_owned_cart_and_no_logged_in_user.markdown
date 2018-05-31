@@ -2,13 +2,12 @@
 
 ## Create with an owned cart and no logged in user
 
-### POST /line_items
+### POST /carts/:cart_id/line_items
 
 ### Parameters
 
 | Name | Description | Required | Scope |
 |------|-------------|----------|-------|
-| cart_id | Data attributes cart | true | data[attributes] |
 | source_id | Data attributes source | true | data[attributes] |
 | source_type | Data attributes source type | true | data[attributes] |
 | sale_price | Data attributes sale price | true | data[attributes] |
@@ -24,11 +23,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>POST /line_items</pre>
+<pre>POST /carts/97/line_items</pre>
 
 #### Body
 
-<pre>{"data":{"attributes":{"cart_id":6,"source_id":6,"source_type":"Item","sale_price":1.0,"list_price":1.0},"type":"line_items"}}</pre>
+<pre>{"data":{"type":"line_items","attributes":{"cart_id":97,"source_id":72,"source_type":"Item","sale_price":1.0,"list_price":1.0}}}</pre>
 
 ### Response
 
@@ -39,8 +38,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 5a505267-4d06-4b1a-8fc8-8ba9b50e81db
-X-Runtime: 0.005828
+X-Request-Id: fe6b4905-88c0-4ca7-9dba-5939231fa4e4
+X-Runtime: 0.003634
 Content-Length: 141</pre>
 
 #### Status

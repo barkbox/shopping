@@ -49,6 +49,13 @@ resource 'Cart', type: :acceptance do
       expect(status).to be 200
       expect(response_json).to eq(expected.deep_symbolize_keys)
     end
+
+    example 'Show (with logged in admin)' do
+      log_in_user(cart.user_id + 1, :admin)
+      do_request
+      expect(status).to be 200
+      expect(response_json).to eq(expected.deep_symbolize_keys)
+    end
   end
 
   get '/carts/:id?include=line_items' do
@@ -103,6 +110,14 @@ resource 'Cart', type: :acceptance do
 
     example 'Show including line items (with logged in cart owner)', :run do
       log_in_user(cart.user_id)
+      do_request
+
+      expect(status).to eq 200
+      expect(response_json).to eq(expected.deep_symbolize_keys)
+    end
+
+    example 'Show including line items (with logged in admin)', :run do
+      log_in_user(cart.user_id + 1, :admin)
       do_request
 
       expect(status).to eq 200
@@ -364,8 +379,8 @@ resource 'Cart', type: :acceptance do
     parameter :user_id, 'User ID', required: true
     let(:user_id){ cart.user_id }
 
-    example 'logged in user with matching user_id' do
-      expected_response = {:data=>
+    let(:expected_response) do
+      {:data=>
         [{:id=> cart.id.to_s,
           :type=>"carts",
           :links=>{:self=>"http://example.org/carts/#{cart.id}"},
@@ -384,8 +399,18 @@ resource 'Cart', type: :acceptance do
              {:links=>
                {:self=>"http://example.org/carts/#{cart.id}/relationships/cart_purchases",
                 :related=>"http://example.org/carts/#{cart.id}/cart_purchases"}}}}]}
+    end
 
+    example 'logged in user with matching user_id' do
       log_in_user(cart.user_id)
+      do_request
+
+      expect(status).to be 200
+      expect(response_json).to eq(expected_response)
+    end
+
+    example 'logged in admin with mismatched user_id' do
+      log_in_user(cart.user_id + 1, :admin)
       do_request
 
       expect(status).to be 200
@@ -415,13 +440,13 @@ resource 'Cart', type: :acceptance do
   get '/carts?filter[origin]=add_to_box&include=line_items&filter[user_id]=:user_id', document: true do
     
     parameter :user_id, 'User ID', required: true
-    let(:user_id){ cart.user_id }
+    let(:user_id) { cart.user_id }
 
-    example 'muliple users logged with with user filter param' do 
-      cart2 = create(:cart, user_id: cart.user_id, origin: 'add_to_box')
-      cart3 = create(:cart, user_id: cart.user_id + 1, origin: 'add_to_box')
+    let!(:cart2) { create(:cart, user_id: cart.user_id, origin: 'add_to_box') }
+    let!(:cart3) { create(:cart, user_id: cart.user_id + 1, origin: 'add_to_box') }
 
-      expected_response = {:data=>
+    let(:expected_response) do
+      {:data=>
         [{:id=> cart2.id.to_s,
           :type=>"carts",
           :links=>{:self=>"http://example.org/carts/#{cart2.id}"},
@@ -441,8 +466,18 @@ resource 'Cart', type: :acceptance do
              {:links=>
                {:self=>"http://example.org/carts/#{cart2.id}/relationships/cart_purchases",
                 :related=>"http://example.org/carts/#{cart2.id}/cart_purchases"}}}}]}
+    end
 
+    example 'muliple users logged with user filter param' do
       log_in_user(cart.user_id)
+      do_request
+
+      expect(status).to be 200
+      expect(response_json).to eq(expected_response)
+    end
+
+    example 'logged in admin with muliple users logged with user filter param' do
+      log_in_user(cart.user_id + 1, :admin)
       do_request
 
       expect(status).to be 200
@@ -522,14 +557,14 @@ resource 'Cart', type: :acceptance do
     parameter :user_id, 'User ID', scope: [:data, :attributes]
 
     example 'Create with user and origin with logged in user' do
+      user_id = 1
       params = {
         data: {
           type: 'carts',
-          attributes: { origin: 'text', user_id: 1 }
+          attributes: { origin: 'text', user_id: user_id }
         }
       }
-      log_in_user(1)
-
+      log_in_user(user_id)
       do_request params
 
       cart = Shopping::Cart.first
@@ -539,7 +574,52 @@ resource 'Cart', type: :acceptance do
           type: "carts",
           links: { self: "http://example.org/carts/#{cart.id}" },
           attributes: {
-            user_id: 1,
+            user_id: user_id,
+            purchased_at: nil,
+            created_at: "#{cart.created_at.as_json}",
+            updated_at: "#{cart.updated_at.as_json}",
+            origin: "text"
+          },
+          relationships: {
+            line_items: {
+              links: {
+                self: "http://example.org/carts/#{cart.id}/relationships/line_items",
+                related: "http://example.org/carts/#{cart.id}/line_items"
+              }
+            },
+            cart_purchases: {
+              links: {
+                self: "http://example.org/carts/#{cart.id}/relationships/cart_purchases",
+                related: "http://example.org/carts/#{cart.id}/cart_purchases"
+              }
+            }
+          }
+        }
+      }
+
+      expect(status).to be 201
+      expect(response_json).to eq(expected_response)
+    end
+
+    example 'Create with user_id and origin with logged in admin user' do
+      user_id = 1
+      params = {
+        data: {
+          type: 'carts',
+          attributes: { origin: 'text', user_id: user_id }
+        }
+      }
+      log_in_user(user_id + 1, :admin)
+      do_request params
+
+      cart = Shopping::Cart.first
+      expected_response = {
+        data: {
+          id: cart.id.to_s,
+          type: "carts",
+          links: { self: "http://example.org/carts/#{cart.id}" },
+          attributes: {
+            user_id: user_id,
             purchased_at: nil,
             created_at: "#{cart.created_at.as_json}",
             updated_at: "#{cart.updated_at.as_json}",
@@ -657,6 +737,14 @@ resource 'Cart', type: :acceptance do
     example 'Update owned cart with logged in owner' do
       cart.update!(user_id: 1)
       log_in_user(cart.user_id)
+      do_request params
+      expect(status).to be 200
+      expect(response_json).to eq(expected)
+    end
+
+    example 'Update owned cart with logged in admin' do
+      cart.update!(user_id: 1)
+      log_in_user(cart.user_id + 1, :admin)
       do_request params
       expect(status).to be 200
       expect(response_json).to eq(expected)

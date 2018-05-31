@@ -20,11 +20,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>GET /carts?filter[user_id]=20</pre>
+<pre>GET /carts?filter[user_id]=2</pre>
 
 #### Query Parameters
 
-<pre>filter: {&quot;user_id&quot;=&gt;&quot;20&quot;}</pre>
+<pre>filter: {&quot;user_id&quot;=&gt;&quot;2&quot;}</pre>
 
 ### Response
 
@@ -35,8 +35,8 @@ X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 228cd5f1-4c4e-4489-bff7-79a1490744e9
-X-Runtime: 0.002613
+X-Request-Id: 0d88c0f1-719b-4d28-9cc6-e09daa861adb
+X-Runtime: 0.002573
 Content-Length: 134</pre>
 
 #### Status

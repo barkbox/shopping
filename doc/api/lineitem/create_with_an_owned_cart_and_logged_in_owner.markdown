@@ -2,13 +2,12 @@
 
 ## Create with an owned cart and logged in owner
 
-### POST /line_items
+### POST /carts/:cart_id/line_items
 
 ### Parameters
 
 | Name | Description | Required | Scope |
 |------|-------------|----------|-------|
-| cart_id | Data attributes cart | true | data[attributes] |
 | source_id | Data attributes source | true | data[attributes] |
 | source_type | Data attributes source type | true | data[attributes] |
 | sale_price | Data attributes sale price | true | data[attributes] |
@@ -24,11 +23,11 @@ Cookie: </pre>
 
 #### Route
 
-<pre>POST /line_items</pre>
+<pre>POST /carts/93/line_items</pre>
 
 #### Body
 
-<pre>{"data":{"attributes":{"cart_id":4,"source_id":4,"source_type":"Item","sale_price":1.0,"list_price":1.0},"type":"line_items"}}</pre>
+<pre>{"data":{"type":"line_items","attributes":{"cart_id":93,"source_id":68,"source_type":"Item","sale_price":1.0,"list_price":1.0}}}</pre>
 
 ### Response
 
@@ -38,12 +37,12 @@ Cookie: </pre>
 X-XSS-Protection: 1; mode=block
 X-Content-Type-Options: nosniff
 Content-Type: application/vnd.api+json
-Location: http://example.org/line_items/3
-ETag: W/&quot;832f8e286e7f81b2b9d77600331e1251&quot;
+Location: http://example.org/line_items/63
+ETag: W/&quot;63cc0df07c5c3061d77390efb96bc728&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 6ca61eea-881f-48c0-bdf6-c824a3dbc267
-X-Runtime: 0.046752
-Content-Length: 491</pre>
+X-Request-Id: ed373bc7-5350-4600-86ad-46b19526258e
+X-Runtime: 0.025724
+Content-Length: 497</pre>
 
 #### Status
 
@@ -51,4 +50,4 @@ Content-Length: 491</pre>
 
 #### Body
 
-<pre>{"data":{"id":"3","type":"line_items","links":{"self":"http://example.org/line_items/3"},"attributes":{"cart_id":4,"sale_price":"1.0","list_price":"1.0","quantity":null,"created_at":"2018-02-28T15:46:45.718Z","updated_at":"2018-02-28T15:46:45.718Z","source_id":4,"source_type":"Item","source_sku":"IMASKU","source_name":"An Item","options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/line_items/3/relationships/cart","related":"http://example.org/line_items/3/cart"}}}}}</pre>
+<pre>{"data":{"id":"63","type":"line_items","links":{"self":"http://example.org/line_items/63"},"attributes":{"cart_id":93,"sale_price":"1.0","list_price":"1.0","quantity":null,"created_at":"2018-05-14T06:13:04.932Z","updated_at":"2018-05-14T06:13:04.932Z","source_id":68,"source_type":"Item","source_sku":"IMASKU","source_name":"An Item","options":{}},"relationships":{"cart":{"links":{"self":"http://example.org/line_items/63/relationships/cart","related":"http://example.org/line_items/63/cart"}}}}}</pre>
