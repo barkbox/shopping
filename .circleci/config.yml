@@ -9,12 +9,12 @@ jobs:
           BUNDLE_RETRY: 3
           BUNDLE_PATH: vendor/bundle
           PGHOST: 127.0.0.1
-          PGUSER: bark-tracking-service
+          PGUSER: shopping
           RAILS_ENV: test
       - image: circleci/postgres:9.6
         environment:
-          POSTGRES_USER: bark-tracking-service
-          POSTGRES_DB: bark-tracking-service_test
+          POSTGRES_USER: shopping
+          POSTGRES_DB: shopping_test
           POSTGRES_PASSWORD: ""
       - image: circleci/redis:4.0-alpine
 
@@ -29,8 +29,8 @@ jobs:
       # Restore bundle cache
       - restore_cache:
           keys:
-            - bark-tracking-service-bundle-v2-{{ checksum "Gemfile.lock" }}
-            - bark-tracking-service-bundle-v2-
+            - shopping-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - shopping-bundle-v2-
 
       - run:
           name: Bundle Install
@@ -49,7 +49,7 @@ jobs:
 
       # Store bundle cache
       - save_cache:
-          key: bark-tracking-service-bundle-v2-{{ checksum "Gemfile.lock" }}
+          key: shopping-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 
