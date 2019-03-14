@@ -16,4 +16,5 @@ gemspec
 
 group :development, :test do
   gem 'rspec_api_documentation'
+  gem 'rspec_junit_formatter'
 end
