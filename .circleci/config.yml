@@ -1,0 +1,77 @@
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    docker:
+      - image: circleci/ruby:2.4.4-node
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          PGHOST: 127.0.0.1
+          PGUSER: bark-tracking-service
+          RAILS_ENV: test
+      - image: circleci/postgres:9.6
+        environment:
+          POSTGRES_USER: bark-tracking-service
+          POSTGRES_DB: bark-tracking-service_test
+          POSTGRES_PASSWORD: ""
+      - image: circleci/redis:4.0-alpine
+
+    steps:
+      - checkout
+
+      # Which version of bundler?
+      - run:
+          name: Which bundler?
+          command: bundle -v
+
+      # Restore bundle cache
+      - restore_cache:
+          keys:
+            - bark-tracking-service-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - bark-tracking-service-bundle-v2-
+
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+
+      # https://gist.github.com/miohtama/e2e9ef62b030d1c77610775ee5d257ec
+      - run:
+          name: Install PostgreSQL Client
+          command: |
+            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+            sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d/postgresql.list'
+            sudo apt update -y
+            sudo apt-get install postgresql-client-9.5 -y
+
+      - run: psql --version
+
+      # Store bundle cache
+      - save_cache:
+          key: bark-tracking-service-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: Database setup
+          command: bundle exec rake db:setup --trace
+
+      # Run rspec in parallel
+      - run:
+          name: run tests
+          command: |
+            bundle exec rspec --profile 10 \
+                              --format RspecJunitFormatter \
+                              --out test_results/rspec.xml \
+                              --format progress \
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+
+
+      # Save test results for timing analysis
+      - store_test_results:
+          path: test_results
