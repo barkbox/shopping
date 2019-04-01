@@ -7,7 +7,7 @@ module Shopping
 
     validate :cannot_alter_locked_cart, :cannot_alter_purchased_cart
 
-    attr_accessible :user_id, :order_id, :purchased_at, :origin, :locked_at, :options
+    # attr_accessible :user_id, :order_id, :purchased_at, :origin, :locked_at, :options
 
     default_scope { order(created_at: :desc) }
     scope :purchased, ->{ where.not(purchased_at: nil) }
