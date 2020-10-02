@@ -11,6 +11,8 @@ module Shopping
 
     default_scope { order(created_at: :desc) }
     scope :purchased, ->{ where.not(purchased_at: nil) }
+    scope :not_purchased, -> { where(purchased_at: nil) }
+    scope :not_locked, -> { where(locked_at: nil) }
     scope :failed, ->{ where.not(failed_at: nil).where(purchased_at: nil) }
     scope :open, -> { where(failed_at: nil, purchased_at: nil) }
     scope :canceled, -> {
