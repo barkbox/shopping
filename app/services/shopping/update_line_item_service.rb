@@ -31,7 +31,7 @@ module Shopping
     end
 
     def update!
-      line_item = @cart.line_items.find_by!(source_id: @source.id, source_type: @source.type, sale_price: @source.price)
+      line_item = @cart.line_items.find_by!(source_id: @source.id, source_type: @source.class.name, sale_price: @source.price)
       line_item.quantity = @quantity
       original_options = line_item.options || {}
       line_item.options = original_options.merge(options)
